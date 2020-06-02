@@ -1,50 +1,65 @@
 <?php
 namespace Deployer;
 
-require 'recipe/symfony.php';
+/*Modif 1*/
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Dotenv\Dotenv;
+
+
+require 'recipe/symfony4.php';
+
+/*Modif 3*/
+
+set('symfony_env', 'prod');
 
 // Project name
-set('application', 'pear');
-set('composer_options', 'install --verbose --prefer-dist --no-progress --no-interaction --optimize-autoloader');
-
+set('application', 'pear'); /*Modif 4*/
 
 // Project repository
-set('repository', 'https://github.com/raudut/pear_project.git');
-set('shared_files', []);
+set('repository', 'https://github.com/raudut/Pear');
+
 // [Optional] Allocate tty for git clone. Default value is false.
-set('git_tty', false); 
-
-// Shared files/dirs between deploys 
-add('shared_files', []);
-add('shared_dirs', []);
-
-// Writable dirs by web server 
-add('writable_dirs', []);
-set('allow_anonymous_stats', false);
+set('git_tty', true); 
 
 // Hosts
 
-host('pear.min.epf.fr')
+host('pear.min.epf.fr') /*Modif 5*/
     ->user('min')
+    //->password('min.epf.fr2020')
     ->port(2247)
-    ->set('bin/php', 'php')
-->set('bin/composer', 'composer')
-    ->set('deploy_path', '/var/www/html/PearProject');
-   
-// Tasks
+    ->set('deploy_path', '/data/www/pear_project/{{application}}');
+    
+// Modif 7: Nombre de déploiements à conserver avant de les supprimer.
+set('keep_releases', 4);
 
-task('build', function () {
-    run('cd {{release_path}} && build');
-});
 
-task('test', function() {
-    writeln('Hello world');
-});
+set('composer_options', '{{composer_action}} --verbose --prefer-dist --no-progress --no-interaction --optimize-autoloader --no-suggest');
 
-task('pwd', function() {
-    $result = run('pwd');
-    writeln("Current dir: $result");
-});
+
+
+task('deploy:assets:install', function () {
+    run('{{bin/php}} {{bin/console}} assets:install {{console_options}} --symlink');
+})->desc('Install bundle assets');
+
+task('deploy', [
+    'deploy:info',
+    'deploy:prepare',
+    'deploy:lock',
+    'deploy:release',
+    'deploy:update_code',
+    'deploy:clear_paths',
+    'deploy:shared',
+    'deploy:vendors',
+    'deploy:cache:clear',
+    'deploy:cache:warmup',
+    'deploy:writable',
+    'deploy:assets:install',
+    'deploy:symlink',
+    'deploy:unlock',
+    'cleanup',
+])->desc('Deploy your project');
+
 
 // [Optional] if deploy fails automatically unlock.
 after('deploy:failed', 'deploy:unlock');
