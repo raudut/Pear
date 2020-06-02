@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel= "stylesheet" href="https://bootswatch.com/4/spacelab/bootstrap.min.css">
+        <style>
+            .filter{
+              diplay: block;
+              position: sticky;
+              top: 20px;
+            }
+        </style>
+        {% block stylesheets %}{% endblock %}
+   
+       </head>
+
+
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            
+            {% if is_granted('ROLE_ADMIN') -%}
+          {% set Home = "/home_admin" %}
+          <a class="navbar-brand" href="/home_admin">Pear</a>
+       {% elseif is_granted('ROLE_LENDER') -%}
+          {% set Home = "/home_lender" %}
+          <a class="navbar-brand" href="/home_lender">Pear</a>
+       {% elseif is_granted('ROLE_BORROWER') %}
+          {% set Home = "/home_user" %}
+          <a class="navbar-brand" href="/home_user">Pear</a>
+       {%- endif %}
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+        </nav>
+        {% block javascript %}  {% endblock %}
+    
+        <div class="container">
+            {% block body %} {% endblock %}
+        </div>
+         
+
+    </body>
+      
+
+

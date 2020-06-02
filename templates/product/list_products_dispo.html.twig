@@ -1,0 +1,40 @@
+{% extends "base.html.twig" %}
+
+
+ {% block title %}Liste des objets{% endblock %}
+ 
+  {% block body %}
+
+
+    
+      <div class="row">
+        <div class="col-md-3">
+          {%include  'product/_filter.html.twig' with {form: form} only %}
+        </div>
+      </div>
+      <div class="col-md-9"> 
+        <div class="grid">
+          <table class="table table-hover">         
+            <tbody>
+            {% if products is defined %}
+              {%for product in products %}              
+                <tr>
+                  <td>{% include 'product/_card.html.twig' with {product: product} only %}</td>                
+                  <td>
+                    <button type="button" class="btn btn-outline-primary">Details</button>
+                    <button type="button" class="btn btn-outline-secondary" onclick="self.location.href='/add-borrowing/{{product.id}}'">Emprunter</button>
+                    
+                    
+                  </td>
+                </tr>    			
+              {% endfor %}
+            {%endif%}
+            </tbody>
+          </table> 
+        </div>    
+       </div>
+   
+  {% endblock %}
+
+
+

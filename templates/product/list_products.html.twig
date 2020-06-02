@@ -1,0 +1,50 @@
+{% extends "base.html.twig" %}
+
+ {% block title %}Liste des objets{% endblock %}
+ 
+  {% block body %}
+
+
+     <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          {%include  'product/_filter.html.twig' with {form: form} only %}
+        </div>
+      
+        <div class="col-md-9"> 
+          <div class="grid">
+            <table class="table table-hover">         
+              <tbody>
+              {% if products is defined %}
+                {%for product in products %}              
+                  <tr>
+                    <td>{% include 'product/_card.html.twig' with {product: product} only %}</td>                
+                    <td>                    
+                      <button type="button" class="btn btn-outline-primary" onclick="self.location.href='/show-product/{{product.id}}'">Details</button>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-outline-secondary" onclick="self.location.href='/add-borrowing/{{product.id}}'">Emprunter</button>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-outline-success">Rendre</button>
+                    </td>
+                    <td> 
+                      <button type="button" class="btn btn-outline-info" onclick="self.location.href='/qrcode-product/{{product.id}}'">QrCode</button>
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-outline-danger" onclick="self.location.href='/delete-product/{{product.id}}'">Supprimer</button> 
+                    </td>
+                  </tr>    			
+                {% endfor %}
+              {%endif%}
+              </tbody>
+            </table> 
+          </div>    
+        </div>
+      </div>
+    </div>
+   
+  {% endblock %}
+
+
+

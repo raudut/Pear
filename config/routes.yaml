@@ -1,0 +1,143 @@
+#Route de l'appli
+home:
+    path: /
+    controller: App\Controller\AppController::home
+
+login:
+  path: /login
+  controller: App\Controller\SecurityController::login
+
+home_admin:
+  path: /home_admin
+  controller: App\Controller\AppController::home_admin
+
+home_lender:
+  path: /home_lender
+  controller: App\Controller\AppController::home_lender
+
+home_user:
+  path: /home_user
+  controller: App\Controller\AppController::home_user
+
+
+
+#Route des users
+add_client:
+    path: /add-client
+    controller: App\Controller\ClientController::add_client
+
+list_clients:
+  path: /list-clients
+  controller: App\Controller\ClientController::list_clients
+
+
+delete_client:
+  path: /delete-client/{id}
+  controller: App\Controller\ClientController::delete_client
+
+edit-client:
+  path: /edit-client/{id}
+  controller: App\Controller\ClientController::edit_client
+
+edit-me:
+  path: /edit-me
+  controller: App\Controller\ClientController::edit_me
+  
+show-client:
+  path: /show-client/{id}
+  controller: App\Controller\ClientController::show_user
+
+#Route des preteurs
+add_lender:
+   path: /add-lender
+   controller: App\Controller\ClientController::add_lender
+
+list_lenders:
+  path: /list-lenders
+  controller: App\Controller\ClientController::list_lenders
+
+
+
+#Route product
+add_product:
+  path: /add-product
+  controller: App\Controller\ProductController::add_product
+
+list_products:
+  path: /list-products
+  controller: App\Controller\ProductController::list_products
+
+list_products_dispo:
+  path: /list-products-dispo
+  controller: App\Controller\ProductController::list_products_dispo
+
+list_products_by_lender:
+  path: /list-products-by-lender
+  controller: App\Controller\ProductController::list_products_by_lender
+
+delete_product:
+  path: /delete-product/{id}
+  controller: App\Controller\ProductController::delete_products
+  
+show_product:
+  path: /show-product/{id}
+  controller: App\Controller\ProductController::show_product
+
+edit_product:
+  path: /edit-product/{id}
+  controller: App\Controller\ProductController::edit_product
+
+#Route Qr Code
+qrcode_product:
+  path: /qrcode-product/{id}
+  controller: App\Controller\ProductController::genarateQRcode
+
+qrcode_confirmation:
+  path: /qrcode-confirmation/{id}
+  controller: App\Controller\ProductController::confirmationQRcode
+
+
+
+
+# Routes pour les emprunts
+
+add_borrowing:
+  path: /add-borrowing/{id}
+  controller: App\Controller\BorrowingController::add_borrowing
+
+list_borrowings:
+  path: /list-borrowings
+  controller: App\Controller\BorrowingController::list_borrowings
+
+delete_borrowing:
+  path: /delete-borrowing/{id}
+  controller: App\Controller\BorrowingController::delete_borrowing
+
+list_my_borrowings:
+  path: /list-my-borrowings
+  controller: App\Controller\BorrowingController::list_my_borrowings
+
+rendre_product:
+  path: /rendre-product/{id}
+  controller: App\Controller\BorrowingController::rendre_product
+
+
+#categories
+add_categorie:
+  path: /add-categorie
+  controller: App\Controller\CategorieController::add_categorie
+
+list_categories:
+  path: /list-categories
+  controller: App\Controller\CategorieController::list_categories
+
+delete_categorie:
+  path: /delete-categorie/{id}
+  controller: App\Controller\CategorieController::delete_categorie
+
+edit_categorie:
+  path: /edit-categorie/{id}
+  controller: App\Controller\CategorieController::edit_categorie
+
+
+

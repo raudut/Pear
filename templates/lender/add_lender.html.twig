@@ -1,0 +1,40 @@
+{% extends "base.html.twig" %}
+
+
+{% block title %}Ajouter préteur!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+
+    <h1>Passer un utilisateur en un préteur</h1>
+  
+  {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+
+  {# Les erreurs générales du formulaire. #}
+  {{ form_errors(form) }}
+
+
+
+  {# Génération manuelle et éclatée : #}
+ <div class="form-group">
+    {# Génération du label. #}
+    {{ form_label(form.iduser, "User :", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    {{ form_errors(form.iduser) }}
+    <div class="col-sm-10">
+      {# Génération de l'input. #}
+      {{ form_widget(form.iduser, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary' }}) }}
+     
+  {{ form_rest(form) }}
+
+  {# Fermeture de la balise <form> du formulaire HTML #}
+  {{ form_end(form) }}
+</div> 
+{#<input type="button" name="home_link" value="Terminer" onclick="self.location.href='/'" style="background-color:#3cb371" style="color:white; font-weight:bold"onclick> #}
+
+{% endblock %}

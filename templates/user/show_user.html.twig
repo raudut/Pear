@@ -1,0 +1,76 @@
+{% if is_granted('ROLE_ADMIN') -%}
+    {% set extendedTemplate = "base_admin.html.twig" %}
+{% elseif is_granted('ROLE_LENDER') -%}
+    {% set extendedTemplate = "base_lender.html.twig" %}
+{% else %}
+    {% set extendedTemplate = "base_user.html.twig" %}
+{%- endif %}
+
+{% extends extendedTemplate %}
+
+ {% block title %}Detail Client{% endblock %}
+ 
+ {% block body %}
+   
+        <div class="row">
+
+            <div class="col-md-2">
+                <div><button type="button" class="btn btn-outline-secondary" onclick="self.location.href='/delete-client/{{client.id}}'"> Supprimer</button></div>
+                <div><button type="button" class="btn btn-outline-secondary" onclick="self.location.href='/edit-client/{{client.id}}'" > Modifier</button></div>
+            </div>
+            <div class="col-md-9">
+                <table class="table table-hover">
+                    <thead>
+                        <tr scope="col">nom</tr>
+                        <tr scope="col">prénom</tr>
+                        <tr scope="col">email</tr>
+                        <tr scope="col">rôle</tr>
+                        <tr scope="col">items prétés</tr>
+                        <tr scope="col">items empruntés</tr>
+                    </thead>
+                    <tbody>
+                    <td>{{client.nom}}</td>
+                    <td>{{client.prenom}}</td>
+                    <td>{{client.email}}</td>
+                    <td>{{client.roles[0]}}</td>
+                    {%if client.roles[0] == "ROLE_LENDER"%}
+                    {%for product in listLendings%}
+                    <td>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>Nom</tr>
+                                <tr>Catégorie</tr>
+                                <tr>Prix</tr>
+                            </thead>
+                            <tbody>
+                                <td>{{product.nom}}</td>
+                                <td>{{product.categorie}}</td>
+                                <td>{{product.prix}}</td>
+                            </tbody>
+                        </table>
+                    </td>
+                    {%endfor%}
+                    {%endif%}
+                    {% for borrow in listBorrowings %} 
+                    <td>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>Nom</tr>
+                                <tr>Date de début</tr>
+                                <tr>Date de fin</tr>
+                            </thead>
+                            <tbody>
+                                {#<td>{{product.nom}}</td>#}
+                                <td>{{borrow.dateDebut}}</td>
+                                <td>{{borrow.dateFin}}</td>
+                            </tbody>
+                        </table>
+                    </td> 
+                    {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>            
+    
+
+ {% endblock %}
