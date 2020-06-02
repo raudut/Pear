@@ -26,7 +26,6 @@ set('git_tty', true);
 
 host('pear.min.epf.fr') /*Modif 5*/
     ->user('min')
-    //->password('min.epf.fr2020')
     ->port(2247)
     ->set('deploy_path', '/data/www/{{application}}');
     
@@ -65,6 +64,5 @@ task('deploy', [
 after('deploy:failed', 'deploy:unlock');
 
 // Migrate database before symlink new release.
-
 before('deploy:symlink', 'database:migrate');
 
