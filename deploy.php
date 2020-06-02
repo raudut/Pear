@@ -28,7 +28,7 @@ host('pear.min.epf.fr') /*Modif 5*/
     ->user('min')
     //->password('min.epf.fr2020')
     ->port(2247)
-    ->set('deploy_path', '/data/www/pear_project/{{application}}');
+    ->set('deploy_path', '/data/www/{{application}}');
     
 // Modif 7: Nombre de déploiements à conserver avant de les supprimer.
 set('keep_releases', 4);
