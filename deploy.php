@@ -14,7 +14,7 @@ require 'recipe/symfony4.php';
 set('symfony_env', 'prod');
 
 // Project name
-set('application', 'pear'); /*Modif 4*/
+set('application', 'Pear-03-06-Server'); /*Modif 4*/
 
 // Project repository
 set('repository', 'https://github.com/raudut/Pear');
