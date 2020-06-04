@@ -279,13 +279,13 @@ class ProductController extends AbstractController
     $numSerie=$product->getNumserie();
     $nom=$product->GetNom();
     $statut=$product->GetStatut();
-    //$borrowing=$product->getBorrowing();
+    
     
     //$qrcode_message="Lobjet $nom ayant pour numero de serie $numSerie est : Dispo car le site n'est pas en ligne pour le moment pour le moment. Il est en $etat état.";
-    $qrcode_message="127.0.0.1:8000/qrcode-confirmation/$id";
+    $qrcode_message="https://pear.min.epf.fr/qrcode-confirmation/$id";
     $encodeurl = urlencode($qrcode_message);
-    //echo($encodeurl); 
-    // goqr $url = "https://api.qrserver.com/v1/create-qrcode/?data=$encodeurl&size=100x100";
+    
+    //API goqr $url = "https://api.qrserver.com/v1/create-qrcode/?data=$encodeurl&size=100x100";
     $url = "https://chart.googleapis.com/chart?chs=500x500&cht=qr&chl=$encodeurl&choe=UTF-8"; //API google
 
     return $this->render('product/qrcode_product.html.twig', array(
