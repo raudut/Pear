@@ -210,9 +210,6 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
         
         $products = $productRepository->findSearch($data);
-        //dd($products);
-        //foreach($products as $product){ echo $product->getNom();}
-
 
        return $this  -> render('product/list_products_dispo.html.twig',
         array("Liste"=> $listProducts,
@@ -271,8 +268,7 @@ class ProductController extends AbstractController
       return $this->redirectToRoute('login');
     }
     else{
-
-    // On crée un objet Advert
+    
     $product = $productRepository -> findOneById($id);
     
     $etat= $product->getEtat();
@@ -281,7 +277,6 @@ class ProductController extends AbstractController
     $statut=$product->GetStatut();
     
     
-    //$qrcode_message="Lobjet $nom ayant pour numero de serie $numSerie est : Dispo car le site n'est pas en ligne pour le moment pour le moment. Il est en $etat état.";
     $qrcode_message="https://pear.min.epf.fr/qrcode-confirmation/$id";
     $encodeurl = urlencode($qrcode_message);
     
@@ -298,14 +293,6 @@ class ProductController extends AbstractController
 
   public function confirmationQRcode(Request $request,ProductRepository $productRepository, $id){
 
-    //$user = $this -> getUser();
-    //if ($user == null){
-    //  $path = "127.0.0.1:8000/qrcode-confirmation/$id";
-    //  return $this->redirectToRoute('login', array('path' => $path));
-    //}
-    //else{
-
-    // On crée un objet Advert
     $product = $productRepository -> findOneById($id);
     
     $etat= $product->getEtat();
@@ -323,7 +310,7 @@ class ProductController extends AbstractController
       'product' => $product
        ));
   }
-//}
+
 
 
   public function show_product($id, ProductRepository $productRepository){

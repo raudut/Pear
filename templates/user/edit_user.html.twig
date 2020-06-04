@@ -54,14 +54,14 @@
   {{form_label(form.naissance, "Date de naissance", {'label_attr' : {'class':'col-sm-2 control-label'}})}}
   {{form_errors (form.naissance)}}
       <div class="col-sm-10">
-      {{ form_widget(form.naissance, {'attr': {'class': 'form-control'}}) }}
+      {{ form_widget(form.naissance, {'label_attr': {'class':'col-sm-2 control-label'}}) }}
     </div>
 </div>
 <div class="form-group">
   {{form_label(form.roles, "Roles", {'label_attr' : {'class':'col-sm-2 control-label'}})}}
   {{form_errors (form.roles)}}
       <div class="col-sm-10">
-      {{ form_widget(form.roles, {'attr': {'class': 'form-control'}}) }}
+      {{ form_widget(form.roles, {'label_attr': {'class':'col-sm-2 control-label'}}) }}
     </div>
 </div>
 
