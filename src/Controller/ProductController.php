@@ -25,17 +25,13 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+
 class ProductController extends AbstractController
 {
   
+    public function add_product(Request $request, CategorieRepository $catrepo){
 
-  public function add_product(Request $request, CategorieRepository $catrepo){
-
-    $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
+    $this->denyAccessUnlessGranted('ROLE_LENDER');
 
     // On crée un objet Advert
     $product = new Product();
@@ -71,6 +67,7 @@ class ProductController extends AbstractController
         
         'entry_type'   => ChoiceType::class,
         'entry_options'  => [
+            'label' => false,
             'choices'  => [
               $product->getStatutNames()
             ],
@@ -99,17 +96,14 @@ class ProductController extends AbstractController
       'form' => $form->createView(),
     ));
   }
-}
+
 
 
  
   public function list_products_by_lender(ProductRepository $productRepository)
   {
-    $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
+    $this->denyAccessUnlessGranted('ROLE_LENDER');
+    
 
     $user = $this -> getUser();
     $id = $user -> getId();
@@ -118,15 +112,11 @@ class ProductController extends AbstractController
 
     return $this -> render ('product/list_products_by_lender.html.twig', array("listProduct" => $listProduct));
   }
-}
+
 
   public function filtreproduit(Request $request, ProductRepository $productRepository){
 
-    $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
+    
 
     $data = new SearchData();
         
@@ -136,16 +126,12 @@ class ProductController extends AbstractController
     $products = $productRepository->findSearch($data);
     return array($form, $products);
   }
-}
+
 
   public function list_products( ProductRepository $productRepository, Request $request)
   {
-
-    $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
+    $this->denyAccessUnlessGranted('ROLE_ADMIN');
+    
 
     $listProducts = $productRepository -> findAll();
 
@@ -177,17 +163,12 @@ class ProductController extends AbstractController
 
 }
         
-  }
+  
 
 
     public function list_products_dispo( ProductRepository $productRepository, Request $request)
   {
-
-    $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
+    $this->denyAccessUnlessGranted('ROLE_BORROWER');
 
     $listProducts = $productRepository -> findBy(['statut' => "STATUT_DISPONIBLE"]); 
 
@@ -228,17 +209,13 @@ class ProductController extends AbstractController
 
         array("Liste"=> $listProducts));
   }
-}
+
 
   
     
   public function delete_products(ProductRepository $productRepository, BorrowingRepository $borrowingRepository, $id, Request $request)
   {
-    $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
+    $this->denyAccessUnlessGranted('ROLE_LENDER');
 
     $user = $this -> getUser();
     $product = $productRepository -> findOneById($id);
@@ -262,15 +239,12 @@ class ProductController extends AbstractController
           return $this->redirectToRoute('home_user');
         }
   }
-}
+
 
   public function genarateQRcode(Request $request,ProductRepository $productRepository, $id){
 
-    $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
+    $this->denyAccessUnlessGranted('ROLE_LENDER');
+    
 
     // On crée un objet Advert
     $product = $productRepository -> findOneById($id);
@@ -279,13 +253,13 @@ class ProductController extends AbstractController
     $numSerie=$product->getNumserie();
     $nom=$product->GetNom();
     $statut=$product->GetStatut();
-    
+    //$borrowing=$product->getBorrowing();
     
     //$qrcode_message="Lobjet $nom ayant pour numero de serie $numSerie est : Dispo car le site n'est pas en ligne pour le moment pour le moment. Il est en $etat état.";
-    $qrcode_message="https://pear.min.epf.fr/qrcode-confirmation/$id";
+    $qrcode_message="127.0.0.1:8000/qrcode-confirmation/$id";
     $encodeurl = urlencode($qrcode_message);
-    
-    //API goqr $url = "https://api.qrserver.com/v1/create-qrcode/?data=$encodeurl&size=100x100";
+    //echo($encodeurl); 
+    // goqr $url = "https://api.qrserver.com/v1/create-qrcode/?data=$encodeurl&size=100x100";
     $url = "https://chart.googleapis.com/chart?chs=500x500&cht=qr&chl=$encodeurl&choe=UTF-8"; //API google
 
     return $this->render('product/qrcode_product.html.twig', array(
@@ -294,16 +268,10 @@ class ProductController extends AbstractController
       'product' => $product
        ));
   }
-  }
 
   public function confirmationQRcode(Request $request,ProductRepository $productRepository, $id){
 
-    //$user = $this -> getUser();
-    //if ($user == null){
-    //  $path = "127.0.0.1:8000/qrcode-confirmation/$id";
-    //  return $this->redirectToRoute('login', array('path' => $path));
-    //}
-    //else{
+    $this->denyAccessUnlessGranted('ROLE_BORROWER');
 
     // On crée un objet Advert
     $product = $productRepository -> findOneById($id);
@@ -323,16 +291,12 @@ class ProductController extends AbstractController
       'product' => $product
        ));
   }
-//}
+
 
 
   public function show_product($id, ProductRepository $productRepository){
 
-    $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
+    $this->denyAccessUnlessGranted('ROLE_BORROWER');
 
     $product = $productRepository -> findOneById($id);
     
@@ -341,16 +305,12 @@ class ProductController extends AbstractController
       'product'=> $product
     ));
   }
-}
+
 
 
  public function edit_product(Request $request, Product $product){
 
-  $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
+  $this->denyAccessUnlessGranted('ROLE_LENDER');
     
     $entityManager = $this->getDoctrine()->getManager();
 
@@ -421,6 +381,6 @@ class ProductController extends AbstractController
     ));
 
   }
-}
+
 
 }

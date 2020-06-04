@@ -31,6 +31,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Test\FormBuilderInterface;
+use Symfony\Component\Form\ChoiceList\ChoiceList;
 
 class ClientController extends AbstractController
 { 
@@ -58,11 +59,15 @@ class ClientController extends AbstractController
       ->add('roles', CollectionType::class, [
         'entry_type'   => ChoiceType::class,
         'entry_options'  => [
+            'label' => false,
             'choices'  => [
               $user->getRolesNames()
             ],
         ],
-    ]);
+    ])
+    ;
+
+      
       
 
 
@@ -98,11 +103,7 @@ class ClientController extends AbstractController
 
   public function show_user(UserRepository $userRepo, $id, ProductRepository $productRepository, BorrowingRepository $borrowingRepo){
 
-    $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
+    $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
     $client= $userRepo -> findOneById($id);
     $listProduct =  $productRepository -> findBy(['owner' => $id]);
@@ -120,17 +121,13 @@ class ClientController extends AbstractController
       'listBorrowings' => $listBorrow,
       'listBProduct' => $listBProduct
     ));
-  }
+  
   }
 
 
   public function edit_client(Request $request, User $user){
 
-    $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
+    $this->denyAccessUnlessGranted('ROLE_ADMIN');
     
     $entityManager = $this->getDoctrine()->getManager();
 
@@ -147,6 +144,7 @@ class ClientController extends AbstractController
       ->add('roles', CollectionType::class, [
         'entry_type'   => ChoiceType::class,
         'entry_options'  => [
+            'label' => false,
             'choices'  => [
               $user->getRolesNames()
             ],
@@ -179,18 +177,16 @@ class ClientController extends AbstractController
     ));
   }
 
-  }
+  
 
 
  public function edit_me(Request $request){
 
-  $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
+  $this->denyAccessUnlessGranted('ROLE_BORROWER');
 
    $user = $this -> getUser();
+
+  
     
     $entityManager = $this->getDoctrine()->getManager();
 
@@ -208,6 +204,7 @@ class ClientController extends AbstractController
       ->add('roles', CollectionType::class, [
         'entry_type'   => ChoiceType::class,
         'entry_options'  => [
+            'label' => false,
             'choices'  => [
               $user->getRolesNames()
             ],
@@ -250,18 +247,14 @@ class ClientController extends AbstractController
     ));
 
   }
-}
+
 
 
 
   public function list_clients( UserRepository $userRepository)
   {
 
-    $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
+    $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
     $listUser = $userRepository -> findAll();
     foreach ($listUser as $user){
@@ -274,17 +267,12 @@ class ClientController extends AbstractController
     return $this -> render ('user/list_users.html.twig', 
     array("listUser" => $listUser));
   }
-  }
+  
 
 
   public function delete_client(UserRepository $userRepository, BorrowingRepository $borrowingRepository, $id)
   {
-    
-      $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
+    $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
       $user = $userRepository -> findOneById($id);
       $borrowing = $borrowingRepository -> findOneByidUser($id);
@@ -297,7 +285,7 @@ class ClientController extends AbstractController
 
       $listUser = $userRepository -> findAll();
       return $this -> render ('user/list_users.html.twig', array("listUser" => $listUser));
-    }
+    
   }
 
     
@@ -305,11 +293,7 @@ class ClientController extends AbstractController
     public function add_lender()
     {
 
-      $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
+      $this->denyAccessUnlessGranted('ROLE_BORROWER');
       
       $entityManager = $this->getDoctrine()->getManager();
       $connUser = $this->getUser();
@@ -320,22 +304,18 @@ class ClientController extends AbstractController
       return $this->redirectToRoute('home_lender');
       
   }
-}
+
 
   public function list_lenders(UserRepository $userRepository)
   {
 
-    $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
+    $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
     $listLender = $userRepository -> findAllLenders('ROLE_LENDER');
 
     return $this -> render ('lender/list_lenders.html.twig', array("listLender" => $listLender));
   }
-}
+
 
     
   
