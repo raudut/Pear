@@ -7,41 +7,54 @@
 
 
   <h1> Vous avez scanner l'objet suivant : </h1>
-  <Table border="1">
+  <h4> </br></h4>
+<table class="table table-hover">
+ <thead>
     <tr>
-      <th> Nom </th>
-      <td> {{product.nom}} </td>
+      <th scope="col">Description de l'objet</th>
+      <th scope="col"></th>
+      
     </tr>
-    <tr>
-      <th> Prix </th>
-      <td> {{product.prix}} </td>
-    </tr>
-    <tr>
-      <th> Etat </th>
-      <td> {{product.etat}} </td>
-    </tr>
-    <tr>
-      <th> Numéro de série </th>
-      <td> {{product.numSerie}} </td>
-    </tr>
-      <th> Satut </th>
-      {%for Satut in product.statut%}
-      <td> {{Satut}} </td>
-      {%endfor%}
-  </Table>
+  </thead>
+  <tbody>
 
+    <tr>
+      <th scope="row">Nom </th>
+      <td>{{product.nom}}</td>
+    </tr>
+       <tr>
+      <th scope="row">Prix </th>
+      <td>{{product.prix}}</td>
+    </tr>
+        <tr>
+      <th scope="row">Etat</th>
+      <td>{{product.etat}}</td>
+    </tr>
+        <tr>
+      <th scope="row">Numéro de série</th>
+      <td>{{product.numSerie}}</td>
+    </tr>
+        <tr>
+      <th scope="row">Statut</th>
+      <td>{{product.statut[0]}}</td>
+    </tr>
+  </tbody>
+</table> 
 
   {% if app.user.id == idOwner %}
 
 
-	{% if statut ends with 'STATUT_DISPONIBLE' %} 
-  <p> Voulez-vous préter cette objet ? </p>
-  <label class="btn btn-primary">
-    <input type="checkbox" onclick="" autocomplete="off"> Oui
-  </label>
-  <label class="btn btn-primary">
-    <input type="checkbox" onclick="" autocomplete="off"> Non
-  </label>
+	{% if product.statut[0] ends with 'STATUT_DISPONIBLE' %} 
+  <h4 text-align="center" > </br></br> Voulez-vous emprunter cet objet ? </h4>
+  
+
+    <button type="button" class="btn btn-outline-success" onclick="self.location.href='/add-borrowing/{{product.id}}'" > Oui</button>
+
+    <button type="button" class="btn btn-outline-danger" onclick="self.location.href='/'" > Non</button>
+
+
+
+</div> 
 
   {% else %}
 

@@ -87,10 +87,10 @@ class BorrowingController extends AbstractController
                 $mailuser->send_email_product($ownername, $owneremail,  $productname);
         
                 return $this->redirectToRoute('list_my_borrowings');
-                echo($borrowing->GetId());
+                
             }
     
-            echo($this->get('security.token_storage')->getToken()->getUser()->getId());
+          
             return $this->render('borrowing/add_borrowing.html.twig', array(
       'form' => $form->createView(),
     ));
@@ -181,7 +181,7 @@ class BorrowingController extends AbstractController
       $borrowing = $borrowingRepository -> findOneById($id);
       $idProduct = $borrowing->getIdProduct();
       $product = $productRepository -> findOneById($idProduct);
-      echo $product ->getNom();
+  
       $statut[] = "STATUT_DISPONIBLE";
       $product->setStatut($statut);
       $entityManager->flush();
@@ -200,6 +200,10 @@ class BorrowingController extends AbstractController
       $listBorrowing =  $borrowingRepository -> findBy(['idUser' =>$borrowing->getIdUser()]);
         return $this -> render ('borrowing/list_my_borrowings.html.twig', array("listBorrowing" => $listBorrowing));
       
-  }
     }
+  }
+
+
+
+
 }
