@@ -12,6 +12,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use App\Repository\BorrowingRepository;
 use Doctrine\ORM\EntityManager;
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,87 +31,78 @@ class BorrowingController extends AbstractController
 {
     public function add_borrowing(Request $request, ProductRepository $productRepository, $id)
     {
+      try {
+          $user = $this -> getUser();
+          if ($user == null) {
+              return $this->redirectToRoute('login');
+          } else {
+              $produit = $productRepository->findOneById($id);
+              $stat = $produit->getStatut();
 
-        $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
+              if (in_array('STATUT_DISPONIBLE', $stat)) {
+                  $mailuser = new AppController();
+                  $borrowing = new Borrowing();
+                  $proprio = new User;
+                  $lender = new Lender;
+                  $entityManager = $this->getDoctrine()->getManager();
 
-        $produit = $productRepository->findOneById($id);
-        $stat = $produit->getStatut();
+                  $formBuilder = $this->get('form.factory')->createBuilder(FormType::class, $borrowing);
 
-        if (in_array('STATUT_DISPONIBLE', $stat)) {
-            $mailuser = new AppController();
-            $borrowing = new Borrowing();
-            $proprio = new User;
-            $lender = new Lender;
-            $entityManager = $this->getDoctrine()->getManager();
-
-            $formBuilder = $this->get('form.factory')->createBuilder(FormType::class, $borrowing);
-
-            //$products = $productRepository -> findProductByStatut('STATUT_DISPONIBLE');
-
-            $formBuilder
+          
+                  $formBuilder
       ->add('dateDebut', DateType::class)
       ->add('dateFin', DateType::class)
       ->add('save', SubmitType::class)
-      /*->add('idProduct', EntityType::class, [
-                'class' => Product::class,
-                'choice_label' => 'nom',
-                'placeholder' => '== Choisir un objet ==',
-                'choices' => $productRepository -> findProductByStatut('STATUT_DISPONIBLE')
-            ]) */
-      
+   
       ;
          
-            $form = $formBuilder->getForm();
-            $form->handleRequest($request);
-            if ($form->isSubmitted() && $form->isValid()) {
-                $borrowing = $form->getData();
-                $borrowing->setIdUser($this->getUser());
-                $product = $productRepository->findOneById($id);
-                $borrowing->setIdProduct($product);
-                $entityManager->persist($borrowing);
-                $entityManager->flush();
+                  $form = $formBuilder->getForm();
+                  $form->handleRequest($request);
+                  if ($form->isSubmitted() && $form->isValid()) {
+                      $borrowing = $form->getData();
+                      $borrowing->setIdUser($this->getUser());
+                      $product = $productRepository->findOneById($id);
+                      $borrowing->setIdProduct($product);
+                      $entityManager->persist($borrowing);
+                      $entityManager->flush();
 
-                $prod = $borrowing->getIdProduct();
-                $statut[] = 'STATUT_LOUE';
-                $prod->setStatut($statut);
-                $entityManager->flush();
+                      $prod = $borrowing->getIdProduct();
+                      $statut[] = 'STATUT_LOUE';
+                      $prod->setStatut($statut);
+                      $entityManager->flush();
 
-                $lender = $product -> getOwner();
-                $owneremail = $lender -> getEmail ();
-                $ownername = $lender -> getNom();
-                $productname = $product ->getNom();
+                      $lender = $product -> getOwner();
+                      $owneremail = $lender -> getEmail();
+                      $ownername = $lender -> getNom();
+                      $productname = $product ->getNom();
 
-                $mailuser->send_email_product($ownername, $owneremail,  $productname);
+                      $mailuser->send_email_product($ownername, $owneremail, $productname);
         
-                return $this->redirectToRoute('list_my_borrowings');
-                
-            }
+                      return $this->redirectToRoute('list_my_borrowings');
+                  }
     
           
-            return $this->render('borrowing/add_borrowing.html.twig', array(
+                  return $this->render('borrowing/add_borrowing.html.twig', array(
       'form' => $form->createView(),
     ));
-        } else {
-            return $this -> render('security/erreur.html.twig');
-        }
-    }
+              } else {
+                  return $this -> render('security/erreur.html.twig');
+              }
+          }
+      }catch (Exception $e){
+        return $this -> render('security/erreur.html.twig');
+      }
   }
 
 
 
     public function list_borrowings(BorrowingRepository $borrowingRepository)
     {
-
-        $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
-
+try {
+    $user = $this -> getUser();
+    if ($user == null) {
+        return $this->redirectToRoute('login');
+    } else {
         $listBorrowing = $borrowingRepository -> findAll();
         foreach ($listBorrowing as $bo) {
             $bo -> getIdUser();
@@ -123,18 +115,19 @@ class BorrowingController extends AbstractController
             array("listBorrowing" => $listBorrowing)
         );
     }
+}catch (Exception $e){
+  return $this -> render('security/erreur.html.twig');
+}
   }
 
 
     public function list_my_borrowings(BorrowingRepository $borrowingRepository)
     {
-
-        $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
-
+try {
+    $user = $this -> getUser();
+    if ($user == null) {
+        return $this->redirectToRoute('login');
+    } else {
         $user = $this -> getUser();
         $id = $user -> getId();
 
@@ -143,19 +136,20 @@ class BorrowingController extends AbstractController
 
         return $this -> render('borrowing/list_my_borrowings.html.twig', array("listBorrowing" => $listBorrowing));
     }
+}catch (Exception $e){
+  return $this -> render('security/erreur.html.twig');
+}
   }
 
 
 
     public function delete_borrowing(BorrowingRepository $borrowingRepository, $id)
     {
-
-        $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
-
+try {
+    $user = $this -> getUser();
+    if ($user == null) {
+        return $this->redirectToRoute('login');
+    } else {
         $bo = $borrowingRepository -> findOneById($id);
 
         $entityManager = $this->getDoctrine()->getManager();
@@ -166,40 +160,43 @@ class BorrowingController extends AbstractController
         $listBorrowing = $borrowingRepository -> findAll();
         return $this -> render('borrowing/list_borrowings.html.twig', array("listBorrowing" => $listBorrowing));
     }
+}catch (Exception $e){
+  return $this -> render('security/erreur.html.twig');
+}
   }
 
     public function rendre_product($id, ProductRepository $productRepository, BorrowingRepository $borrowingRepository){
-      
-      $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
-
-      $mailowner = new AppController();
-      $entityManager = $this->getDoctrine()->getManager();
-      $borrowing = $borrowingRepository -> findOneById($id);
-      $idProduct = $borrowing->getIdProduct();
-      $product = $productRepository -> findOneById($idProduct);
+      try {
+          $user = $this -> getUser();
+          if ($user == null) {
+              return $this->redirectToRoute('login');
+          } else {
+              $mailowner = new AppController();
+              $entityManager = $this->getDoctrine()->getManager();
+              $borrowing = $borrowingRepository -> findOneById($id);
+              $idProduct = $borrowing->getIdProduct();
+              $product = $productRepository -> findOneById($idProduct);
   
-      $statut[] = "STATUT_DISPONIBLE";
-      $product->setStatut($statut);
-      $entityManager->flush();
+              $statut[] = "STATUT_DISPONIBLE";
+              $product->setStatut($statut);
+              $entityManager->flush();
 
-      $lender = $product -> getOwner();
-      $owneremail = $lender -> getEmail ();
-      $ownername = $lender -> getNom();
-      $productname = $product ->getNom();
+              $lender = $product -> getOwner();
+              $owneremail = $lender -> getEmail();
+              $ownername = $lender -> getNom();
+              $productname = $product ->getNom();
        
 
-      $mailowner->send_email_rendre_product($owneremail, $ownername,  $productname);
+              $mailowner->send_email_rendre_product($owneremail, $ownername, $productname);
 
-      $this -> delete_borrowing($borrowingRepository, $borrowing);  
-      $entityManager->flush();
+              $this -> delete_borrowing($borrowingRepository, $borrowing);
+              $entityManager->flush();
 
-      $listBorrowing =  $borrowingRepository -> findBy(['idUser' =>$borrowing->getIdUser()]);
-        return $this -> render ('borrowing/list_my_borrowings.html.twig', array("listBorrowing" => $listBorrowing));
-      
+              $listBorrowing =  $borrowingRepository -> findBy(['idUser' =>$borrowing->getIdUser()]);
+              return $this -> render('borrowing/list_my_borrowings.html.twig', array("listBorrowing" => $listBorrowing));
+          }
+      }catch (Exception $e){
+      return $this -> render('security/erreur.html.twig');
     }
   }
 

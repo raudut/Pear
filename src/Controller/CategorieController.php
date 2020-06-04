@@ -2,7 +2,7 @@
 // src/Controller/CategorieController.php
 
 namespace App\Controller;
-
+use Exception;
 use App\Entity\Categorie;
 use App\Controller\AppController;
 use App\Repository\CategorieRepository;
@@ -16,17 +16,14 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 class CategorieController extends AppController{
 
     public function add_categorie(Request $request){
-
+try{
       $user = $this -> getUser();
     if ($user == null){
       return $this->redirectToRoute('login');
     }
     else{
 
-
         $categorie = new Categorie();
-    
-
     $entityManager = $this->getDoctrine()->getManager();
 
     // On crée le FormBuilder grâce au service form factory
@@ -45,12 +42,13 @@ class CategorieController extends AppController{
     $form = $formBuilder->getForm();
 
     $form->handleRequest($request);
-    if($form->isSubmitted() && $form->isValid()) {
-      $categorie = $form->getData();
-      $entityManager -> persist($categorie);
-      $entityManager->flush();
+    if ($form->isSubmitted() && $form->isValid()) {
+        $categorie = $form->getData();
+        $entityManager -> persist($categorie);
+        $entityManager->flush();
 
-      return $this->redirectToRoute('list_categories');
+        return $this->redirectToRoute('list_categories');
+    
     }
 
     // On passe la méthode createView() du formulaire à la vue
@@ -61,38 +59,41 @@ class CategorieController extends AppController{
     ));
           
     }
+  }catch (Exception $e){
+    return $this -> render('security/erreur.html.twig');
+  }
   }
 
     public function list_categories( CategorieRepository $repo, Request $request)
     {
-
-      $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
+try {
+    $user = $this -> getUser();
+    if ($user == null) {
+        return $this->redirectToRoute('login');
+    } else {
+        $list = $repo -> findAll();
   
-      $list = $repo -> findAll();
-  
-        foreach($list as $categorie)
-        {
-        $categorie->getId();
-        $categorie->getCategorie();
+        foreach ($list as $categorie) {
+            $categorie->getId();
+            $categorie->getCategorie();
         }
   
   
-         return $this  -> render('categories/list_categories.html.twig',
-          array("list"=> $list,
+        return $this  -> render(
+            'categories/list_categories.html.twig',
+            array("list"=> $list,
           
           )
-        
         );
     }
+}catch (Exception $e){
+  return $this -> render('security/erreur.html.twig');
+}
   }
 
     public function delete_categorie(CategorieRepository $repo,  $id)
   {
-
+try{
     $user = $this -> getUser();
     if ($user == null){
       return $this->redirectToRoute('login');
@@ -110,10 +111,13 @@ class CategorieController extends AppController{
 
       return $this -> render ('categories/list_categories.html.twig', array("list" => $list));
   }
+}catch (Exception $e){
+  return $this -> render('security/erreur.html.twig');
+}
 }
 
-      public function edit_categorie(Request $request, Categorie $categorie){
-        
+  public function edit_categorie(Request $request, Categorie $categorie){
+   try {    
     $user = $this -> getUser();
     if ($user == null){
       return $this->redirectToRoute('login');
@@ -155,6 +159,9 @@ class CategorieController extends AppController{
     ));
           
     }
+  }catch (Exception $e){
+    return $this -> render('security/erreur.html.twig');
+  }
   }
     
 }
