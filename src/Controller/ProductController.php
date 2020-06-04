@@ -12,6 +12,7 @@ use App\Controller\BorrowingController;
 use App\Repository\BorrowingRepository;
 use App\Repository\CategorieRepository;
 use App\Repository\UserRepository;
+use Exception;
 use phpDocumentor\Reflection\Types\String_;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -31,7 +32,9 @@ class ProductController extends AbstractController
   
     public function add_product(Request $request, CategorieRepository $catrepo){
 
+
     $this->denyAccessUnlessGranted('ROLE_LENDER');
+    try {
 
     // On crée un objet Advert
     $product = new Product();
@@ -95,7 +98,11 @@ class ProductController extends AbstractController
     return $this->render('product/add_product.html.twig', array(
       'form' => $form->createView(),
     ));
-  }
+  
+}catch (Exception $e){
+  return $this -> render('security/erreur.html.twig');
+}
+}
 
 
 
@@ -104,19 +111,24 @@ class ProductController extends AbstractController
   {
     $this->denyAccessUnlessGranted('ROLE_LENDER');
     
-
+    try {
     $user = $this -> getUser();
     $id = $user -> getId();
     $listProduct =  $productRepository -> findBy(['owner' => $id]);
 
 
     return $this -> render ('product/list_products_by_lender.html.twig', array("listProduct" => $listProduct));
-  }
+  }catch (Exception $e){
+        return $this -> render('security/erreur.html.twig');
+      }
+    }
+
+  
 
 
   public function filtreproduit(Request $request, ProductRepository $productRepository){
-
-    
+try{
+   
 
     $data = new SearchData();
         
@@ -126,11 +138,19 @@ class ProductController extends AbstractController
     $products = $productRepository->findSearch($data);
     return array($form, $products);
   }
+  catch (Exception $e){
+        return $this -> render('security/erreur.html.twig');
+      }
+    }
 
+
+
+ 
 
   public function list_products( ProductRepository $productRepository, Request $request)
   {
     $this->denyAccessUnlessGranted('ROLE_ADMIN');
+    try{
     
 
     $listProducts = $productRepository -> findAll();
@@ -161,6 +181,9 @@ class ProductController extends AbstractController
       
       );
 
+}catch (Exception $e){
+  return $this -> render('security/erreur.html.twig');
+}
 }
         
   
@@ -168,7 +191,11 @@ class ProductController extends AbstractController
 
     public function list_products_dispo( ProductRepository $productRepository, Request $request)
   {
+
     $this->denyAccessUnlessGranted('ROLE_BORROWER');
+
+try{
+    
 
     $listProducts = $productRepository -> findBy(['statut' => "STATUT_DISPONIBLE"]); 
 
@@ -191,9 +218,6 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
         
         $products = $productRepository->findSearch($data);
-        //dd($products);
-        //foreach($products as $product){ echo $product->getNom();}
-
 
        return $this  -> render('product/list_products_dispo.html.twig',
         array("Liste"=> $listProducts,
@@ -208,13 +232,17 @@ class ProductController extends AbstractController
         return $this  -> render('product/list_products_dispo.html.twig',
 
         array("Liste"=> $listProducts));
-  }
 
+}catch (Exception $e){
+  return $this -> render('security/erreur.html.twig');
+}
+}
 
   
     
   public function delete_products(ProductRepository $productRepository, BorrowingRepository $borrowingRepository, $id, Request $request)
   {
+
     $this->denyAccessUnlessGranted('ROLE_LENDER');
 
     $user = $this -> getUser();
@@ -244,9 +272,40 @@ class ProductController extends AbstractController
   public function genarateQRcode(Request $request,ProductRepository $productRepository, $id){
 
     $this->denyAccessUnlessGranted('ROLE_LENDER');
+   
+    try {
+        
+            $user = $this -> getUser();
+            $product = $productRepository -> findOneById($id);
+            $borrowing = $borrowingRepository -> findOneByidUser($id);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            if (!is_null($borrowing)) {
+                $entityManager->remove($borrowing);
+            }
+            $entityManager->remove($product);
+            $entityManager->flush();
+
+            $listProducts = $productRepository -> findAll();
+            $form= $this -> filtreproduit($request, $productRepository)[0];
+            $products = $this -> filtreproduit($request, $productRepository)[1];
+            if (in_array("ROLE_ADMIN", $user->getRoles())) {
+                return $this->redirectToRoute('home_admin');
+            } elseif (in_array("ROLE_LENDER", $user->getRoles())) {
+                return $this->redirectToRoute('home_lender');
+            } else {
+                return $this->redirectToRoute('home_user');
+            }
+        
+    }catch (Exception $e){
+      return $this -> render('security/erreur.html.twig');
+    }
+}
+
+  public function genarateQRcode(Request $request,ProductRepository $productRepository, $id){
+try{
     
 
-    // On crée un objet Advert
     $product = $productRepository -> findOneById($id);
     
     $etat= $product->getEtat();
@@ -255,8 +314,10 @@ class ProductController extends AbstractController
     $statut=$product->GetStatut();
     //$borrowing=$product->getBorrowing();
     
-    //$qrcode_message="Lobjet $nom ayant pour numero de serie $numSerie est : Dispo car le site n'est pas en ligne pour le moment pour le moment. Il est en $etat état.";
-    $qrcode_message="127.0.0.1:8000/qrcode-confirmation/$id";
+
+    
+    $qrcode_message="https://pear.min.epf.fr/qrcode-confirmation/$id";
+
     $encodeurl = urlencode($qrcode_message);
     //echo($encodeurl); 
     // goqr $url = "https://api.qrserver.com/v1/create-qrcode/?data=$encodeurl&size=100x100";
@@ -267,13 +328,18 @@ class ProductController extends AbstractController
       'statut' => $statut,
       'product' => $product
        ));
+}catch (Exception $e){
+  return $this -> render('security/erreur.html.twig');
+}
   }
 
+ 
+
   public function confirmationQRcode(Request $request,ProductRepository $productRepository, $id){
+$this->denyAccessUnlessGranted('ROLE_BORROWER');
 
-    $this->denyAccessUnlessGranted('ROLE_BORROWER');
+try{
 
-    // On crée un objet Advert
     $product = $productRepository -> findOneById($id);
     
     $etat= $product->getEtat();
@@ -290,27 +356,38 @@ class ProductController extends AbstractController
       'idOwner' => $idOwner,
       'product' => $product
        ));
+      }catch (Exception $e){
+        return $this -> render('security/erreur.html.twig');
+      }
   }
 
 
 
   public function show_product($id, ProductRepository $productRepository){
+    
 
     $this->denyAccessUnlessGranted('ROLE_BORROWER');
-
+    try{
     $product = $productRepository -> findOneById($id);
     
     
     return $this->render('product/show_product.html.twig', array(
       'product'=> $product
     ));
-  }
+  }catch (Exception $e){
+  return $this -> render('security/erreur.html.twig');
+}
+}
+
+
+
 
 
 
  public function edit_product(Request $request, Product $product){
-
   $this->denyAccessUnlessGranted('ROLE_LENDER');
+try{
+  
     
     $entityManager = $this->getDoctrine()->getManager();
 
@@ -380,7 +457,10 @@ class ProductController extends AbstractController
       'form' => $form->createView(),
     ));
 
-  }
-
+  
+}catch (Exception $e){
+  return $this -> render('security/erreur.html.twig');
+}
+}
 
 }

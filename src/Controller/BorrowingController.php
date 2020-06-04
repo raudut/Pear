@@ -12,6 +12,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use App\Repository\BorrowingRepository;
 use Doctrine\ORM\EntityManager;
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,9 +31,10 @@ class BorrowingController extends AbstractController
 {
     public function add_borrowing(Request $request, ProductRepository $productRepository, $id)
     {
+
       $this->denyAccessUnlessGranted('ROLE_BORROWER');
         
-
+      try {
         $produit = $productRepository->findOneById($id);
         $stat = $produit->getStatut();
 
@@ -48,18 +50,14 @@ class BorrowingController extends AbstractController
             //$products = $productRepository -> findProductByStatut('STATUT_DISPONIBLE');
 
             $formBuilder
+
+      
       ->add('dateDebut', DateType::class)
       ->add('dateFin', DateType::class)
       ->add('save', SubmitType::class)
-      /*->add('idProduct', EntityType::class, [
-                'class' => Product::class,
-                'choice_label' => 'nom',
-                'placeholder' => '== Choisir un objet ==',
-                'choices' => $productRepository -> findProductByStatut('STATUT_DISPONIBLE')
-            ]) */
-      
+   
       ;
-         
+
             $form = $formBuilder->getForm();
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
@@ -81,28 +79,37 @@ class BorrowingController extends AbstractController
                 $productname = $product ->getNom();
 
                 $mailuser->send_email_product($ownername, $owneremail,  $productname);
+
         
-                return $this->redirectToRoute('list_my_borrowings');
-                echo($borrowing->GetId());
-            }
+                      return $this->redirectToRoute('list_my_borrowings');
+                  }
     
-            echo($this->get('security.token_storage')->getToken()->getUser()->getId());
-            return $this->render('borrowing/add_borrowing.html.twig', array(
+          
+                  return $this->render('borrowing/add_borrowing.html.twig', array(
       'form' => $form->createView(),
     ));
-        } else {
-            return $this -> render('security/erreur.html.twig');
-        }
-    }
-  
+
+              } else {
+                  return $this -> render('security/erreur.html.twig');
+              }
+          
+      }catch (Exception $e){
+        return $this -> render('security/erreur.html.twig');
+      }
+  }
+
 
 
 
     public function list_borrowings(BorrowingRepository $borrowingRepository)
     {
 
+
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
+
+try {
+  
         $listBorrowing = $borrowingRepository -> findAll();
         foreach ($listBorrowing as $bo) {
             $bo -> getIdUser();
@@ -114,17 +121,26 @@ class BorrowingController extends AbstractController
             'borrowing/list_borrowings.html.twig',
             array("listBorrowing" => $listBorrowing)
         );
-    }
-  
+    
+
+}catch (Exception $e){
+  return $this -> render('security/erreur.html.twig');
+}
+  }
+
 
 
     public function list_my_borrowings(BorrowingRepository $borrowingRepository)
     {
 
+
       $this->denyAccessUnlessGranted('ROLE_BORROWER');
 
         
 
+
+try {
+    
         $user = $this -> getUser();
         $id = $user -> getId();
 
@@ -132,8 +148,11 @@ class BorrowingController extends AbstractController
         $listBorrowing =  $borrowingRepository -> findBy(['idUser' => $id]);
 
         return $this -> render('borrowing/list_my_borrowings.html.twig', array("listBorrowing" => $listBorrowing));
-    }
-  
+    
+}catch (Exception $e){
+  return $this -> render('security/erreur.html.twig');
+}
+  }
 
 
 
@@ -142,6 +161,8 @@ class BorrowingController extends AbstractController
 
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
+try {
+    
         $bo = $borrowingRepository -> findOneById($id);
 
         $entityManager = $this->getDoctrine()->getManager();
@@ -151,37 +172,48 @@ class BorrowingController extends AbstractController
 
         $listBorrowing = $borrowingRepository -> findAll();
         return $this -> render('borrowing/list_borrowings.html.twig', array("listBorrowing" => $listBorrowing));
-    }
+    
+    }catch (Exception $e){
+  return $this -> render('security/erreur.html.twig');
+}
+}
+
   
 
+
     public function rendre_product($id, ProductRepository $productRepository, BorrowingRepository $borrowingRepository){
-      
       $this->denyAccessUnlessGranted('ROLE_BORROWER');
+      try {
+          
+              $mailowner = new AppController();
+              $entityManager = $this->getDoctrine()->getManager();
+              $borrowing = $borrowingRepository -> findOneById($id);
+              $idProduct = $borrowing->getIdProduct();
+              $product = $productRepository -> findOneById($idProduct);
+  
+              $statut[] = "STATUT_DISPONIBLE";
+              $product->setStatut($statut);
+              $entityManager->flush();
 
-      $mailowner = new AppController();
-      $entityManager = $this->getDoctrine()->getManager();
-      $borrowing = $borrowingRepository -> findOneById($id);
-      $idProduct = $borrowing->getIdProduct();
-      $product = $productRepository -> findOneById($idProduct);
-      echo $product ->getNom();
-      $statut[] = "STATUT_DISPONIBLE";
-      $product->setStatut($statut);
-      $entityManager->flush();
+              $lender = $product -> getOwner();
+              $owneremail = $lender -> getEmail();
+              $ownername = $lender -> getNom();
+              $productname = $product ->getNom();
 
-      $lender = $product -> getIdlender();
-      $owneremail = $lender -> getEmail ();
-      $ownername = $lender -> getNom();
-      $productname = $product ->getNom();
        
 
-      $mailowner->send_email_rendre_product($owneremail, $ownername,  $productname);
+              $mailowner->send_email_rendre_product($owneremail, $ownername, $productname);
 
-      $this -> delete_borrowing($borrowingRepository, $borrowing);  
-      $entityManager->flush();
+              $this -> delete_borrowing($borrowingRepository, $borrowing);
+              $entityManager->flush();
 
-      $listBorrowing =  $borrowingRepository -> findBy(['idUser' =>$borrowing->getIdUser()]);
-        return $this -> render ('borrowing/list_my_borrowings.html.twig', array("listBorrowing" => $listBorrowing));
-      
+
+              $listBorrowing =  $borrowingRepository -> findBy(['idUser' =>$borrowing->getIdUser()]);
+              return $this -> render('borrowing/list_my_borrowings.html.twig', array("listBorrowing" => $listBorrowing));
+          
+      }catch (Exception $e){
+      return $this -> render('security/erreur.html.twig');
+    }
   }
-    
+
 }

@@ -32,6 +32,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class AppController extends AbstractController
 {
+
   public function home()
   {
   	return $this -> render('app/home.html.twig');
@@ -60,8 +61,10 @@ class AppController extends AbstractController
 
 
 
-  public function send_email_add_user_admin ($user,  $mailuseradd){
-    $bodyAdmin = [
+
+    public function send_email_add_user_admin($user, $mailuseradd)
+    {
+        $bodyAdmin = [
       'Messages' => [
           [
           'From' => [
@@ -80,28 +83,31 @@ class AppController extends AbstractController
       ]
   ];
   
-  $ch = curl_init();
+        $ch = curl_init();
   
-  curl_setopt($ch, CURLOPT_URL, "https://api.mailjet.com/v3.1/send");
-  curl_setopt($ch, CURLOPT_POST, 1);
-  curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($bodyAdmin));
-  curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-  curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+        curl_setopt($ch, CURLOPT_URL, "https://api.mailjet.com/v3.1/send");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($bodyAdmin));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            array(
       'Content-Type: application/json')
-  );
-  curl_setopt($ch, CURLOPT_USERPWD, "47219a1c999266c91efd07942860e61d:46478c82213deacd3a251becee8e5776");
-  $server_output = curl_exec($ch);
-  curl_close ($ch);
+        );
+        curl_setopt($ch, CURLOPT_USERPWD, "47219a1c999266c91efd07942860e61d:46478c82213deacd3a251becee8e5776");
+        $server_output = curl_exec($ch);
+        curl_close($ch);
   
-  $response = json_decode($server_output);
-  if ($response->Messages[0]->Status == 'success') {
-     // echo "Email sent successfully.";
-  }
+        $response = json_decode($server_output);
+        if ($response->Messages[0]->Status == 'success') {
+            // echo "Email sent successfully.";
+        }
+    }
 
-} 
-
-public function send_email_add_user_confirmation ($user,  $mailuseradd){
-  $bodyAdmin = [
+    public function send_email_add_user_confirmation($user, $mailuseradd)
+    {
+        $bodyAdmin = [
     'Messages' => [
         [
         'From' => [
@@ -120,29 +126,32 @@ public function send_email_add_user_confirmation ($user,  $mailuseradd){
     ]
 ];
 
-$ch = curl_init();
+        $ch = curl_init();
 
-curl_setopt($ch, CURLOPT_URL, "https://api.mailjet.com/v3.1/send");
-curl_setopt($ch, CURLOPT_POST, 1);
-curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($bodyAdmin));
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+        curl_setopt($ch, CURLOPT_URL, "https://api.mailjet.com/v3.1/send");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($bodyAdmin));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            array(
     'Content-Type: application/json')
-);
-curl_setopt($ch, CURLOPT_USERPWD, "47219a1c999266c91efd07942860e61d:46478c82213deacd3a251becee8e5776");
-$server_output = curl_exec($ch);
-curl_close ($ch);
+        );
+        curl_setopt($ch, CURLOPT_USERPWD, "47219a1c999266c91efd07942860e61d:46478c82213deacd3a251becee8e5776");
+        $server_output = curl_exec($ch);
+        curl_close($ch);
 
-$response = json_decode($server_output);
-if ($response->Messages[0]->Status == 'success') {
-   // echo "Email sent successfully.";
-}
+        $response = json_decode($server_output);
+        if ($response->Messages[0]->Status == 'success') {
+            // echo "Email sent successfully.";
+        }
+    }
 
-} 
 
-
-public function send_email_product ($user, $mailuseradd,  $object){
-    $bodyAdmin = [
+    public function send_email_product($user, $mailuseradd, $object)
+    {
+        $bodyAdmin = [
         'Messages' => [
             [
             'From' => [
@@ -161,28 +170,31 @@ public function send_email_product ($user, $mailuseradd,  $object){
         ]
     ];
 
-    $ch = curl_init();
+        $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, "https://api.mailjet.com/v3.1/send");
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($bodyAdmin));
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+        curl_setopt($ch, CURLOPT_URL, "https://api.mailjet.com/v3.1/send");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($bodyAdmin));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            array(
         'Content-Type: application/json')
-    );
-    curl_setopt($ch, CURLOPT_USERPWD, "47219a1c999266c91efd07942860e61d:46478c82213deacd3a251becee8e5776");
-    $server_output = curl_exec($ch);
-    curl_close ($ch);
+        );
+        curl_setopt($ch, CURLOPT_USERPWD, "47219a1c999266c91efd07942860e61d:46478c82213deacd3a251becee8e5776");
+        $server_output = curl_exec($ch);
+        curl_close($ch);
 
-    $response = json_decode($server_output);
-    if ($response->Messages[0]->Status == 'success') {
-    // echo "Email sent successfully.";
+        $response = json_decode($server_output);
+        if ($response->Messages[0]->Status == 'success') {
+            // echo "Email sent successfully.";
+        }
     }
 
-} 
-
-public function send_email_rendre_product ($usermail, $user,  $object){
-    $bodyAdmin = [
+    public function send_email_rendre_product($usermail, $user, $object)
+    {
+        $bodyAdmin = [
         'Messages' => [
             [
             'From' => [
@@ -201,25 +213,24 @@ public function send_email_rendre_product ($usermail, $user,  $object){
         ]
     ];
 
-    $ch = curl_init();
+        $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, "https://api.mailjet.com/v3.1/send");
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($bodyAdmin));
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+        curl_setopt($ch, CURLOPT_URL, "https://api.mailjet.com/v3.1/send");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($bodyAdmin));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            array(
         'Content-Type: application/json')
-    );
-    curl_setopt($ch, CURLOPT_USERPWD, "47219a1c999266c91efd07942860e61d:46478c82213deacd3a251becee8e5776");
-    $server_output = curl_exec($ch);
-    curl_close ($ch);
+        );
+        curl_setopt($ch, CURLOPT_USERPWD, "47219a1c999266c91efd07942860e61d:46478c82213deacd3a251becee8e5776");
+        $server_output = curl_exec($ch);
+        curl_close($ch);
 
-    $response = json_decode($server_output);
-    if ($response->Messages[0]->Status == 'success') {
-    // echo "Email sent successfully.";
+        $response = json_decode($server_output);
+        if ($response->Messages[0]->Status == 'success') {
+        }
     }
-
-} 
-
-
 }

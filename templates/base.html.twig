@@ -1,5 +1,16 @@
 <!DOCTYPE html>
 <html>
+<style>
+.footer {
+  position:fixed;
+  left: 0;
+  bottom:0;
+  width: 100%;
+   background-color:#f2f2f2; 
+  text-align: center;
+}
+</style>
+
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
@@ -21,13 +32,16 @@
             
             {% if is_granted('ROLE_ADMIN') -%}
           {% set Home = "/home_admin" %}
-          <a class="navbar-brand" href="/home_admin">Pear</a>
+          <img  class="navbar-brand" href="/home_admin" src = "https://www.logolynx.com/images/logolynx/6b/6b8c0718034a984dd1cec7517595de43.png" width="50" height="75">
+          <a class="navbar-brand" href='/home_admin'>Pear</a>
        {% elseif is_granted('ROLE_LENDER') -%}
           {% set Home = "/home_lender" %}
-          <a class="navbar-brand" href="/home_lender">Pear</a>
+          <img  class="navbar-brand" href="/home_admin" src = "https://www.logolynx.com/images/logolynx/6b/6b8c0718034a984dd1cec7517595de43.png" width="50" height="75">
+          <a class="navbar-brand" href='/home_admin'>Pear</a>
        {% elseif is_granted('ROLE_BORROWER') %}
           {% set Home = "/home_user" %}
-          <a class="navbar-brand" href="/home_user">Pear</a>
+          <img  class="navbar-brand" href="/home_admin" src = "https://www.logolynx.com/images/logolynx/6b/6b8c0718034a984dd1cec7517595de43.png" width="50" height="75">
+          <a class="navbar-brand" href='/home_admin'>Pear</a>
        {%- endif %}
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -42,5 +56,9 @@
 
     </body>
       
-
-
+  {% block footer %}
+            <footer  class="footer">
+  <h4 color:	#b5b5b5>Contact : pear@epf.fr </h4>
+  <p> EPF | MIN | 2020 Copyright  © </p>
+  </footer>
+        {% endblock %}

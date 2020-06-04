@@ -2,7 +2,7 @@
 // src/Controller/CategorieController.php
 
 namespace App\Controller;
-
+use Exception;
 use App\Entity\Categorie;
 use App\Controller\AppController;
 use App\Repository\CategorieRepository;
@@ -17,12 +17,13 @@ class CategorieController extends AppController{
 
     public function add_categorie(Request $request){
 
+
      $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
+try{
+      
 
         $categorie = new Categorie();
-    
-
     $entityManager = $this->getDoctrine()->getManager();
 
     // On crée le FormBuilder grâce au service form factory
@@ -41,12 +42,13 @@ class CategorieController extends AppController{
     $form = $formBuilder->getForm();
 
     $form->handleRequest($request);
-    if($form->isSubmitted() && $form->isValid()) {
-      $categorie = $form->getData();
-      $entityManager -> persist($categorie);
-      $entityManager->flush();
+    if ($form->isSubmitted() && $form->isValid()) {
+        $categorie = $form->getData();
+        $entityManager -> persist($categorie);
+        $entityManager->flush();
 
-      return $this->redirectToRoute('list_categories');
+        return $this->redirectToRoute('list_categories');
+    
     }
 
     // On passe la méthode createView() du formulaire à la vue
@@ -57,35 +59,50 @@ class CategorieController extends AppController{
     ));
           
     
+  }catch (Exception $e){
+    return $this -> render('security/erreur.html.twig');
+  }
+
   }
 
     public function list_categories( CategorieRepository $repo, Request $request)
     {
 
+
       $this->denyAccessUnlessGranted('ROLE_ADMIN');
   
-      $list = $repo -> findAll();
+
+try {
+   
+        $list = $repo -> findAll();
+
   
-        foreach($list as $categorie)
-        {
-        $categorie->getId();
-        $categorie->getCategorie();
+        foreach ($list as $categorie) {
+            $categorie->getId();
+            $categorie->getCategorie();
         }
   
   
-         return $this  -> render('categories/list_categories.html.twig',
-          array("list"=> $list,
+        return $this  -> render(
+            'categories/list_categories.html.twig',
+            array("list"=> $list,
           
           )
-        
         );
-    
+
+}catch (Exception $e){
+  return $this -> render('security/erreur.html.twig');
+}
+
   }
 
     public function delete_categorie(CategorieRepository $repo,  $id)
   {
 
     $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+try{
+    
    
     $categorie = $repo -> findOneById($id);
 
@@ -97,12 +114,18 @@ class CategorieController extends AppController{
       $list = $repo -> findAll();
 
       return $this -> render ('categories/list_categories.html.twig', array("list" => $list));
-  }
+  }catch (Exception $e){
+  return $this -> render('security/erreur.html.twig');
+}
+}
 
 
-      public function edit_categorie(Request $request, Categorie $categorie){
-        
+      
+
+  public function edit_categorie(Request $request, Categorie $categorie){
     $this->denyAccessUnlessGranted('ROLE_ADMIN');
+   try {    
+    
 
 
     $entityManager = $this->getDoctrine()->getManager();
@@ -138,7 +161,11 @@ class CategorieController extends AppController{
       'form' => $form->createView(),
     ));
           
-    
+
+  }catch (Exception $e){
+    return $this -> render('security/erreur.html.twig');
+  }
+
   }
     
 }
