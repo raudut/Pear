@@ -84,16 +84,16 @@ class Product
         $this->borrowings = new ArrayCollection();
     }
 
-    public function getIdlender(): ?int
-    {
-        return $this->idLender;
-    }
-    public function setIdLender(?Lender $idLender): self
-    {
-        $this->idLender = $idLender;
+    // public function getIdlender(): ?int
+    // {
+    //     return $this->idLender;
+    // }
+    // public function setIdLender(?Lender $idLender): self
+    // {
+    //     $this->idLender = $idLender;
 
-        return $this;
-    }
+    //     return $this;
+    // }
     public function getId(): ?int
     {
         return $this->id;
