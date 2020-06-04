@@ -79,7 +79,7 @@ class BorrowingController extends AbstractController
                 $prod->setStatut($statut);
                 $entityManager->flush();
 
-                $lender = $product -> getIdlender();
+                $lender = $product -> getOwner();
                 $owneremail = $lender -> getEmail ();
                 $ownername = $lender -> getNom();
                 $productname = $product ->getNom();
@@ -186,7 +186,7 @@ class BorrowingController extends AbstractController
       $product->setStatut($statut);
       $entityManager->flush();
 
-      $lender = $product -> getIdlender();
+      $lender = $product -> getOwner();
       $owneremail = $lender -> getEmail ();
       $ownername = $lender -> getNom();
       $productname = $product ->getNom();
