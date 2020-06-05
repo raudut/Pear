@@ -15,6 +15,7 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel= "stylesheet" href="https://bootswatch.com/4/spacelab/bootstrap.min.css">
+        <link rel= "icon" href="https://www.logolynx.com/images/logolynx/6b/6b8c0718034a984dd1cec7517595de43.png">
         <style>
             .filter{
               diplay: block;
@@ -31,15 +32,15 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             
             {% if is_granted('ROLE_ADMIN') -%}
-          {% set Home = "/home_admin" %}
+         
           <img  class="navbar-brand" href="/home_admin" src = "https://www.logolynx.com/images/logolynx/6b/6b8c0718034a984dd1cec7517595de43.png" width="50" height="75">
           <a class="navbar-brand" href='/home_admin'>Pear</a>
        {% elseif is_granted('ROLE_LENDER') -%}
-          {% set Home = "/home_lender" %}
+          
           <img  class="navbar-brand" href="/home_admin" src = "https://www.logolynx.com/images/logolynx/6b/6b8c0718034a984dd1cec7517595de43.png" width="50" height="75">
           <a class="navbar-brand" href='/home_lender'>Pear</a>
        {% elseif is_granted('ROLE_BORROWER') %}
-          {% set Home = "/home_user" %}
+          
           <img  class="navbar-brand" href="/home_admin" src = "https://www.logolynx.com/images/logolynx/6b/6b8c0718034a984dd1cec7517595de43.png" width="50" height="75">
           <a class="navbar-brand" href='/home_user'>Pear</a>
        {%- endif %}
