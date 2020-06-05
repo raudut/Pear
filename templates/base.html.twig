@@ -2,12 +2,13 @@
 <html>
 <style>
 .footer {
-  position:fixed;
+  position:relative;
   left: 0;
-  bottom:0;
+  bottom:0px;
   width: 100%;
    background-color:#f2f2f2; 
   text-align: center;
+  height: 100px;
 }
 </style>
 
@@ -60,8 +61,8 @@
     </body>
       
   {% block footer %}
-            <footer  class="footer">
+  <footer  class="footer">
   <h4 color:	#b5b5b5>Contact : pear@epf.fr </h4>
   <p> EPF | MIN | 2020 Copyright  © </p>
   </footer>
-        {% endblock %}
+  {% endblock %}
