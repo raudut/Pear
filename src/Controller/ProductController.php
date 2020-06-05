@@ -245,6 +245,8 @@ try{
 
     $this->denyAccessUnlessGranted('ROLE_LENDER');
 
+    try {
+
     $user = $this -> getUser();
     $product = $productRepository -> findOneById($id);
     $borrowing = $borrowingRepository -> findOneByidUser($id);
@@ -266,41 +268,13 @@ try{
         else{
           return $this->redirectToRoute('home_user');
         }
-  }
-
-
-  public function genarateQRcode(Request $request,ProductRepository $productRepository, $id){
-
-    $this->denyAccessUnlessGranted('ROLE_LENDER');
-   
-    try {
-        
-            $user = $this -> getUser();
-            $product = $productRepository -> findOneById($id);
-            $borrowing = $borrowingRepository -> findOneByidUser($id);
-
-            $entityManager = $this->getDoctrine()->getManager();
-            if (!is_null($borrowing)) {
-                $entityManager->remove($borrowing);
-            }
-            $entityManager->remove($product);
-            $entityManager->flush();
-
-            $listProducts = $productRepository -> findAll();
-            $form= $this -> filtreproduit($request, $productRepository)[0];
-            $products = $this -> filtreproduit($request, $productRepository)[1];
-            if (in_array("ROLE_ADMIN", $user->getRoles())) {
-                return $this->redirectToRoute('home_admin');
-            } elseif (in_array("ROLE_LENDER", $user->getRoles())) {
-                return $this->redirectToRoute('home_lender');
-            } else {
-                return $this->redirectToRoute('home_user');
-            }
-        
-    }catch (Exception $e){
+  }catch (Exception $e){
       return $this -> render('security/erreur.html.twig');
     }
 }
+
+
+
 
   public function genarateQRcode(Request $request,ProductRepository $productRepository, $id){
 try{

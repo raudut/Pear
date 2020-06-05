@@ -196,6 +196,7 @@ try{
 }catch (Exception $e){
   return $this -> render('security/erreur.html.twig');
 }
+}
 
   
 
@@ -341,6 +342,7 @@ try{
   }catch (Exception $e){
     return $this -> render('security/erreur.html.twig');
   }
+}
 
 
 
