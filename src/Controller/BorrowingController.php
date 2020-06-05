@@ -215,4 +215,40 @@ try {
     }
   }
 
+  public function rendre_product_qrcode($id, ProductRepository $productRepository, BorrowingRepository $borrowingRepository){
+    $this->denyAccessUnlessGranted('ROLE_BORROWER');
+    try {
+        
+      $product = $productRepository -> findOneById($id);
+      $mailowner = new AppController();
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $borrowing =  $borrowingRepository -> findBy(['idProduct' => $id]);
+           $user = $borrowing[0]->getIdUser();
+           
+            $statut[] = "STATUT_DISPONIBLE";
+            $product->setStatut($statut);
+            $entityManager->flush();
+
+            $lender = $product -> getOwner();
+            $owneremail = $lender -> getEmail();
+            $ownername = $lender -> getNom();
+            $productname = $product ->getNom();
+
+     
+
+            $mailowner->send_email_rendre_product($owneremail, $ownername, $productname);
+
+            $this -> delete_borrowing($borrowingRepository, $borrowing);
+            $entityManager->flush();
+
+
+            $listBorrowing =  $borrowingRepository -> findBy(['idUser' =>$user]);
+            return $this -> render('borrowing/list_my_borrowings.html.twig', array("listBorrowing" => $listBorrowing));
+        
+    }catch (Exception $e){
+    return $this -> render('security/erreur.html.twig');
+  }
+}
+
 }
