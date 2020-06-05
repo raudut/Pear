@@ -61,6 +61,9 @@ class ClientController extends AbstractController
             'choices'  => [
               $user->getRolesNames()
             ],
+            'multiple' => false,
+            'label' => false,
+            'placeholder' => false
         ],
     ]);
       
