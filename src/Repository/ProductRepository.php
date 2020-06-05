@@ -87,6 +87,12 @@ class ProductRepository extends ServiceEntityRepository
             ->setParameter('categorie', $data->categorie);
     }
 
+    if (!empty($data->statut)) {
+        $query = $query
+          ->andWhere('p.statut LIKE :statut')
+          ->setParameter('statut', $data->statut);
+    }
+
       
    return $query -> getQuery()->getResult();
     }
