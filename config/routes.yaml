@@ -121,6 +121,10 @@ rendre_product:
   path: /rendre-product/{id}
   controller: App\Controller\BorrowingController::rendre_product
 
+rendre_product_qrcode:
+  path: /rendre-product-qrcode/{id}
+  controller: App\Controller\BorrowingController::rendre_product_qrcode
+
 
 #categories
 add_categorie:
