@@ -3,7 +3,37 @@
  {% block title %}Liste des objets{% endblock %}
  
     {% block body %}
-    	<table class="table table-hover">
+
+    <div class row>
+        {# <div class="col-md-2">
+          {%include  'product/_filter.html.twig' with {form: form} only %}
+        </div> #}
+    
+      <div class="col-md-9"> 
+          <div class="grid">
+            <table class="table table-hover">         
+              <tbody>
+                {% if listProduct is defined %}
+                  {%for product in listProduct %}              
+                    <tr>
+                      <td>{% include 'product/_card.html.twig' with {product: product} only %}</td>                
+                      <td>
+                        <button type="button" class="btn btn-outline-primary">Details</button>      
+                        <button type="button" class="btn btn-outline-primary" onclick="self.location.href='/delete-product/{{product.id}}'">Supprimer</button>   
+                        <button type="button" class="btn btn-outline-primary" onclick="self.location.href='/edit-product/{{product.id}}'">Modifier</button>   
+                        <button type="button" class="btn btn-outline-primary" onclick="self.location.href='/qrcode-product/{{product.id}}'">Générer un QrCode</button>        
+                      </td>
+                    </tr>    			
+                  {% endfor %}
+                {%endif%}
+              </tbody>
+            </table> 
+          </div>    
+        </div>
+      </div>
+    
+
+    	{# <table class="table table-hover">
             <thead>
             <tr>
     			<th> Nom </th>
@@ -51,7 +81,7 @@
 			{% endfor %}
 		{%endif%}
         </tbody>
-          </table> 
+          </table>  #}
 
 {% endblock %}
 

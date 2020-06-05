@@ -8,18 +8,14 @@ use App\Data\SearchData;
 use App\Form\SearchForm;
 use App\Entity\Categorie;
 use App\Repository\ProductRepository;
-use App\Controller\BorrowingController;
 use App\Repository\BorrowingRepository;
 use App\Repository\CategorieRepository;
-use App\Repository\UserRepository;
-use phpDocumentor\Reflection\Types\String_;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -115,7 +111,9 @@ class ProductController extends AbstractController
     $id = $user -> getId();
     $listProduct =  $productRepository -> findBy(['owner' => $id]);
 
-
+      foreach($listProduct as $product){
+          echo $product -> getId();
+      }
     return $this -> render ('product/list_products_by_lender.html.twig', array("listProduct" => $listProduct));
   }
 }
