@@ -42,7 +42,6 @@ class BorrowingController extends AbstractController
             $mailuser = new AppController();
             $borrowing = new Borrowing();
             $proprio = new User;
-            $lender = new Lender;
             $entityManager = $this->getDoctrine()->getManager();
 
             $formBuilder = $this->get('form.factory')->createBuilder(FormType::class, $borrowing);
@@ -73,9 +72,9 @@ class BorrowingController extends AbstractController
                 $prod->setStatut($statut);
                 $entityManager->flush();
 
-                
-                $owneremail = $lender -> getEmail ();
-                $ownername = $lender -> getNom();
+                $proprio = $product -> getOwner();
+                $owneremail = $proprio -> getEmail ();
+                $ownername = $proprio -> getNom();
                 $productname = $product ->getNom();
 
                 $mailuser->send_email_product($ownername, $owneremail,  $productname);
