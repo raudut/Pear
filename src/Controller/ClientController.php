@@ -63,7 +63,7 @@ class ClientController extends AbstractController
         'entry_options'  => [
             'label' => false,
             'choices'  => [
-              $user->getRolesNames()
+              'Choisir un rôle' => $user->getRolesNames()
             ],
         ],
     ])
@@ -163,7 +163,7 @@ try{
         'entry_options'  => [
             'label' => false,
             'choices'  => [
-              $user->getRolesNames()
+              'Choisir un rôle' => $user->getRolesNames()
             ],
         ],
     ]);
@@ -228,7 +228,7 @@ try {
         'entry_options'  => [
             'label' => false,
             'choices'  => [
-              $user->getRolesNames()
+              'Choisir un rôle' => $user->getRolesNames()
             ],
         ],
     ]);

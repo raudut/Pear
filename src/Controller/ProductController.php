@@ -72,7 +72,7 @@ class ProductController extends AbstractController
         'entry_options'  => [
             'label' => false,
             'choices'  => [
-              $product->getStatutNames()
+              'Choisir un statut' => $product->getStatutNames()
             ],
         ],
     ])
@@ -388,8 +388,9 @@ try{
         
         'entry_type'   => ChoiceType::class,
         'entry_options'  => [
+            'label' => false ,
             'choices'  => [
-              $product->getStatutNames()
+              'Choisir un statut' => $product->getStatutNames()
             ],
         ],
     ])
