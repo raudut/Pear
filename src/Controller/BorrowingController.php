@@ -141,7 +141,6 @@ class BorrowingController extends AbstractController
 
             return $this -> render('borrowing/list_my_borrowings.html.twig', array("listBorrowing" => $listBorrowing));
         } catch (Exception $e) {
-            echo $e;
             return $this -> render('security/erreur.html.twig');
         }
     }
@@ -235,7 +234,7 @@ class BorrowingController extends AbstractController
             $listBorrowing =  $borrowingRepository -> findBy(['idUser' =>$user]);
             return $this -> render('borrowing/list_my_borrowings.html.twig', array("listBorrowing" => $listBorrowing));
         } catch (Exception $e) {
-            
+            echo $e;
             return $this -> render('security/erreur.html.twig');
         }
     }
