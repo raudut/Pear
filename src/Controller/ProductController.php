@@ -106,20 +106,45 @@ class ProductController extends AbstractController
 
 
  
-  public function list_products_by_lender(ProductRepository $productRepository)
+  public function list_products_by_lender(ProductRepository $productRepository, Request $request)
   {
     $this->denyAccessUnlessGranted('ROLE_LENDER');
     
     try {
     $user = $this -> getUser();
     $id = $user -> getId();
-    $listProduct =  $productRepository -> findBy(['owner' => $id]);
+    $listProducts =  $productRepository -> findBy(['owner' => $id]);
 
-      foreach($listProduct as $product){
-          echo $product -> getId();
-      }
-    return $this -> render ('product/list_products_by_lender.html.twig', array("listProduct" => $listProduct));
+    foreach($listProducts as $product)
+    {
+      
+      $product -> getNom();
+      $product -> getPrix();
+      $product -> getCategorie();
+      $product -> getCaution();
+      $product -> getEtat();
+      $product -> getEmplacement();
+      $product -> getNumSerie();
+      $product -> getKit();
+    }
+
+
+
+      $form= $this -> filtreproduit($request, $productRepository)[0];
+      $products = $this -> filtreproduit($request, $productRepository)[1];
+
+
+       return $this  -> render('product/list_products_by_lender.html.twig',
+        array("Liste"=> $listProducts,
+        'products' => $products,
+        'form' => $form->createView()
+        
+        )
+      
+      );
+
   }catch (Exception $e){
+    echo $e;
         return $this -> render('security/erreur.html.twig');
       }
     }
