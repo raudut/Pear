@@ -25,13 +25,13 @@
                     {% if product.statut[0] == "STATUT_DISPONIBLE" %}
                      <td> <button type="button" class="btn btn-outline-secondary" onclick="self.location.href='/add-borrowing/{{product.id}}'">Emprunter</button> </td>
                      <td> <button type="button" class="btn btn-outline-success disabled" >Rendre</button> </td>
-                      {%endif%}
+                      {% endif %}
                    {% if product.statut[0] == "STATUT_LOUE" %}
                     <td> <button type="button" class="btn btn-outline-secondary disabled">Emprunter</button> </td>
                     <td>
                       <button type="button" class="btn btn-outline-success" onclick="self.location.href='/rendre-product/{{product.id}}'">Rendre</button>
                     </td>
-                    {%endif%}
+                    {% endif %}
                     <td> 
                       <button type="button" class="btn btn-outline-info" onclick="self.location.href='/qrcode-product/{{product.id}}'">QrCode</button>
                     </td>
