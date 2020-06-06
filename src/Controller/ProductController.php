@@ -98,7 +98,6 @@ class ProductController extends AbstractController
     ));
   
 }catch (Exception $e){
-  echo $e;
   return $this -> render('security/erreur.html.twig');
 }
 }
@@ -144,7 +143,6 @@ class ProductController extends AbstractController
       );
 
   }catch (Exception $e){
-    echo $e;
         return $this -> render('security/erreur.html.twig');
       }
     }
@@ -208,7 +206,7 @@ try{
       );
 
 }catch (Exception $e){
-  echo $e;
+
   return $this -> render('security/erreur.html.twig');
 }
 }
@@ -250,7 +248,6 @@ try{
               'form' => $form->createView()));
 
 }catch (Exception $e){
-  echo $e;
   return $this -> render('security/erreur.html.twig');
 }
 }
@@ -307,7 +304,6 @@ try{
     $qrcode_message="https://pear.min.epf.fr/qrcode-confirmation/$id";
 
     $encodeurl = urlencode($qrcode_message);
-    //echo($encodeurl); 
     // goqr $url = "https://api.qrserver.com/v1/create-qrcode/?data=$encodeurl&size=100x100";
     $url = "https://chart.googleapis.com/chart?chs=500x500&cht=qr&chl=$encodeurl&choe=UTF-8"; //API google
 
@@ -390,7 +386,6 @@ try{
       'product'=> $product
     ));
   }catch (Exception $e){
-    echo $e;
   return $this -> render('security/erreur.html.twig');
 }
 }
@@ -479,7 +474,6 @@ try{
 
   
 }catch (Exception $e){
-  echo($e);
   return $this -> render('security/erreur.html.twig');
 }
 }
