@@ -70,7 +70,7 @@ class ProductController extends AbstractController
         'entry_options'  => [
             'label' => false,
             'choices'  => [
-              $product->getStatutNames()
+              'Choisir un statut' => $product->getStatutNames()
             ],
         ],
     ])
@@ -194,7 +194,7 @@ try{
 
     $this->denyAccessUnlessGranted('ROLE_BORROWER');
 
-try{
+    try{
     
 
     $listProducts = $productRepository -> findBy(['statut' => "STATUT_DISPONIBLE"]); 
@@ -388,8 +388,9 @@ try{
         
         'entry_type'   => ChoiceType::class,
         'entry_options'  => [
+            'label' => false ,
             'choices'  => [
-              $product->getStatutNames()
+              'Choisir un statut' => $product->getStatutNames()
             ],
         ],
     ])

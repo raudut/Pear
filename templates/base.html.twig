@@ -15,6 +15,7 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel= "stylesheet" href="https://bootswatch.com/4/spacelab/bootstrap.min.css">
+		<link rel="icon" href="https://www.logolynx.com/images/logolynx/6b/6b8c0718034a984dd1cec7517595de43.png">
         <style>
             .filter{
               diplay: block;
@@ -31,54 +32,6 @@
        </head>
 
 
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            
-            {% if is_granted('ROLE_ADMIN') -%}
-          {% set Home = "/home_admin" %}
-          <img  class="navbar-brand" href="/home_admin" src = "https://www.logolynx.com/images/logolynx/6b/6b8c0718034a984dd1cec7517595de43.png" width="50" height="75">
-          <a class="navbar-brand" href='/home_admin'>Pear</a>
-       {% elseif is_granted('ROLE_LENDER') -%}
-          {% set Home = "/home_lender" %}
-          <img  class="navbar-brand" href="/home_admin" src = "https://www.logolynx.com/images/logolynx/6b/6b8c0718034a984dd1cec7517595de43.png" width="50" height="75">
-          <a class="navbar-brand" href='/home_admin'>Pear</a>
-       {% elseif is_granted('ROLE_BORROWER') %}
-          {% set Home = "/home_user" %}
-          <img  class="navbar-brand" href="/home_admin" src = "https://www.logolynx.com/images/logolynx/6b/6b8c0718034a984dd1cec7517595de43.png" width="50" height="75">
-          <a class="navbar-brand" href='/home_admin'>Pear</a>
-       {%- endif %}
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-            </button>
-        </nav>
-        {% block javascript %}  {% endblock %}
-    
-        <div class="container">
-            {% block body %} {% endblock %}
-        </div>
-         
-
-    </body>
-      
-
-	<head>
-		<meta charset="UTF-8">
-		<title>
-			{% block title %}Welcome!
-			{% endblock %}
-		</title>
-		<link rel="stylesheet" href="https://bootswatch.com/4/spacelab/bootstrap.min.css">
-		<link rel="icon" href="https://www.logolynx.com/images/logolynx/6b/6b8c0718034a984dd1cec7517595de43.png">
-		<style>
-			.filter {
-				diplay: block;
-				position: sticky;
-				top: 20px;
-			}
-		</style>
-		{% block stylesheets %}{% endblock %}
-
-	</head>
 
 
 	<body>
@@ -86,7 +39,13 @@
 
 
 			<img class="navbar-brand" href="/home_admin" src="https://www.logolynx.com/images/logolynx/6b/6b8c0718034a984dd1cec7517595de43.png" width="50" height="75">
+			{% if (is_granted('ROLE_ADMIN')) %}
 			<a class="navbar-brand" href='/home_admin'>Pear</a>
+			{% elseif (is_granted('ROLE_LENDER')) %}
+			<a class="navbar-brand" href='/home_lender'>Pear</a>
+			{% else %}
+			<a class="navbar-brand" href='/home_user'>Pear</a>
+			{% endif %}
 
 			<div class="collapse navbar-collapse" id="navbarColor01">
 				<ul class="navbar-nav mr-auto">
