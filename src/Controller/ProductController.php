@@ -98,10 +98,7 @@ class ProductController extends AbstractController
     ));
   
 }catch (Exception $e){
-<<<<<<< HEAD
  
-=======
->>>>>>> 4918b2f465fa3b114a2c107338f395ff572192d4
   return $this -> render('security/erreur.html.twig');
 }
 }
@@ -109,50 +106,19 @@ class ProductController extends AbstractController
 
 
  
-  public function list_products_by_lender(ProductRepository $productRepository, Request $request)
+  public function list_products_by_lender(ProductRepository $productRepository)
   {
     $this->denyAccessUnlessGranted('ROLE_LENDER');
     
     try {
     $user = $this -> getUser();
     $id = $user -> getId();
-    $listProducts =  $productRepository -> findBy(['owner' => $id]);
+    $listProduct =  $productRepository -> findBy(['owner' => $id]);
 
-    foreach($listProducts as $product)
-    {
-      
-      $product -> getNom();
-      $product -> getPrix();
-      $product -> getCategorie();
-      $product -> getCaution();
-      $product -> getEtat();
-      $product -> getEmplacement();
-      $product -> getNumSerie();
-      $product -> getKit();
-    }
-
-
-
-      $form= $this -> filtreproduit($request, $productRepository)[0];
-      $products = $this -> filtreproduit($request, $productRepository)[1];
-
-
-       return $this  -> render('product/list_products_by_lender.html.twig',
-        array("Liste"=> $listProducts,
-        'products' => $products,
-        'form' => $form->createView()
-        
-        )
-      
-      );
-
-<<<<<<< HEAD
       foreach($listProduct as $product){
           
       }
     return $this -> render ('product/list_products_by_lender.html.twig', array("listProduct" => $listProduct));
-=======
->>>>>>> 4918b2f465fa3b114a2c107338f395ff572192d4
   }catch (Exception $e){
         return $this -> render('security/erreur.html.twig');
       }
@@ -217,11 +183,7 @@ try{
       );
 
 }catch (Exception $e){
-<<<<<<< HEAD
  
-=======
-
->>>>>>> 4918b2f465fa3b114a2c107338f395ff572192d4
   return $this -> render('security/erreur.html.twig');
 }
 }
@@ -320,10 +282,7 @@ try{
     $qrcode_message="https://pear.min.epf.fr/qrcode-confirmation/$id";
 
     $encodeurl = urlencode($qrcode_message);
-<<<<<<< HEAD
     
-=======
->>>>>>> 4918b2f465fa3b114a2c107338f395ff572192d4
     // goqr $url = "https://api.qrserver.com/v1/create-qrcode/?data=$encodeurl&size=100x100";
     $url = "https://chart.googleapis.com/chart?chs=500x500&cht=qr&chl=$encodeurl&choe=UTF-8"; //API google
 
@@ -406,10 +365,7 @@ try{
       'product'=> $product
     ));
   }catch (Exception $e){
-<<<<<<< HEAD
    
-=======
->>>>>>> 4918b2f465fa3b114a2c107338f395ff572192d4
   return $this -> render('security/erreur.html.twig');
 }
 }
@@ -436,16 +392,13 @@ try{
       ->add('caution',   TextType::class)
       ->add('etat',    TextType::class)
       ->add('emplacement',    TextType::class,[
-        'empty_data' => '',
         'required'=> false
       ])
       ->add('num_serie',    TextType::class, [
-        'empty_data' => '',
         'required'=> false
       ]
       )
       ->add('kit',    TextType::class, [
-        'empty_data' => '',
         'required'=> false,
       ])
       ->add('statut', CollectionType::class, [
