@@ -11,6 +11,15 @@
 
     <h1>Formulaire d'ajout</h1>
 
+	{% if (bool == "true" ) %}
+
+<div class="alert alert-dismissible alert-warning">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <h4 class="alert-heading">Attention !</h4>
+  <p class="mb-0">La catégorie que vous esssayez d'ajouter existe déjà, veuillez en saisir une autre ! </a>.</p>
+</div>
+{% endif %}
+
      <div>Bonjour  {{app.user.username}}! Quelle catégorie voulez-vous créer ?</div>  
   <div class="well">
   {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}

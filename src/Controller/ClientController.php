@@ -229,7 +229,7 @@ try {
       ->add('roles', CollectionType::class, [
         'entry_type'   => ChoiceType::class,
         'entry_options'  => [
-            'label' => false,
+            'label' => "",
             'choices'  => [
               'Choisir un rôle' => $user->getRolesNames()
             ],

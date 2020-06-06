@@ -183,6 +183,7 @@ try{
 
 }
 }catch (Exception $e){
+  echo $e;
   return $this -> render('security/erreur.html.twig');
 }
         
@@ -234,6 +235,7 @@ try{
         array("Liste"=> $listProducts));
 
 }catch (Exception $e){
+  echo $e;
   return $this -> render('security/erreur.html.twig');
 }
 }
@@ -242,33 +244,26 @@ try{
   public function delete_products(ProductRepository $productRepository, BorrowingRepository $borrowingRepository, $id, Request $request)
   {
     try {
-        $user = $this -> getUser();
-        if ($user == null) {
-            return $this->redirectToRoute('login');
-        } else {
-            $user = $this -> getUser();
-            $product = $productRepository -> findOneById($id);
-            $borrowing = $borrowingRepository -> findOneByidUser($id);
 
-            $entityManager = $this->getDoctrine()->getManager();
-            if (!is_null($borrowing)) {
-                $entityManager->remove($borrowing);
-            }
-            $entityManager->remove($product);
-            $entityManager->flush();
+    $user = $this -> getUser();
+    $product = $productRepository -> findOneById($id);
+    $borrowing = $borrowingRepository -> findOneByidUser($id);
 
-            $listProducts = $productRepository -> findAll();
-            $form= $this -> filtreproduit($request, $productRepository)[0];
-            $products = $this -> filtreproduit($request, $productRepository)[1];
-            if (in_array("ROLE_ADMIN", $user->getRoles())) {
-                return $this->redirectToRoute('home_admin');
-            } elseif (in_array("ROLE_LENDER", $user->getRoles())) {
-                return $this->redirectToRoute('home_lender');
-            } else {
-                return $this->redirectToRoute('home_user');
-            }
-        }
-    }catch (Exception $e){
+      $entityManager = $this->getDoctrine()->getManager();
+      if(!is_null($borrowing)) {$entityManager->remove($borrowing);}
+      $entityManager->remove($product);
+      $entityManager->flush();
+
+      $listProducts = $productRepository -> findAll();
+      $form= $this -> filtreproduit($request, $productRepository)[0];
+      $products = $this -> filtreproduit($request, $productRepository)[1];
+      return $this  -> render('product/list_products.html.twig',
+        array("Liste"=> $listProducts,
+        'products' => $products,
+        'form' => $form->createView()
+        
+    ));
+  }catch (Exception $e){
       return $this -> render('security/erreur.html.twig');
     }
 }
@@ -346,8 +341,8 @@ try{
     return $this->render('product/show_product.html.twig', array(
       'product'=> $product
     ));
-  }
-}catch (Exception $e){
+  }catch (Exception $e){
+    echo $e;
   return $this -> render('security/erreur.html.twig');
 }
 }

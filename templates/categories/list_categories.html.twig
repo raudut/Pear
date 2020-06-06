@@ -3,36 +3,26 @@
 
 
  {% block title %}Liste des catégories{% endblock %}
- 
-    {% block body %}
      
-        <table class="table table-hover">
-            <thead>
-              <tr>
-                
-                <th scope="col">Nom</th>
-                
-              </tr>
-            </thead>
-            <tbody>
-                {%for categorie in list %}
-              <tr>
-                
-                <td>{{ categorie.categorie }}</td>
-                <td>
-        <div class="btn-group btn-group-toggle" data-toggle="buttons">
-          
-          <label class="btn btn-primary">
-            <input type="checkbox" onclick="self.location.href='/delete-categorie/{{categorie.id}}'" autocomplete="off"> Supprimer
-          </label>
-          <label class="btn btn-primary">
-            <input type="checkbox" onclick="self.location.href='/edit-categorie/{{categorie.id}}'" autocomplete="off"> Modifier
-          </label>
-          </div>
-        </td>
-                
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table> 
+         {% block body %}
+     <div class="grid">
+            <table class="table table-hover">         
+              <tbody>
+                {% if list is defined %}
+                  {%for categorie in list %}             
+                    <tr>
+                      <td>{% include 'categories/_card_categorie.html.twig' with {categorie: categorie} only %}</td>                
+                      <td>     
+                        <button type="button" class="btn btn-outline-primary" onclick="self.location.href='/delete-categorie/{{categorie.id}}'">Supprimer</button>   
+                        <button type="button" class="btn btn-outline-primary" onclick="self.location.href='/edit-categorie/{{categorie.id}}'" >Modifier</button>   
+                      </td>
+                    </tr>    			
+                  {% endfor %}
+                {%endif%}
+              </tbody>
+            </table> 
+          </div> 
+
+
+    
 {% endblock %}

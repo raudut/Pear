@@ -49,7 +49,7 @@ class SearchForm extends AbstractType
                  ]
              ])
              ->add('statut', ChoiceType::class,[
-                 'choices' => ["STATUT_LOUE" => true , "STATUT_DISPONIBLE" => false],
+                 'choices' => ["STATUT_LOUE" => "STATUT_LOUE" , "STATUT_DISPONIBLE" => "STATUT_DISPONIBLE"],
                  'expanded' => true,
                  'multiple' => false, 
                 'label' => false,
