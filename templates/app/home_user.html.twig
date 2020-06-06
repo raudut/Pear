@@ -13,33 +13,45 @@
 		<div>
 			<p> Pear est un site de gestion de prêt de materiel.</p>
 
-		<div>
-			<button type="button" class="btn btn-outline-primary" onclick="self.location.href='/login'">Connexion</button>
-			<button type="button" class="btn btn-outline-primary" onclick="self.location.href='{{ path('logout') }}'">Logout</button>
-		</div>
+		<table style="width:100%">
+			<tr>
+				<td>
+					<div class="card border-primary mb-3" style="max-width: 20rem;">
+						<div class="card-header">J'ai des objets à prêter !</div>
+						<div class="card-body">
+							<button type="button" style="margin-bottom: 10px;" class="btn btn-outline-primary" onclick="self.location.href='/add-lender'">Je deviens préteur</button>
 
-		<div>
-			<button type="button" class="btn btn-outline-primary" onclick="self.location.href='/edit-me'">Modifier mes informations</button>
-		</div>
-		
+						</div>
+					</div>
+				</td>
+				<td>
+				<td>
+					<div class="card border-success mb-3" style="max-width: 20rem;">
+						<div class="card-header">Je veux emprunter un objet !</div>
+						<div class="card-body">
+							<button type="button" style="margin-bottom: 10px;" class="btn btn-outline-primary" onclick="self.location.href='/list-products'">Lister les objets</button>
+						</div>
+					</div>
+				</td>
+				</td>
 
-		
+			</tr>
+			<tr>
+				
+				<td>
+					<div class="card border-info mb-3" style="max-width: 20rem;">
+						<div class="card-header">Gérer les emprunts
+						</div>
+						<div class="card-body">
+							
+							<button type="button" style="margin-bottom: 10px;" class="btn btn-outline-primary" onclick="self.location.href='/list-my-borrowings'">Lister mes emprunts</button>
+						</div>
+					</div>
+				</td>
 
-		<div>
-			<h4>Preteur</h4>
-			<button type="button" class="btn btn-outline-primary" onclick="self.location.href='/add-lender'">Utilisateur -> Preteur</button>
-		</div>
+			</tr>
 
-		<div>
-			<h4>Produit<h4>
-			<button type="button" class="btn btn-outline-primary" onclick="self.location.href='/list-products-dispo'">Lister les objets disponibles</button>
-		</div>
-
-		<div>
-			<h4>Emprunts</h4>
-			<button type="button" class="btn btn-outline-primary" onclick="self.location.href='/list-my-borrowings'">Lister mes emprunts</button>
-		</div>
-
+		</table>
 	
 		</div>
 

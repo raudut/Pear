@@ -15,13 +15,15 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class CategorieController extends AppController{
 
-    public function add_categorie(Request $request){
+    public function add_categorie(Request $request, CategorieRepository $repo){
 
 
      $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
 try{
       
+        $categorie = new Categorie();
+        $listCat= $repo -> findAll();
 
         $categorie = new Categorie();
     $entityManager = $this->getDoctrine()->getManager();
@@ -42,13 +44,24 @@ try{
     $form = $formBuilder->getForm();
 
     $form->handleRequest($request);
-    if ($form->isSubmitted() && $form->isValid()) {
-        $categorie = $form->getData();
+    if($form->isSubmitted() && $form->isValid()) {
+      $categorie = $form->getData();
+      $bool = false;
+      foreach($listCat as $cat){
+          if ($cat->getCategorie() == $categorie->getCategorie())
+          {
+            $bool = true;
+          }
+      }
+
+      if($bool==false)
+      {
         $entityManager -> persist($categorie);
         $entityManager->flush();
-
+  
         return $this->redirectToRoute('list_categories');
-    
+      }
+      else{return $this->redirectToRoute('list_categories');}
     }
 
     // On passe la méthode createView() du formulaire à la vue

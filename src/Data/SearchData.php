@@ -3,12 +3,7 @@
 namespace App\Data;
 
 class SearchData{
-    
-        /**
-         * @var int
-         */
-        public $page = 1;
-    
+        
         /**
          * @var string
          */
@@ -27,5 +22,12 @@ class SearchData{
         /**
          * @var null|integer
          */
-        public $min;    
+        public $min;  
+
+                /**
+         * @var string
+         */
+        public $statut ;
+        
+        
     }

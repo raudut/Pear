@@ -35,7 +35,7 @@ set('keep_releases', 4);
 
 set('composer_options', '{{composer_action}} --verbose --prefer-dist --no-progress --no-interaction --optimize-autoloader --no-suggest');
 
-
+set('writable_mode', 'chmod');
 
 task('deploy:assets:install', function () {
     run('{{bin/php}} {{bin/console}} assets:install {{console_options}} --symlink');
