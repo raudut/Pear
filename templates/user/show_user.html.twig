@@ -1,68 +1,58 @@
+
 {% extends "base.html.twig" %}
 
- {% block title %}Detail Client{% endblock %}
+ {% block title %}Detail du client{% endblock %}
  
  {% block body %}
-   
-        <div class="row">
+   <h1>Le détail du client </h1>
 
-            <div class="col-md-2">
-                <div><button type="button" class="btn btn-outline-secondary" onclick="self.location.href='/delete-client/{{client.id}}'"> Supprimer</button></div>
-                <div><button type="button" class="btn btn-outline-secondary" onclick="self.location.href='/edit-client/{{client.id}}'" > Modifier</button></div>
-            </div>
-            <div class="col-md-9">
-                <table class="table table-hover">
-                    <thead>
-                        <tr scope="col">nom</tr>
-                        <tr scope="col">prénom</tr>
-                        <tr scope="col">email</tr>
-                        <tr scope="col">rôle</tr>
-                        <tr scope="col">items prétés</tr>
-                        <tr scope="col">items empruntés</tr>
-                    </thead>
-                    <tbody>
-                    <td>{{client.nom}}</td>
-                    <td>{{client.prenom}}</td>
-                    <td>{{client.email}}</td>
-                    <td>{{client.roles[0]}}</td>
-                    {%if client.roles[0] == "ROLE_LENDER"%}
-                    {%for product in listLendings%}
-                    <td>
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>Nom</tr>
-                                <tr>Catégorie</tr>
-                                <tr>Prix</tr>
-                            </thead>
-                            <tbody>
-                                <td>{{product.nom}}</td>
-                                <td>{{product.categorie}}</td>
-                                <td>{{product.prix}}</td>
-                            </tbody>
-                        </table>
-                    </td>
-                    {%endfor%}
-                    {%endif%}
-                    {% for borrow in listBorrowings %} 
-                    <td>
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>Nom</tr>
-                                <tr>Date de début</tr>
-                                <tr>Date de fin</tr>
-                            </thead>
-                            <tbody>
 
-                                <td>{{borrow.dateDebut}}</td>
-                                <td>{{borrow.dateFin}}</td>
-                            </tbody>
-                        </table>
-                    </td> 
-                    {%endfor%}
-                    </tbody>
-                </table>
-            </div>
-        </div>            
+<table style="width:100%">
+            <tr>
+                <td>
+<div class="card border-primary mb-3" style="max-width: 20rem;">
+  <div class="card-header">Informations principales : </div>
+  <div class="card-body">
+    <p class="card-text">Nom de famille : {{client.nom}}</p>
+    <p class="card-text">Prénom : {{client.prenom}}</p>
+    <p class="card-text">Date de naissance : {{client.naissance| date('Y-m-d')}}</p>
+    <p class="card-text">Email : {{client.email}}</p>
+    <p class="card-text">Rôle : {{client.roles[0]}}</p>
+  </div>
+  </td>
+
+  <td>
+</div>
+<div class="card border-info mb-3" style="max-width: 20rem;">
+  <div class="card-header">Ses objets :</div>
+  <div class="card-body">
+    {%for product in listLendings %}
+      <p class="card-header">Nom de l'objet : {{product.nom}}</p>                        
+      <p class="card-text">Catégorie : {{product.categorie}}</p>       
+    {% endfor %}                                       
+  </div>
+  </td>
+  </tr>
+
+   <tr>
+  <td>
+</div>
+<div class="card border-success mb-3" style="max-width: 20rem;">
+  <div class="card-header">Ses emprunts :</div>
+  <div class="card-body">
+      {%for borrowing in listBorrowings %}
+          <p class="card-header">Objet : {{borrowing.idProduct}}</p>
+          <p class="card-text">Date de début : {{borrowing.dateDebut | date('Y-m-d')}}</p>
+          <p class="card-text">Date de fin : {{borrowing.dateFin | date('Y-m-d')}}</p>
+      {% endfor %}
+
+  </div>
+</div>
+</td>
+</tr>
+
+  
+</table>           
     
 
  {% endblock %}

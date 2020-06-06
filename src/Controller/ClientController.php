@@ -118,19 +118,12 @@ class ClientController extends AbstractController
     $client= $userRepo -> findOneById($id);
     $listProduct =  $productRepository -> findBy(['owner' => $id]);
     $listBorrow = $borrowingRepo -> findBy(['idUser' => $id]);
-    $listBProduct= array();
-    foreach($listBorrow as $borrow)
-    {
-      $idProduct = $borrow -> getIdProduct();
-      $product = $productRepository -> findby(['id' => $idProduct]);
-      $listBorrow = array($product);
-    }
+    
     return $this-> render('user/show_user.html.twig', array(
 
       'client'=>$client,
       'listLendings'=> $listProduct,
-      'listBorrowings' => $listBorrow,
-      'listBProduct' => $listBProduct
+      'listBorrowings' => $listBorrow
     ));
 
     
