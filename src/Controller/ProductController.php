@@ -194,7 +194,7 @@ try{
 
     $this->denyAccessUnlessGranted('ROLE_BORROWER');
 
-try{
+    try{
     
 
     $listProducts = $productRepository -> findBy(['statut' => "STATUT_DISPONIBLE"]); 

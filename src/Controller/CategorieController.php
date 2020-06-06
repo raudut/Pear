@@ -26,7 +26,7 @@ try{
         $listCat= $repo -> findAll();
 
         $categorie = new Categorie();
-    $entityManager = $this->getDoctrine()->getManager();
+        $entityManager = $this->getDoctrine()->getManager();
 
     // On crée le FormBuilder grâce au service form factory
     $formBuilder = $this->get('form.factory')->createBuilder(FormType::class, $categorie);
@@ -85,7 +85,7 @@ try{
     {
 
 
-      $this->denyAccessUnlessGranted('ROLE_ADMIN');
+      $this->denyAccessUnlessGranted('ROLE_LENDER');
   
 
 try {

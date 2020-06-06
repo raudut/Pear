@@ -39,7 +39,13 @@
 
 
 			<img class="navbar-brand" href="/home_admin" src="https://www.logolynx.com/images/logolynx/6b/6b8c0718034a984dd1cec7517595de43.png" width="50" height="75">
+			{% if (is_granted('ROLE_ADMIN')) %}
 			<a class="navbar-brand" href='/home_admin'>Pear</a>
+			{% elseif (is_granted('ROLE_LENDER')) %}
+			<a class="navbar-brand" href='/home_lender'>Pear</a>
+			{% else %}
+			<a class="navbar-brand" href='/home_user'>Pear</a>
+			{% endif %}
 
 			<div class="collapse navbar-collapse" id="navbarColor01">
 				<ul class="navbar-nav mr-auto">
