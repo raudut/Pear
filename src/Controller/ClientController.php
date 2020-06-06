@@ -155,7 +155,9 @@ try{
       ->add('nom',      TextType::class)
       ->add('prenom',     TextType::class)
       ->add('email',   EmailType::class)
-      ->add('naissance', BirthdayType::class)
+      ->add('naissance', BirthdayType::class, [
+        'widget' =>"single_text",
+      ])
       ->add('save',      SubmitType::class)
       ->add('roles', CollectionType::class, [
         'entry_type'   => ChoiceType::class,
@@ -219,7 +221,9 @@ try {
       ->add('nom', TextType::class)
       ->add('prenom', TextType::class)
       ->add('email', EmailType::class)
-      ->add('naissance', BirthdayType::class)
+      ->add('naissance', BirthdayType::class,[
+        'widget' =>"single_text",
+      ])
       ->add('password', PasswordType::class)
       ->add('save', SubmitType::class)
       ->add('roles', CollectionType::class, [
