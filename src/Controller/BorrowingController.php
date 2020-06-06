@@ -2,17 +2,18 @@
 
 namespace App\Controller;
 
+use DateTime;
+use Exception;
 use App\Entity\User;
-use App\Entity\Product;
 use App\Entity\Lender;
+use App\Entity\Product;
 use App\Entity\Borrowing;
+use Doctrine\ORM\EntityManager;
 use Doctrine\DBAL\Types\ArrayType;
 use App\Repository\ProductRepository;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use App\Repository\BorrowingRepository;
-use Doctrine\ORM\EntityManager;
-use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,6 +38,7 @@ class BorrowingController extends AbstractController
       try {
         $produit = $productRepository->findOneById($id);
         $stat = $produit->getStatut();
+        $listBorrowing = $borrowingRepo -> findBy(['idProduct'=>$id]);
 
         if (in_array('STATUT_DISPONIBLE', $stat)) {
             $mailuser = new AppController();
@@ -45,22 +47,25 @@ class BorrowingController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
 
             $formBuilder = $this->get('form.factory')->createBuilder(FormType::class, $borrowing);
-
+            $date = date('d/m/y');
+            $mydate = new DateTime($date);
+            //echo $mydate;
             //$products = $productRepository -> findProductByStatut('STATUT_DISPONIBLE');
 
             $formBuilder
-
-      
-      ->add('dateDebut', DateType::class)
-      ->add('dateFin', DateType::class)
-      ->add('save', SubmitType::class)
-   
-      ;
+                
+                ->add('dateFin', DateType::class,[
+                  'widget' =>"single_text",
+                ])
+                ->add('save', SubmitType::class)
+            
+                ;
 
             $form = $formBuilder->getForm();
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $borrowing = $form->getData();
+                $borrowing-> setDateDebut($mydate);
                 $borrowing->setIdUser($this->getUser());
                 $product = $productRepository->findOneById($id);
                 $borrowing->setIdProduct($product);
@@ -93,6 +98,7 @@ class BorrowingController extends AbstractController
               }
           
       }catch (Exception $e){
+        echo $e;
         return $this -> render('security/erreur.html.twig');
       }
   }

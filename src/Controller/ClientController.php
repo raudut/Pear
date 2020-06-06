@@ -56,7 +56,9 @@ class ClientController extends AbstractController
       ->add('prenom', TextType::class)
       ->add('email', EmailType::class)
       ->add('password', PasswordType::class)
-      ->add('naissance', BirthdayType::class)
+      ->add('naissance', BirthdayType::class,[
+        'widget' =>"single_text",
+      ])
       ->add('save', SubmitType::class)
       ->add('roles', CollectionType::class, [
         'entry_type'   => ChoiceType::class,

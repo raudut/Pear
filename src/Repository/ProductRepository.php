@@ -15,27 +15,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
  * @method Product[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ProductRepository extends ServiceEntityRepository
-{
-
-    public function findProductByStatut($statut)
-    {
-        $qb = $this->createQueryBuilder('p');
-        $qb->select('p')
-            ->where('p.statut LIKE :statut')
-            ->setParameter('statut', '%"'.$statut.'"%');
-
-        return $qb->getQuery()->getResult();
-    }
-
-    public function findByUserId($brandId)
-{
-    $qb = $this->createQueryBuilder('rm');
-    $qb->where('IDENTITY(rm.brand) = :brandId')
-       ->setParameter('brandId', $brandId);
-
-    return $qb->getQuery()->getResult();
-}
-    
+{  
     public function findProductByIdUser($owner)
     {
         $qb = $this->createQueryBuilder('p');
@@ -50,7 +30,6 @@ class ProductRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Product::class);
     }
-
 
 /**
      * Récupère les produits en lien avec une recherche
@@ -91,6 +70,7 @@ class ProductRepository extends ServiceEntityRepository
         $query = $query
           ->andWhere('p.statut LIKE :statut')
           ->setParameter('statut', $data->statut);
+          echo $data->statut;
     }
 
       

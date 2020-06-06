@@ -343,7 +343,7 @@ try{
     try{
     $product = $productRepository -> findOneById($id);
     
-    
+    echo $product;
     return $this->render('product/show_product.html.twig', array(
       'product'=> $product
     ));
