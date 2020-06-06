@@ -198,7 +198,7 @@ try{
 
     try{
     
-
+/*
     $listProducts = $productRepository -> findBy(['statut' => "STATUT_DISPONIBLE"]); 
 
       foreach($listProducts as $product)
@@ -213,27 +213,16 @@ try{
         $product -> getNumSerie();
         $product -> getKit();
       }
+      */
 
-        $data = new SearchData();
-        
-        $form = $this->createForm(SearchForm::class, $data);
-        $form->handleRequest($request);
-        
-        $products = $productRepository->findSearch($data);
-
-       return $this  -> render('product/list_products_dispo.html.twig',
-        array("Liste"=> $listProducts,
-        'products' => $products,
-        'form' => $form->createView()
-        
-        )
-      
-      );
+       $form= $this -> filtreproduit($request, $productRepository)[0];
+       $products = $this -> filtreproduit($request, $productRepository)[1];
 
 
         return $this  -> render('product/list_products_dispo.html.twig',
 
-        array("Liste"=> $listProducts));
+        array("products"=> $products,
+              'form' => $form->createView()));
 
 }catch (Exception $e){
   echo $e;
