@@ -113,7 +113,7 @@ class ProductController extends AbstractController
     $user = $this -> getUser();
     $id = $user -> getId();
     $listProducts =  $productRepository -> findBy(['owner' => $id]);
-
+        echo $id;
     foreach($listProducts as $product)
     {
       
