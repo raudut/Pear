@@ -205,7 +205,7 @@ class BorrowingController extends AbstractController
 
     public function rendre_product_qrcode($id, ProductRepository $productRepository, BorrowingRepository $borrowingRepository)
     {
-        $this->denyAccessUnlessGranted('ROLE_BORROWER');
+    //    $this->denyAccessUnlessGranted('ROLE_LENDER');
         try {
             $product = $productRepository -> findOneById($id);
             $mailowner = new AppController();
