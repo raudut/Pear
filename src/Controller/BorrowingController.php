@@ -15,6 +15,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use App\Repository\BorrowingRepository;
 use App\Repository\UserRepository;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -127,7 +128,8 @@ class BorrowingController extends AbstractController
             }
             return $this -> render(
                 'borrowing/list_borrowings.html.twig',
-                array("listBorrowing" => $listBorrowing)
+                array("listBorrowing" => $listBorrowing
+                )
             );
         } catch (Exception $e) {
             return $this -> render('security/erreur.html.twig');
