@@ -344,8 +344,8 @@ try{
           
           $etat= $product->getEtat();
           $numSerie=$product->getNumserie();
-          $productname=$product->GetNom();
-          $statut=$product->GetStatut();
+          $productname=$product->getNom();
+          $statut=$product->getStatut();
           $owner=$product->getOwner();
           $idOwner= $owner->getId();
           //$borrowing=$product->getBorrowing();
