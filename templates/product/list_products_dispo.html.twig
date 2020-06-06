@@ -21,9 +21,17 @@
                 <tr>
                   <td>{% include 'product/_card.html.twig' with {product: product} only %}</td>                
                   <td>
-                    <button type="button" class="btn btn-outline-primary">Details</button>
-                    <button type="button" class="btn btn-outline-secondary" onclick="self.location.href='/add-borrowing/{{product.id}}'">Emprunter</button>
-                    
+                    <button type="button" class="btn btn-outline-primary"  onclick="self.location.href='/show-product/{{product.id}}'">Details</button>
+                    {% if product.statut[0] == "STATUT_DISPONIBLE" %}
+                     <td> <button type="button" class="btn btn-outline-secondary" onclick="self.location.href='/add-borrowing/{{product.id}}'">Emprunter</button> </td>
+                     <td> <button type="button" class="btn btn-outline-success disabled" >Rendre</button> </td>
+                      {%endif%}
+                   {% if product.statut[0] == "STATUT_LOUE" %}
+                    <td> <button type="button" class="btn btn-outline-secondary disabled">Emprunter</button> </td>
+                    <td>
+                      <button type="button" class="btn btn-outline-success" onclick="self.location.href='/rendre-product/{{product.id}}'">Rendre</button>
+                    </td>
+                    {%endif%} 
                     
                   </td>
                 </tr>    			

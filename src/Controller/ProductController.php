@@ -224,6 +224,7 @@ try{
               'form' => $form->createView()));
 
 }catch (Exception $e){
+  echo $e;
   return $this -> render('security/erreur.html.twig');
 }
 }
@@ -249,15 +250,12 @@ try{
       $listProducts = $productRepository -> findAll();
       $form= $this -> filtreproduit($request, $productRepository)[0];
       $products = $this -> filtreproduit($request, $productRepository)[1];
-      if(in_array("ROLE_ADMIN", $user->getRoles())){
-          return $this->redirectToRoute('home_admin');
-        }
-        elseif (in_array("ROLE_LENDER",  $user->getRoles())) {
-          return $this->redirectToRoute('home_lender');
-        }
-        else{
-          return $this->redirectToRoute('home_user');
-        }
+      return $this  -> render('product/list_products.html.twig',
+        array("Liste"=> $listProducts,
+        'products' => $products,
+        'form' => $form->createView()
+        
+    ));
   }catch (Exception $e){
       return $this -> render('security/erreur.html.twig');
     }
@@ -339,6 +337,7 @@ try{
       'product'=> $product
     ));
   }catch (Exception $e){
+    echo $e;
   return $this -> render('security/erreur.html.twig');
 }
 }

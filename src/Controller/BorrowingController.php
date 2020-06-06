@@ -29,7 +29,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class BorrowingController extends AbstractController
 {
-    public function add_borrowing(Request $request, ProductRepository $productRepository, $id)
+    public function add_borrowing(Request $request, ProductRepository $productRepository, $id, BorrowingRepository $borrowingRepo)
     {
 
       $this->denyAccessUnlessGranted('ROLE_BORROWER');
