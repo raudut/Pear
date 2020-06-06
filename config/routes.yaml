@@ -87,6 +87,7 @@ edit_product:
   path: /edit-product/{id}
   controller: App\Controller\ProductController::edit_product
 
+  
 #Route Qr Code
 qrcode_product:
   path: /qrcode-product/{id}
