@@ -123,6 +123,7 @@ try {
     
 
 }catch (Exception $e){
+ 
   return $this -> render('security/erreur.html.twig');
 }
   }
@@ -149,6 +150,7 @@ try {
         return $this -> render('borrowing/list_my_borrowings.html.twig', array("listBorrowing" => $listBorrowing));
     
 }catch (Exception $e){
+  echo $e;
   return $this -> render('security/erreur.html.twig');
 }
   }

@@ -61,7 +61,10 @@ try{
   
         return $this->redirectToRoute('list_categories');
       }
-      else{return $this->redirectToRoute('list_categories');}
+      else{
+        
+        
+        return $this->redirectToRoute('list_categories');}
     }
 
     // On passe la méthode createView() du formulaire à la vue
