@@ -334,7 +334,34 @@ try{
         }
     }
 
-
+    public function renduFirstStepQRcode(Request $request,ProductRepository $productRepository, $id){
+      //$this->denyAccessUnlessGranted('ROLE_BORROWER');
+    
+      try{
+        $mailuser = new AppController();
+          $product = $productRepository -> findOneById($id);
+          
+          $etat= $product->getEtat();
+          $numSerie=$product->getNumserie();
+          $productname=$product->GetNom();
+          $statut=$product->GetStatut();
+          $owner=$product->getOwner();
+          $idOwner= $owner->getId();
+          //$borrowing=$product->getBorrowing();
+          $owneremail = $owner->getEmail();
+          $ownername = $owner->getName();
+          
+          $mailuser->send_email_confirmation_rendu($ownername, $owneremail, $productname,$id);
+    
+          return $this->render('product/qrcode_affichage_rendu.html.twig', array(
+            'statut' => $statut,
+            'idOwner' => $idOwner,
+            'product' => $product
+            ));
+            }catch (Exception $e){
+              return $this -> render('security/erreur.html.twig');
+            }
+        }
 
   public function show_product($id, ProductRepository $productRepository){
     

@@ -130,6 +130,9 @@ rendre_product_qrcode:
   path: /rendre-product-qrcode/{id}
   controller: App\Controller\BorrowingController::rendre_product_qrcode
 
+renduFirstStepQRcode:
+  path: /rendu-QRcode/{id}
+  controller: App\Controller\ProductController::renduFirstStepQRcode
 
 
 #categories
