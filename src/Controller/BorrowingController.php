@@ -49,8 +49,6 @@ class BorrowingController extends AbstractController
             $formBuilder = $this->get('form.factory')->createBuilder(FormType::class, $borrowing);
             $date = date('d/m/y');
             $mydate = new DateTime($date);
-            //echo $mydate;
-            //$products = $productRepository -> findProductByStatut('STATUT_DISPONIBLE');
 
             $formBuilder
                 

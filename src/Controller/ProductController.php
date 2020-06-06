@@ -23,7 +23,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class ProductController extends AbstractController
 {
@@ -43,7 +43,7 @@ class ProductController extends AbstractController
     // On ajoute les champs de l'entité que l'on veut à notre formulaire
     $formBuilder
       ->add('nom',      TextType::class)
-      ->add('prix',     TextType::class)
+      ->add('prix',     NumberType::class)
       ->add('categorie', EntityType::class, [
         'label' => false,
         'required' => true,
@@ -51,7 +51,7 @@ class ProductController extends AbstractController
         'expanded' => true,
         'multiple' => false
     ])
-      ->add('caution',   TextType::class)
+      ->add('caution',   NumberType::class)
       ->add('etat',    TextType::class)
       ->add('emplacement',    TextType::class,[
         'required'=> false
@@ -98,6 +98,7 @@ class ProductController extends AbstractController
     ));
   
 }catch (Exception $e){
+  echo $e;
   return $this -> render('security/erreur.html.twig');
 }
 }
