@@ -1,25 +1,39 @@
  
 {% extends "base.html.twig" %}
 
- {% block title %}Detail du client{% endblock %}
+ {% block title %}Detail de l'objet{% endblock %}
  
  {% block body %}
-   <h1>Le détail du client </h1>
+   <h1>Le détail de l'objet </h1>
 
 
 <table style="width:100%">
 <tr>
 <td>
-<div class="card border-primary mb-3" style="max-width: 20rem;">
+<div class="card border-primary mb-3" style="max-width: 20rem; position: center; margin-left: auto;
+  margin-right: auto;">
   <div class="card-header">Informations principales : </div>
   <div class="card-body">
     <p class="card-text">Objet : {{product.nom}}</p>
-    <p class="card-text">Prix : {{product.prix}}€</p>
     <p class="card-text">Catégorie : {{product.categorie}}</p>
+    <p class="card-text">Prix : {{product.prix}}€</p>
     <p class="card-text">Caution : {{product.caution}}€</p>
     <p class="card-text">Etat : {{product.etat}}</p>
+    {% if product.numSerie == null %}
+    <p class="card-text">Numéro de série : Non renseigné</p>
+    {%else%}
     <p class="card-text">Numéro de série : {{product.numSerie}}</p>
+    {%endif%}
+    {% if product.kit == null %}
+    <p class="card-text">Kit : Non renseigné</p>
+    {%else%}
     <p class="card-text">Kit : {{product.kit}}</p>
+    {%endif%}
+    {% if product.emplacement == null %}
+    <p class="card-text">Emplacement : Non renseigné</p>
+    {%else%}
+    <p class="card-text">Emplacement : {{product.emplacement}}</p>
+    {%endif%}
     <p class="card-text">Propriétaire : {{product.owner.nom}}</p>
     <p class="card-text">Statut : {{product.statut[0]}}</p>
     
