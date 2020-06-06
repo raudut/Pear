@@ -96,25 +96,11 @@ class CategorieController extends AppController
                 array("list"=> $list,
           
           )
-<<<<<<< HEAD
-        );
-
-}catch (Exception $e){
-  echo $e;
-  return $this -> render('security/erreur.html.twig');
-}
-
-  }
-
-    public function delete_categorie(CategorieRepository $repo,  $id)
-  {
-=======
             );
         } catch (Exception $e) {
             return $this -> render('security/erreur.html.twig');
         }
     }
->>>>>>> dev-marthe
 
     public function delete_categorie(CategorieRepository $repo, $id)
     {
