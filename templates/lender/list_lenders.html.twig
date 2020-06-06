@@ -5,32 +5,26 @@
  {% block title %}Liste des preteurs{% endblock %}
  
     {% block body %}
+     <div class="grid">
+            <table class="table table-hover">         
+              <tbody>
+                {% if listLender is defined %}
+                  {%for user in listLender %}             
+                    <tr>
+                      <td>{% include 'lender/_card_lender.html.twig' with {user: user} only %}</td>                
+                      <td>
+                        <button type="button" class="btn btn-outline-primary">Details</button>      
+                        <button type="button" class="btn btn-outline-primary" >Supprimer</button>   
+                        <button type="button" class="btn btn-outline-primary" >Modifier</button>   
+                      </td>
+                    </tr>    			
+                  {% endfor %}
+                {%endif%}
+              </tbody>
+            </table> 
+          </div> 
+
+
+
      
-        <table class="table table-hover">
-            <thead>
-              <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Nom</th>
-                <th scope="col">Prénom</th>
-                <th scope="col">Email</th>
-                <th scope="col">Date de naissance</th>
-                <th scope="col">Rôle</th>
-              </tr>
-            </thead>
-            <tbody>
-                {%for user in listLender %}
-              <tr>
-                <td>{{ user.id}} </td>
-                <td>{{ user.nom }}</td>
-                <td>{{ user.prenom }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.naissance | date('d/m/Y')}}</td>
-                
-                {%for roles in user.roles%}
-                <td>{{roles}}</td>
-                {%endfor%}
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table> 
 {% endblock %}
