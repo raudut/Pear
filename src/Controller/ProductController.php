@@ -191,20 +191,11 @@ try{
 
     public function list_products_dispo( ProductRepository $productRepository, Request $request)
   {
-<<<<<<< HEAD
-try{
-    $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
-=======
 
     $this->denyAccessUnlessGranted('ROLE_BORROWER');
 
     try{
     
->>>>>>> master
 
     $listProducts = $productRepository -> findBy(['statut' => "STATUT_DISPONIBLE"]); 
 
@@ -241,13 +232,12 @@ try{
         return $this  -> render('product/list_products_dispo.html.twig',
 
         array("Liste"=> $listProducts));
-  }
+
 }catch (Exception $e){
   return $this -> render('security/erreur.html.twig');
 }
 }
 
-  
     
   public function delete_products(ProductRepository $productRepository, BorrowingRepository $borrowingRepository, $id, Request $request)
   {
