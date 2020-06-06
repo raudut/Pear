@@ -89,7 +89,7 @@ class ProductRepository extends ServiceEntityRepository
 
     if (!empty($data->statut)) {
         $query = $query
-          ->andWhere('p.statut LIKE :statut')
+          ->andWhere(':statut IN json_decode(p.statut, true)')
           ->setParameter('statut', $data->statut);
     }
 

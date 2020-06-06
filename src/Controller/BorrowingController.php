@@ -226,7 +226,7 @@ try {
             $entityManager = $this->getDoctrine()->getManager();
 
             $borrowing =  $borrowingRepository -> findBy(['idProduct' => $id]);
-           $user = $borrowing[0]->getIdUser();
+            $user = $borrowing[0]->getIdUser();
            
             $statut[] = "STATUT_DISPONIBLE";
             $product->setStatut($statut);
