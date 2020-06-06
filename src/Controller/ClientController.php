@@ -135,6 +135,7 @@ class ClientController extends AbstractController
 
     
 }catch (Exception $e){
+  echo($e);
   return $this -> render('security/erreur.html.twig');
 }
 
