@@ -340,11 +340,11 @@ try{
     
       //try{
         $mailuser = new AppController();
-          $productl = $productRepository -> findBy(['id' => $id]);
-          echo($id);
-          $product=$productl[0];
+          $product = $productRepository -> findOneById($id);
+          
+          $etat= $product->getEtat();
+          $numSerie=$product->getNumserie();
           $productname=$product->getNom();
-          echo($productname);
           $statut=$product->getStatut();
           $owner=$product->getOwner();
           $idOwner= $owner->getId();
