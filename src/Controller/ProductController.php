@@ -417,13 +417,16 @@ try{
       ->add('caution',   TextType::class)
       ->add('etat',    TextType::class)
       ->add('emplacement',    TextType::class,[
+        'empty_data' => '',
         'required'=> false
       ])
       ->add('num_serie',    TextType::class, [
+        'empty_data' => '',
         'required'=> false
       ]
       )
       ->add('kit',    TextType::class, [
+        'empty_data' => '',
         'required'=> false,
       ])
       ->add('statut', CollectionType::class, [
@@ -476,6 +479,7 @@ try{
 
   
 }catch (Exception $e){
+  echo($e);
   return $this -> render('security/erreur.html.twig');
 }
 }
