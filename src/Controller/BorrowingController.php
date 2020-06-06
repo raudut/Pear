@@ -103,7 +103,7 @@ class BorrowingController extends AbstractController
 
     public function list_borrowings(BorrowingRepository $borrowingRepository)
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        //$this->denyAccessUnlessGranted('ROLE_ADMIN');
 
 
         try {
@@ -127,7 +127,7 @@ class BorrowingController extends AbstractController
 
     public function list_my_borrowings(BorrowingRepository $borrowingRepository)
     {
-        $this->denyAccessUnlessGranted('ROLE_BORROWER');
+        //$this->denyAccessUnlessGranted('ROLE_BORROWER');
 
         
 
@@ -206,8 +206,8 @@ class BorrowingController extends AbstractController
 
     public function rendre_product_qrcode($id, ProductRepository $productRepository, BorrowingRepository $borrowingRepository)
     {
-        $this->denyAccessUnlessGranted('ROLE_BORROWER');
-        try {
+        //$this->denyAccessUnlessGranted('ROLE_BORROWER');
+        //try {
             $product = $productRepository -> findOneById($id);
             $mailowner = new AppController();
             $entityManager = $this->getDoctrine()->getManager();
@@ -233,10 +233,10 @@ class BorrowingController extends AbstractController
 
 
             $listBorrowing =  $borrowingRepository -> findBy(['idUser' =>$user]);
-            return $this -> render('borrowing/list_my_borrowings.html.twig', array("listBorrowing" => $listBorrowing));
-        } catch (Exception $e) {
-            return $this -> render('security/erreur.html.twig');
-        }
+            return $this -> render('product/qrcode_affichage_rendu_step_two.html.twig', array("listBorrowing" => $listBorrowing));
+        //} catch (Exception $e) {
+        //    return $this -> render('security/erreur.html.twig');
+        //}
     }
 
     public function show_borrowings($id, ProductRepository $productRepository, BorrowingRepository $borrowingRepo, UserRepository $userRespo)
