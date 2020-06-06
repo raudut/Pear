@@ -1,0 +1,57 @@
+
+{% extends "base.html.twig" %}
+
+ {% block title %}Detail de l'emprunt{% endblock %}
+ 
+ {% block body %}
+   <h1>Le détail d' emprunt </h1>
+
+
+<table style="width:100%">
+			<tr>
+				<td>
+<div class="card border-primary mb-3" style="max-width: 20rem;">
+  <div class="card-header">Le propriétaire de l'objet : </div>
+  <div class="card-body">
+    <p class="card-text">Nom de famille : {{owner.nom}}</p>
+    <p class="card-text">Prénom : {{owner.prenom}}</p>
+  </div>
+  </td>
+
+  <td>
+</div>
+<div class="card border-info mb-3" style="max-width: 20rem;">
+  <div class="card-header">L'objet qui est emprunté :</div>
+  <div class="card-body">
+      <p class="card-text">Nom de l'objet : {{product.nom}}</p>                        
+      <p class="card-text">Catégorie : {{product.categorie}}</p>                                               
+  </div>
+  </td>
+  </tr>
+
+  <tr>
+  <td>
+</div>
+<div class="card border-success mb-3" style="max-width: 20rem;">
+  <div class="card-header">Les dates de l'emprunt :</div>
+  <div class="card-body">
+          <p class="card-text">Date de début : {{borrowing.dateDebut | date('Y-m-d')}}</p>
+          <p class="card-text">Date de fin : {{borrowing.dateFin | date('Y-m-d')}}</p>
+                        
+  </div>
+</div>
+</td>
+<td>
+<div class="card border-danger mb-3" style="max-width: 20rem;">
+  <div class="card-header">Le loueur de l'objet :</div>
+  <div class="card-body">
+    <p class="card-text">Nom de famille : {{lender.nom}}</p>
+    <p class="card-text">Prénom : {{lender.prenom}}</p>                    
+  </div>
+</div> 
+</td>
+</tr>
+</table>           
+    
+
+ {% endblock %}

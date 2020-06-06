@@ -56,7 +56,9 @@ class ClientController extends AbstractController
       ->add('prenom', TextType::class)
       ->add('email', EmailType::class)
       ->add('password', PasswordType::class)
-      ->add('naissance', BirthdayType::class)
+      ->add('naissance', BirthdayType::class,[
+        'widget' =>"single_text",
+      ])
       ->add('save', SubmitType::class)
       ->add('roles', CollectionType::class, [
         'entry_type'   => ChoiceType::class,
@@ -118,23 +120,17 @@ class ClientController extends AbstractController
     $client= $userRepo -> findOneById($id);
     $listProduct =  $productRepository -> findBy(['owner' => $id]);
     $listBorrow = $borrowingRepo -> findBy(['idUser' => $id]);
-    $listBProduct= array();
-    foreach($listBorrow as $borrow)
-    {
-      $idProduct = $borrow -> getIdProduct();
-      $product = $productRepository -> findby(['id' => $idProduct]);
-      $listBorrow = array($product);
-    }
+    
     return $this-> render('user/show_user.html.twig', array(
 
       'client'=>$client,
       'listLendings'=> $listProduct,
-      'listBorrowings' => $listBorrow,
-      'listBProduct' => $listBProduct
+      'listBorrowings' => $listBorrow
     ));
 
     
 }catch (Exception $e){
+  echo($e);
   return $this -> render('security/erreur.html.twig');
 }
 

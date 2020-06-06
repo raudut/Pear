@@ -110,6 +110,10 @@ list_borrowings:
   path: /list-borrowings
   controller: App\Controller\BorrowingController::list_borrowings
 
+show_borrowings:
+  path: /show-borrowings/{id}
+  controller: App\Controller\BorrowingController::show_borrowings
+
 delete_borrowing:
   path: /delete-borrowing/{id}
   controller: App\Controller\BorrowingController::delete_borrowing
@@ -125,6 +129,10 @@ rendre_product:
 rendre_product_qrcode:
   path: /rendre-product-qrcode/{id}
   controller: App\Controller\BorrowingController::rendre_product_qrcode
+
+renduFirstStepQRcode:
+  path: /rendu-QRcode/{id}
+  controller: App\Controller\ProductController::renduFirstStepQRcode
 
 
 #categories

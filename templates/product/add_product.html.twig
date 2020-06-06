@@ -12,7 +12,8 @@
 
     <h1>Formulaire d'ajout</h1>
 
-     <div>Vous allez ajouter un objet.</br></br></div>  
+     <div>Vous allez ajouter un objet.</br></br></div> 
+     <div><h5>Les champs indiqués d'une étoiles (*) sont à remplir obligatoirement</h5><div> 
   <div class="well">
   {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
 
@@ -24,7 +25,7 @@
   {# Génération manuelle et éclatée : #}
   <div class="form-group">
     {# Génération du label. #}
-    {{ form_label(form.nom, "Quel est l'objet ?", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    {{ form_label(form.nom, "Quel est l'objet ?*", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
 
     {# Affichage des erreurs pour ce champ précis. #}
     {{ form_errors(form.nom) }}
@@ -37,7 +38,7 @@
 
   {# Idem pour un autre champ. #}
   <div class="form-group">
-    {{ form_label(form.prix, "Quelle est la valeur de l'objet ?", {'label_attr': {'class': 'col-sm-4 control-label'}}) }}
+    {{ form_label(form.prix, "Quelle est la valeur de l'objet ?*", {'label_attr': {'class': 'col-sm-4 control-label'}}) }}
     {{ form_errors(form.prix) }}
     <div class="col-sm-10">
       {{ form_widget(form.prix, {'attr': {'class': 'form-control'}}) }}
@@ -45,7 +46,7 @@
   </div>
 
       <div class="form-group">
-  {{form_label(form.categorie, "Categorie", {'label_attr' : {'class':'col-sm-2 control-label'}})}}
+  {{form_label(form.categorie, "Quelle est la catégorie de l'objet?*", {'label_attr' : {'class':'col-sm-2 control-label'}})}}
   {{form_errors (form.categorie)}}
       <div class="col-sm-10">
       {{ form_widget(form.categorie)}}
@@ -53,7 +54,7 @@
 </div>
 
   <div class="form-group">
-    {{ form_label(form.caution, "Quelle est la valeur de la caution ?", {'label_attr': {'class': 'col-sm-4 control-label'}}) }}
+    {{ form_label(form.caution, "Quelle est la valeur de la caution ?*", {'label_attr': {'class': 'col-sm-4 control-label'}}) }}
     {{ form_errors(form.caution) }}
     <div class="col-sm-10">
       {{ form_widget(form.caution, {'attr': {'class': 'form-control'}}) }}
@@ -61,7 +62,7 @@
   </div>
 
   <div class="form-group">
-    {{ form_label(form.etat, "Quel est l'état de l'objet ?", {'label_attr': {'class': 'col-sm-4 control-label'}}) }}
+    {{ form_label(form.etat, "Quel est l'état de l'objet ?*", {'label_attr': {'class': 'col-sm-4 control-label'}}) }}
     {{ form_errors(form.etat) }}
     <div class="col-sm-10">
       {{ form_widget(form.etat, {'attr': {'class': 'form-control'}}) }}
@@ -69,11 +70,10 @@
   </div>
 
   <div class="form-group">
-    {{ form_label(form.emplacement, "Quel est l'emplacement de l'objet ?*", {'label_attr': {'class': 'col-sm-4 control-label'}}) }}
+    {{ form_label(form.emplacement, "Quel est l'emplacement de l'objet ?", {'label_attr': {'class': 'col-sm-4 control-label'}}) }}
     {{ form_errors(form.emplacement) }}
     <div class="col-sm-10">
       {{ form_widget(form.emplacement, {'attr': {'class': 'form-control'}}) }}
-      <p><i>*L'emplacement est là où on peut venir chercher votre objet pour l'emprunter</i></p>
     </div>
   </div>
 
@@ -94,7 +94,7 @@
   </div>
 
   <div class="form-group">
-  {{form_label(form.statut, "Statut", {'label_attr' : {'class':'col-sm-4 control-label'}})}}
+  {{form_label(form.statut, "Quel est le statut de l'objet?*", {'label_attr' : {'class':'col-sm-4 control-label'}})}}
   {{form_errors (form.statut)}}
       <div class="col-sm-10">
       {{ form_widget(form.statut)}}

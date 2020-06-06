@@ -41,11 +41,11 @@
   </tbody>
 </table> 
 
-  {% if app.user.id == idOwner %}
+ 
 
 
 	{% if product.statut[0] ends with 'STATUT_DISPONIBLE' %} 
-  <h4 text-align="center" > </br></br> Voulez-vous préter cet objet ? </h4>
+  <h4 text-align="center" > </br></br> Voulez-vous emprunter cet objet ? </h4>
   
 
     <button type="button" class="btn btn-outline-success" onclick="self.location.href='/add-borrowing/{{product.id}}'" > Oui</button>
@@ -59,9 +59,9 @@
   {% else %}
 
   
-  <h4> Cet objet vous a t'il bien été remis ? </h4>
+  <h4> Voulez-vous rendre cet objet ? </h4>
   <label class="btn btn-primary">
-     <button type="button" class="btn btn-outline-success" onclick="self.location.href='/rendre-product-qrcode/{{product.id}}'" autocomplete="off"> Oui </button>
+     <button type="button" class="btn btn-outline-success" onclick="self.location.href='/rendu-QRcode/{{product.id}}'" autocomplete="off"> Oui </button>
   </label>
   <label class="btn btn-primary">
     <button type="button" class="btn btn-outline-danger" onclick="self.location.href='/'" autocomplete="off"> Non </button>
@@ -69,7 +69,7 @@
 
   {%endif%}
 
-  {%endif%}
+
 
 {% endblock %}
 
