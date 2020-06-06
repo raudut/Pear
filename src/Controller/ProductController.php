@@ -264,10 +264,10 @@ try{
           return $this->redirectToRoute('home_admin');
         }
         elseif (in_array("ROLE_LENDER",  $user->getRoles())) {
-          return $this->redirectToRoute('home_lender');
+          return $this->redirectToRoute('list-products');
         }
         else{
-          return $this->redirectToRoute('home_user');
+          return $this->redirectToRoute('list-products');
         }
   }catch (Exception $e){
       return $this -> render('security/erreur.html.twig');
