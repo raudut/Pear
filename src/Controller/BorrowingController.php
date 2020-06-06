@@ -39,6 +39,7 @@ class BorrowingController extends AbstractController
         $produit = $productRepository->findOneById($id);
         $stat = $produit->getStatut();
         $listBorrowing = $borrowingRepo -> findBy(['idProduct'=>$id]);
+        $bool = false;
 
         if (in_array('STATUT_DISPONIBLE', $stat)) {
             $mailuser = new AppController();
@@ -64,6 +65,14 @@ class BorrowingController extends AbstractController
             if ($form->isSubmitted() && $form->isValid()) {
                 $borrowing = $form->getData();
                 $borrowing-> setDateDebut($mydate);
+                $dateFin = $borrowing->getDateFin();
+                if ($mydate > $dateFin){
+                    $bool =true ;
+                    return $this->render('borrowing/add_borrowing.html.twig', array(
+                        'form' => $form->createView(),
+                        'bool' => $bool,
+                    ));
+                }
                 $borrowing->setIdUser($this->getUser());
                 $product = $productRepository->findOneById($id);
                 $borrowing->setIdProduct($product);
@@ -89,11 +98,13 @@ class BorrowingController extends AbstractController
           
                 return $this->render('borrowing/add_borrowing.html.twig', array(
       'form' => $form->createView(),
+      'bool' => $bool,
     ));
             } else {
                 return $this -> render('security/erreur.html.twig');
             }
         } catch (Exception $e) {
+            echo($e);
             return $this -> render('security/erreur.html.twig');
         }
     }
@@ -149,7 +160,7 @@ class BorrowingController extends AbstractController
 
     public function delete_borrowing(BorrowingRepository $borrowingRepository, $id, $bool)
     {
-        $this->denyAccessUnlessGranted('ROLE_LENDER');
+        $this->denyAccessUnlessGranted('ROLE_BORROWER');
 
         try {
             $bo = $borrowingRepository -> findOneById($id);
@@ -242,7 +253,7 @@ class BorrowingController extends AbstractController
             $listBorrowing =  $borrowingRepository -> findBy(['idUser' =>$user]);
             return $this -> render('product/qrcode_affichage_rendu_step_two.html.twig', array("listBorrowing" => $listBorrowing));
         } catch (Exception $e) {
-            echo $e;
+            
             return $this -> render('security/erreur.html.twig');
         }
     }

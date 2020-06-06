@@ -3,6 +3,8 @@
 
 {% block title %}Ajouter Borrowing !{% endblock %}
 
+
+
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.css">
@@ -26,6 +28,15 @@
 
 
     <h1>Formulaire d'emprunt</h1>
+
+    {% if (bool == "true" ) %}
+
+<div class="alert alert-dismissible alert-warning">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <h4 class="alert-heading">Attention !</h4>
+  <p class="mb-0">La date de rendu que vous saisissez n'est pas correct ! Veuillez en saisir une nouvelle. </a></p>
+</div>
+{% endif %}
 
     <div>Quand souhaitez-vous emprunter cet objet ? </br></br></div>  
 

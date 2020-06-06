@@ -48,18 +48,7 @@ class SearchForm extends AbstractType
                      'placeholder' => 'Prix max'
                  ]
              ])
-             ->add('statut', ChoiceType::class,[
-                 'choices' => ["STATUT_LOUE" => "Loue" , "STATUT_DISPONIBLE" => "Disponible"],
-                 'expanded' => true,
-                 'multiple' => false, 
-                'label' => false,
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'Statut'
-                ]
-            ] 
-             
-             )
+            
 
         ;
     }
