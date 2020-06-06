@@ -242,7 +242,7 @@ class BorrowingController extends AbstractController
             $listBorrowing =  $borrowingRepository -> findBy(['idUser' =>$user]);
             return $this -> render('product/qrcode_affichage_rendu_step_two.html.twig', array("listBorrowing" => $listBorrowing));
         } catch (Exception $e) {
-            echo $e;
+            
             return $this -> render('security/erreur.html.twig');
         }
     }
