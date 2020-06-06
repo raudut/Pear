@@ -1,57 +1,81 @@
 {% extends 'base.html.twig' %}
 
-	{% block title %}Bienvenue sur Pear!{% endblock %}
+{% block title %}Bienvenue sur Pear!
+{% endblock %}
 
-	{% block body %}
-		<style>
-			.example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-			.example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-		</style>
+{% block body %}
+	<style>
+		.example-wrapper {
+			margin: 1em auto;
+			max-width: 800px;
+			width: 95%;
+			font: 18px / 1.5 sans-serif;
+		}
+		.example-wrapper code {
+			background: #F5F5F5;
+			padding: 2px 6px;
+		}
+	</style>
 
-			<h1> Bienvenue sur Pear cher Administrateur ! </h1>
+	<h1>
+		Bienvenue sur Pear cher Administrateur !
+	</h1>
 
-		<div>
-			<p> Pear est un site de gestion de prêt de materiel. </p>
+	<div>
+		<p>
+			Pear est un site de gestion de prêt de materiel.
+		</p>
 
-		<div>
-			<button type="button" class="btn btn-outline-primary" onclick="self.location.href='/login'">Connexion</button>
-		</div
+		<table style="width:100%">
+			<tr>
+				<td>
+					<div class="card border-primary mb-3" style="max-width: 20rem;">
+						<div class="card-header">Gérer les produits</div>
+						<div class="card-body">
+							<button type="button" style="margin-bottom: 10px;" class="btn btn-outline-primary" onclick="self.location.href='/add-product'">Ajouter un objet</button>
+							<button type="button" style="margin-bottom: 10px;" class="btn btn-outline-primary" onclick="self.location.href='/list-products-by-lender'">Liste de mes objets</button>
+							<button type="button" style="margin-bottom: 10px;" class="btn btn-outline-primary" onclick="self.location.href='/list-products'">Lister les objets</button>
+						</div>
+					</div>
+				</td>
+				<td>
+					<div class="card border-secondary mb-3" style="max-width: 20rem;">
+						<div class="card-header">Gérer les utilistateurs
+						</div>
+						<div class="card-body">
 
-		<div>
-			<button type="button" class="btn btn-outline-primary" onclick="self.location.href='/edit-me'">Modifier mes informations</button>
-		</div>
-		
-		<div>
-			<h4>Client</h4>
-			<button type="button" class="btn btn-outline-primary" onclick="self.location.href='/list-clients'">Liste des clients</button>
-		</div>
+							<button type="button" style="margin-bottom: 10px;" class="btn btn-outline-primary" onclick="self.location.href='/list-clients'">Liste des clients</button>
+							<button type="button" style="margin-bottom: 10px;" class="btn btn-outline-primary" onclick="self.location.href='/list-lenders'">Liste des preteurs</button>
+						</div>
+					</div>
+				</td>
 
-		<div>
-			<h4>Preteur</h4>
-			<button type="button" class="btn btn-outline-primary" onclick="self.location.href='/list-lenders'">Liste des preteurs</button>
-		</div>
+			</tr>
+			<tr>
+				<td>
+					<div class="card border-success mb-3" style="max-width: 20rem;">
+						<div class="card-header">Gérer les catégories
+						</div>
+						<div class="card-body">
+							<button type="button" style="margin-bottom: 10px;" class="btn btn-outline-primary" onclick="self.location.href='/add-categorie'">Ajouter une catégorie</button>
+							<button type="button" style="margin-bottom: 10px;" class="btn btn-outline-primary" onclick="self.location.href='/list-categories'">Liste des catégories</button>
+						</div>
+					</td>
+				</td>
+				<td>
+					<div class="card border-info  mb-3" style="max-width: 20rem;">
+						<div class="card-header">Gérer les emprunts
+						</div>
+						<div class="card-body">
+							<button type="button" style="margin-bottom: 10px;" class="btn btn-outline-primary" onclick="self.location.href='/list-borrowings'">Lister les emprunts</button>
+							<button type="button" style="margin-bottom: 10px;" class="btn btn-outline-primary" onclick="self.location.href='/list-my-borrowings'">Lister mes emprunts</button>
+						</div>
+					</div>
+				</td>
 
-		<div>
-			<h4>Produit<h4>
-			<button type="button" class="btn btn-outline-primary" onclick="self.location.href='/add-product'">Ajouter un objet</button>
-			<button type="button" class="btn btn-outline-primary" onclick="self.location.href='/list-products-by-lender'">Liste de mes objets</button>
-			<button type="button" class="btn btn-outline-primary" onclick="self.location.href='/list-products'">Lister les objets</button>
+			</tr>
 
-		</div>
+		</table>
+</div>
 
-		<div>
-			<h4>Emprunts<h4>
-			<button type="button" class="btn btn-outline-primary" onclick="self.location.href='/list-borrowings'">Lister les emprunts</button>
-			<button type="button" class="btn btn-outline-primary" onclick="self.location.href='/list-my-borrowings'">Lister mes emprunts</button>
-		</div>
-
-		<div>
-			<h4>Catégories<h4>
-			<button type="button" class="btn btn-outline-primary" onclick="self.location.href='/add-categorie'">Ajouter une catégorie</button>
-			<button type="button" class="btn btn-outline-primary" onclick="self.location.href='/list-categories'">Liste des catégories</button>
-		</div>
-
-	
-		</div>
-
-	{% endblock %}
+{% endblock %}

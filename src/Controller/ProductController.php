@@ -8,7 +8,6 @@ use App\Data\SearchData;
 use App\Form\SearchForm;
 use App\Entity\Categorie;
 use App\Repository\ProductRepository;
-use App\Controller\BorrowingController;
 use App\Repository\BorrowingRepository;
 use App\Repository\CategorieRepository;
 use App\Repository\UserRepository;
@@ -20,7 +19,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -73,7 +71,7 @@ class ProductController extends AbstractController
         'entry_type'   => ChoiceType::class,
         'entry_options'  => [
             'choices'  => [
-              $product->getStatutNames()
+              'Choisir un statut' => $product->getStatutNames()
             ],
         ],
     ])
@@ -109,22 +107,21 @@ class ProductController extends AbstractController
  
   public function list_products_by_lender(ProductRepository $productRepository)
   {
+    $this->denyAccessUnlessGranted('ROLE_LENDER');
+    
     try {
-        $user = $this -> getUser();
-        if ($user == null) {
-            return $this->redirectToRoute('login');
-        } else {
-            $user = $this -> getUser();
-            $id = $user -> getId();
-            $listProduct =  $productRepository -> findBy(['owner' => $id]);
+    $user = $this -> getUser();
+    $id = $user -> getId();
+    $listProduct =  $productRepository -> findBy(['owner' => $id]);
 
-
-            return $this -> render('product/list_products_by_lender.html.twig', array("listProduct" => $listProduct));
-        }
-      }catch (Exception $e){
+      foreach($listProduct as $product){
+          echo $product -> getId();
+      }
+    return $this -> render ('product/list_products_by_lender.html.twig', array("listProduct" => $listProduct));
+  }catch (Exception $e){
         return $this -> render('security/erreur.html.twig');
       }
-}
+    }
 
   public function filtreproduit(Request $request, ProductRepository $productRepository){
 try{
@@ -194,12 +191,20 @@ try{
 
     public function list_products_dispo( ProductRepository $productRepository, Request $request)
   {
+<<<<<<< HEAD
 try{
     $user = $this -> getUser();
     if ($user == null){
       return $this->redirectToRoute('login');
     }
     else{
+=======
+
+    $this->denyAccessUnlessGranted('ROLE_BORROWER');
+
+    try{
+    
+>>>>>>> master
 
     $listProducts = $productRepository -> findBy(['statut' => "STATUT_DISPONIBLE"]); 
 
@@ -391,8 +396,9 @@ try{
         
         'entry_type'   => ChoiceType::class,
         'entry_options'  => [
+            'label' => false ,
             'choices'  => [
-              $product->getStatutNames()
+              'Choisir un statut' => $product->getStatutNames()
             ],
         ],
     ])

@@ -23,19 +23,17 @@ class BorrowingRepository extends ServiceEntityRepository
     // /**
     //  * @return Borrowing[] Returns an array of Borrowing objects
     //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+    
+
+    public function findBorrowingByProductId($IdProduct)
+{
+    $qb = $this->createQueryBuilder('b');
+    $qb->where('IDENTITY(b.id) = :IdProduct')
+       ->setParameter('IdProduct', $IdProduct);
+
+    return $qb->getQuery()->getResult();
+}
+    
 
     /*
     public function findOneBySomeField($value): ?Borrowing
