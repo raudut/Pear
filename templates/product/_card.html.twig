@@ -10,7 +10,14 @@
             {{product.categorie}}
         </div>
         <div clas="card-title">
-            {{product.statut[0]}}
+            {% if product.statut[0] == "STATUT_LOUE" %}
+             Loué
+            {%elseif product.statut[0] == "STATUT_DISPONIBLE"%}
+            Disponible
+            {%else%}
+            Indisponible
+            {%endif%}
+
         </div>
         <div clas="card-title">
             {{product.owner}}

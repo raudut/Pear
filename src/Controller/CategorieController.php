@@ -31,11 +31,7 @@ class CategorieController extends AppController
 
             // On ajoute les champs de l'entité que l'on veut à notre formulaire
             $formBuilder
-            ->add('categorie', TextType::class, [
-                'attr' => [
-                 'placeholder' => 'Nom de la categorie'
-                ]
-           ])
+            ->add('categorie', TextType::class)
             ->add('save', SubmitType::class)
                ;
 

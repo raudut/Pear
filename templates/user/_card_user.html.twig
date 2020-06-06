@@ -12,7 +12,13 @@
         </div>
                   
             <div clas="card-title">
-                {{user.roles[0]}}
+                {%if user.roles[0] == "ROLE_ADMIN" %}
+                ADMIN
+                {%elseif user.roles[0] == "ROLE_LENDER"%}
+                PRETEUR
+                {%else%}
+                LOUEUR
+                {%endif%}
             </div>
         
     </div>
