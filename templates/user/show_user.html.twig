@@ -1,12 +1,4 @@
-{% if is_granted('ROLE_ADMIN') -%}
-    {% set extendedTemplate = "base_admin.html.twig" %}
-{% elseif is_granted('ROLE_LENDER') -%}
-    {% set extendedTemplate = "base_lender.html.twig" %}
-{% else %}
-    {% set extendedTemplate = "base_user.html.twig" %}
-{%- endif %}
-
-{% extends extendedTemplate %}
+{% extends "base.html.twig" %}
 
  {% block title %}Detail Client{% endblock %}
  
@@ -60,7 +52,7 @@
                                 <tr>Date de fin</tr>
                             </thead>
                             <tbody>
-                                {#<td>{{product.nom}}</td>#}
+
                                 <td>{{borrow.dateDebut}}</td>
                                 <td>{{borrow.dateFin}}</td>
                             </tbody>

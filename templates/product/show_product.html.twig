@@ -7,8 +7,16 @@
         <div class="row">
 
             <div class="col-md-3">
-                <div><button type="button" class="btn btn-outline-secondary" onclick="self.location.href='/add-borrowing/{{product.id}}'">Emprunter</button></div>
-                <div><button type="button" class="btn btn-outline-success">Rendre</button></div>
+                    {% if product.statut[0] == "STATUT_DISPONIBLE" %}
+                     <td> <button type="button" class="btn btn-outline-secondary" onclick="self.location.href='/add-borrowing/{{product.id}}'">Emprunter</button> </td>
+                     <td> <button type="button" class="btn btn-outline-success disabled" >Rendre</button> </td>
+                      {% endif %}
+                   {% if product.statut[0] == "STATUT_LOUE" %}
+                    <td> <button type="button" class="btn btn-outline-secondary disabled">Emprunter</button> </td>
+                    <td>
+                      <button type="button" class="btn btn-outline-success" onclick="self.location.href='/rendre-product/{{product.id}}'">Rendre</button>
+                    </td>
+                    {% endif %}
                 <div><button type="button" class="btn btn-outline-info" onclick="self.location.href='/qrcode-product/{{product.id}}'">QrCode</button></div>
                 <div><button type="button" class="btn btn-outline-danger" onclick="self.location.href='/delete-product/{{product.id}}'">Supprimer</button> </div>
             </div>

@@ -13,9 +13,9 @@
                     <tr>
                       <td>{% include 'lender/_card_lender.html.twig' with {user: user} only %}</td>                
                       <td>
-                        <button type="button" class="btn btn-outline-primary">Details</button>      
-                        <button type="button" class="btn btn-outline-primary" >Supprimer</button>   
-                        <button type="button" class="btn btn-outline-primary" >Modifier</button>   
+                        <button type="button" class="btn btn-outline-primary" onclick="self.location.href='/show-client/{{user.id}}'">Details</button>      
+                        <button type="button" class="btn btn-outline-primary" onclick="self.location.href='/edit-client/{{user.id}}'" >Modifier</button>   
+                        <button type="button" class="btn btn-outline-primary" onclick="self.location.href='/delete-client/{{user.id}}'">Supprimer</button> 
                       </td>
                     </tr>    			
                   {% endfor %}
