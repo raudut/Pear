@@ -20,7 +20,7 @@
                  <tr>
                     <td>{% include 'borrowing/_card_borrowing.html.twig' with {borrowing: borrowing} only %}</td>                
                     <td>                    
-                      <button type="button" class="btn btn-outline-primary" onclick="self.location.href='/show-product/{{borrowing.id}}'">Details</button>
+                      <button type="button" class="btn btn-outline-primary" onclick="self.location.href='/show-borrowings/{{borrowing.id}}'">Details</button>
                     </td>
 			      </tr> 
                 {% endfor %}
