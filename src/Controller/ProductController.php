@@ -24,17 +24,15 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
+
 class ProductController extends AbstractController
 {
   
+    public function add_product(Request $request, CategorieRepository $catrepo){
 
-  public function add_product(Request $request, CategorieRepository $catrepo){
-    try{
-    $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
+
+    $this->denyAccessUnlessGranted('ROLE_LENDER');
+    try {
 
     // On crée un objet Advert
     $product = new Product();
@@ -70,6 +68,7 @@ class ProductController extends AbstractController
         
         'entry_type'   => ChoiceType::class,
         'entry_options'  => [
+            'label' => false,
             'choices'  => [
               'Choisir un statut' => $product->getStatutNames()
             ],
@@ -97,11 +96,12 @@ class ProductController extends AbstractController
     return $this->render('product/add_product.html.twig', array(
       'form' => $form->createView(),
     ));
-  }
+  
 }catch (Exception $e){
   return $this -> render('security/erreur.html.twig');
 }
 }
+
 
 
  
@@ -123,13 +123,12 @@ class ProductController extends AbstractController
       }
     }
 
+  
+
+
   public function filtreproduit(Request $request, ProductRepository $productRepository){
 try{
-    $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
+   
 
     $data = new SearchData();
         
@@ -139,19 +138,20 @@ try{
     $products = $productRepository->findSearch($data);
     return array($form, $products);
   }
-}catch (Exception $e){
-  return $this -> render('security/erreur.html.twig');
-}
-}
+  catch (Exception $e){
+        return $this -> render('security/erreur.html.twig');
+      }
+    }
+
+
+
+ 
 
   public function list_products( ProductRepository $productRepository, Request $request)
   {
-try{
-    $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
+    $this->denyAccessUnlessGranted('ROLE_ADMIN');
+    try{
+    
 
     $listProducts = $productRepository -> findAll();
 
@@ -181,13 +181,13 @@ try{
       
       );
 
-}
 }catch (Exception $e){
   echo $e;
   return $this -> render('security/erreur.html.twig');
 }
+}
         
-  }
+  
 
 
     public function list_products_dispo( ProductRepository $productRepository, Request $request)
@@ -240,9 +240,13 @@ try{
 }
 }
 
+  
     
   public function delete_products(ProductRepository $productRepository, BorrowingRepository $borrowingRepository, $id, Request $request)
   {
+
+    $this->denyAccessUnlessGranted('ROLE_LENDER');
+
     try {
 
     $user = $this -> getUser();
@@ -268,26 +272,28 @@ try{
     }
 }
 
+
+
+
   public function genarateQRcode(Request $request,ProductRepository $productRepository, $id){
 try{
-    $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
     
+
     $product = $productRepository -> findOneById($id);
     
     $etat= $product->getEtat();
     $numSerie=$product->getNumserie();
     $nom=$product->GetNom();
     $statut=$product->GetStatut();
+    //$borrowing=$product->getBorrowing();
     
+
     
     $qrcode_message="https://pear.min.epf.fr/qrcode-confirmation/$id";
+
     $encodeurl = urlencode($qrcode_message);
-    
-    //API goqr $url = "https://api.qrserver.com/v1/create-qrcode/?data=$encodeurl&size=100x100";
+    //echo($encodeurl); 
+    // goqr $url = "https://api.qrserver.com/v1/create-qrcode/?data=$encodeurl&size=100x100";
     $url = "https://chart.googleapis.com/chart?chs=500x500&cht=qr&chl=$encodeurl&choe=UTF-8"; //API google
 
     return $this->render('product/qrcode_product.html.twig', array(
@@ -295,14 +301,18 @@ try{
       'statut' => $statut,
       'product' => $product
        ));
-  }
 }catch (Exception $e){
   return $this -> render('security/erreur.html.twig');
 }
   }
 
+ 
+
   public function confirmationQRcode(Request $request,ProductRepository $productRepository, $id){
+$this->denyAccessUnlessGranted('ROLE_BORROWER');
+
 try{
+
     $product = $productRepository -> findOneById($id);
     
     $etat= $product->getEtat();
@@ -327,14 +337,10 @@ try{
 
 
   public function show_product($id, ProductRepository $productRepository){
+    
+
+    $this->denyAccessUnlessGranted('ROLE_BORROWER');
     try{
-
-    $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
-
     $product = $productRepository -> findOneById($id);
     
     
@@ -348,13 +354,14 @@ try{
 }
 
 
+
+
+
+
  public function edit_product(Request $request, Product $product){
+  $this->denyAccessUnlessGranted('ROLE_LENDER');
 try{
-  $user = $this -> getUser();
-    if ($user == null){
-      return $this->redirectToRoute('login');
-    }
-    else{
+  
     
     $entityManager = $this->getDoctrine()->getManager();
 
@@ -425,7 +432,7 @@ try{
       'form' => $form->createView(),
     ));
 
-  }
+  
 }catch (Exception $e){
   return $this -> render('security/erreur.html.twig');
 }
