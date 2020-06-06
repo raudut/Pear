@@ -327,7 +327,7 @@ try{
     public function renduFirstStepQRcode(Request $request,ProductRepository $productRepository, $id){
       //$this->denyAccessUnlessGranted('ROLE_BORROWER');
     
-      //try{
+      try{
         $mailuser = new AppController();
           $product = $productRepository -> findOneById($id);
           
@@ -348,9 +348,10 @@ try{
             'idOwner' => $idOwner,
             'product' => $product
             ));
-            //}catch (Exception $e){
-              //return $this -> render('security/erreur.html.twig');
-            //}
+            }catch (Exception $e){
+              
+              return $this -> render('security/erreur.html.twig');
+            }
         }
 
   public function show_product($id, ProductRepository $productRepository){
@@ -360,7 +361,6 @@ try{
     try{
     $product = $productRepository -> findOneById($id);
     
-    echo $product;
     return $this->render('product/show_product.html.twig', array(
       'product'=> $product
     ));
