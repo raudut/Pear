@@ -20,9 +20,9 @@
                       <td>
                         <button type="button" class="btn btn-outline-primary"
                         onclick="self.location.href='/show-product/{{product.id}}'">Details</button>      
-                        <button type="button" class="btn btn-outline-primary" onclick="self.location.href='/delete-product/{{product.id}}'">Supprimer</button>   
+                        <button type="button" class="btn btn-outline-danger" onclick="self.location.href='/delete-product/{{product.id}}'">Supprimer</button>   
                         <button type="button" class="btn btn-outline-primary" onclick="self.location.href='/edit-product/{{product.id}}'">Modifier</button>   
-                        <button type="button" class="btn btn-outline-primary" onclick="self.location.href='/qrcode-product/{{product.id}}'">Générer un QrCode</button>        
+                        <button type="button" class="btn btn-outline-info" onclick="self.location.href='/qrcode-product/{{product.id}}'">Générer un QrCode</button>        
                       </td>
                     </tr>    			
                   {% endfor %}
