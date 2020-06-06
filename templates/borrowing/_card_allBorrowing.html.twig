@@ -1,0 +1,16 @@
+<div class="card">
+    {# <img src="{{ product.image }}" alt="" class="card-img-top"> #}
+
+    <div class="card-body">
+        <div class="card-title"> {{borrowing.id}} </div>
+        <div class="card-title"> {{borrowing.idUser}} </div>
+        <div class="card-title"> {{borrowing.idProduct}} </div>
+        <div clas="card-title">
+            {{borrowing.dateDebut|date('Y-m-d')}}
+        </div>
+        <div clas s="card-title">
+            {{borrowing.dateFin|date('Y-m-d')}}
+        </div>
+    </div>
+
+</div>
