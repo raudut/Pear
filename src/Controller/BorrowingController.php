@@ -184,7 +184,26 @@ class BorrowingController extends AbstractController
             return $this -> render('security/erreur.html.twig');
         }
     }
+    public function delete_borrowing_from_list(BorrowingRepository $borrowingRepository, $id)
+    {
+        $this->denyAccessUnlessGranted('ROLE_BORROWER');
 
+        try {
+            $bo = $borrowingRepository -> findOneById($id);
+
+            $entityManager = $this->getDoctrine()->getManager();
+      
+            $entityManager->remove($bo);
+            $entityManager->flush();
+            $listBorrowing = $borrowingRepository -> findAll();
+            
+                return $this -> render('borrowing/list_borrowings.html.twig', array("listBorrowing" => $listBorrowing));
+            
+        
+        } catch (Exception $e) {
+            return $this -> render('security/erreur.html.twig');
+        }
+    }
   
 
 
