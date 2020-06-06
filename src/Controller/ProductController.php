@@ -338,19 +338,19 @@ try{
     public function renduFirstStepQRcode(Request $request,ProductRepository $productRepository, $id){
       //$this->denyAccessUnlessGranted('ROLE_BORROWER');
     
-      try{
+      //try{
         $mailuser = new AppController();
-          $product = $productRepository -> findOneById($id);
-          
-          $etat= $product->getEtat();
-          $numSerie=$product->getNumserie();
-          $productname=$product->GetNom();
-          $statut=$product->GetStatut();
+          $productl = $productRepository -> findBy(['id' => $id]);
+          echo($id);
+          $product=$productl[0];
+          $productname=$product->getNom();
+          echo($productname);
+          $statut=$product->getStatut();
           $owner=$product->getOwner();
           $idOwner= $owner->getId();
-          //$borrowing=$product->getBorrowing();
+          /////$borrowing=$product->getBorrowing();
           $owneremail = $owner->getEmail();
-          $ownername = $owner->getName();
+          $ownername = $owner->getNom();
           
           $mailuser->send_email_confirmation_rendu($ownername, $owneremail, $productname,$id);
     
@@ -359,9 +359,9 @@ try{
             'idOwner' => $idOwner,
             'product' => $product
             ));
-            }catch (Exception $e){
-              return $this -> render('security/erreur.html.twig');
-            }
+            //}catch (Exception $e){
+              //return $this -> render('security/erreur.html.twig');
+            //}
         }
 
   public function show_product($id, ProductRepository $productRepository){
