@@ -149,7 +149,7 @@ class BorrowingController extends AbstractController
 
     public function delete_borrowing(BorrowingRepository $borrowingRepository, $id)
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('ROLE_LENDER');
 
         try {
             $bo = $borrowingRepository -> findOneById($id);
