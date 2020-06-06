@@ -23,7 +23,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 class ProductController extends AbstractController
 {
@@ -43,7 +43,7 @@ class ProductController extends AbstractController
     // On ajoute les champs de l'entité que l'on veut à notre formulaire
     $formBuilder
       ->add('nom',      TextType::class)
-      ->add('prix',     TextType::class)
+      ->add('prix',     NumberType::class)
       ->add('categorie', EntityType::class, [
         'label' => false,
         'required' => true,
@@ -51,7 +51,7 @@ class ProductController extends AbstractController
         'expanded' => true,
         'multiple' => false
     ])
-      ->add('caution',   TextType::class)
+      ->add('caution',   NumberType::class)
       ->add('etat',    TextType::class)
       ->add('emplacement',    TextType::class,[
         'required'=> false
@@ -98,6 +98,7 @@ class ProductController extends AbstractController
     ));
   
 }catch (Exception $e){
+  echo $e;
   return $this -> render('security/erreur.html.twig');
 }
 }
@@ -298,32 +299,59 @@ try{
  
 
   public function confirmationQRcode(Request $request,ProductRepository $productRepository, $id){
-$this->denyAccessUnlessGranted('ROLE_BORROWER');
+  //$this->denyAccessUnlessGranted('ROLE_BORROWER');
 
-try{
+  try{
 
-    $product = $productRepository -> findOneById($id);
+      $product = $productRepository -> findOneById($id);
+      
+      $etat= $product->getEtat();
+      $numSerie=$product->getNumserie();
+      $nom=$product->GetNom();
+      $statut=$product->GetStatut();
+      $owner=$product->getOwner();
+      $idOwner= $owner->getId();
+      //$borrowing=$product->getBorrowing();
+      
+
+      return $this->render('product/qrcode_confirmation.html.twig', array(
+        'statut' => $statut,
+        'idOwner' => $idOwner,
+        'product' => $product
+        ));
+        }catch (Exception $e){
+          return $this -> render('security/erreur.html.twig');
+        }
+    }
+
+    public function renduFirstStepQRcode(Request $request,ProductRepository $productRepository, $id){
+      //$this->denyAccessUnlessGranted('ROLE_BORROWER');
     
-    $etat= $product->getEtat();
-    $numSerie=$product->getNumserie();
-    $nom=$product->GetNom();
-    $statut=$product->GetStatut();
-    $owner=$product->getOwner();
-    $idOwner= $owner->getId();
-    //$borrowing=$product->getBorrowing();
+      //try{
+        $mailuser = new AppController();
+          $product = $productRepository -> findOneById($id);
+          
+          $etat= $product->getEtat();
+          $numSerie=$product->getNumserie();
+          $productname=$product->getNom();
+          $statut=$product->getStatut();
+          $owner=$product->getOwner();
+          $idOwner= $owner->getId();
+          /////$borrowing=$product->getBorrowing();
+          $owneremail = $owner->getEmail();
+          $ownername = $owner->getNom();
+          
+          $mailuser->send_email_confirmation_rendu($ownername, $owneremail, $productname,$id);
     
-
-    return $this->render('product/qrcode_confirmation.html.twig', array(
-      'statut' => $statut,
-      'idOwner' => $idOwner,
-      'product' => $product
-       ));
-      }catch (Exception $e){
-        return $this -> render('security/erreur.html.twig');
-      }
-  }
-
-
+          return $this->render('product/qrcode_affichage_rendu.html.twig', array(
+            'statut' => $statut,
+            'idOwner' => $idOwner,
+            'product' => $product
+            ));
+            //}catch (Exception $e){
+              //return $this -> render('security/erreur.html.twig');
+            //}
+        }
 
   public function show_product($id, ProductRepository $productRepository){
     
@@ -332,7 +360,7 @@ try{
     try{
     $product = $productRepository -> findOneById($id);
     
-    
+    echo $product;
     return $this->render('product/show_product.html.twig', array(
       'product'=> $product
     ));

@@ -1,0 +1,52 @@
+{% extends "base.html.twig" %}
+
+
+{% block title %} Confirmation d'emprunt ou de rendu : {% endblock %}
+
+{% block body %}
+
+
+  <h1> Vous avez scanner l'objet suivant : </h1>
+  <h4> </br></h4>
+<table class="table table-hover">
+ <thead>
+    <tr>
+      <th scope="col">Description de l'objet</th>
+      <th scope="col"></th>
+      
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr>
+      <th scope="row">Nom </th>
+      <td>{{product.nom}}</td>
+    </tr>
+       <tr>
+      <th scope="row">Prix </th>
+      <td>{{product.prix}}</td>
+    </tr>
+        <tr>
+      <th scope="row">Etat</th>
+      <td>{{product.etat}}</td>
+    </tr>
+        <tr>
+      <th scope="row">Numéro de série</th>
+      <td>{{product.numSerie}}</td>
+    </tr>
+        <tr>
+      <th scope="row">Statut</th>
+      <td>{{product.statut[0]}}</td>
+    </tr>
+  </tbody>
+</table> 
+
+ 
+
+  <h3 text-align="center" > </br></br> Vous avez bien rendu cet objet, le propriétaire a été informé. </h3>
+  
+
+
+
+{% endblock %}
+
