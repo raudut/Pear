@@ -309,30 +309,30 @@ try{
  
 
   public function confirmationQRcode(Request $request,ProductRepository $productRepository, $id){
-$this->denyAccessUnlessGranted('ROLE_BORROWER');
+  //$this->denyAccessUnlessGranted('ROLE_BORROWER');
 
-try{
+  try{
 
-    $product = $productRepository -> findOneById($id);
-    
-    $etat= $product->getEtat();
-    $numSerie=$product->getNumserie();
-    $nom=$product->GetNom();
-    $statut=$product->GetStatut();
-    $owner=$product->getOwner();
-    $idOwner= $owner->getId();
-    //$borrowing=$product->getBorrowing();
-    
+      $product = $productRepository -> findOneById($id);
+      
+      $etat= $product->getEtat();
+      $numSerie=$product->getNumserie();
+      $nom=$product->GetNom();
+      $statut=$product->GetStatut();
+      $owner=$product->getOwner();
+      $idOwner= $owner->getId();
+      //$borrowing=$product->getBorrowing();
+      
 
-    return $this->render('product/qrcode_confirmation.html.twig', array(
-      'statut' => $statut,
-      'idOwner' => $idOwner,
-      'product' => $product
-       ));
-      }catch (Exception $e){
-        return $this -> render('security/erreur.html.twig');
-      }
-  }
+      return $this->render('product/qrcode_confirmation.html.twig', array(
+        'statut' => $statut,
+        'idOwner' => $idOwner,
+        'product' => $product
+        ));
+        }catch (Exception $e){
+          return $this -> render('security/erreur.html.twig');
+        }
+    }
 
 
 
