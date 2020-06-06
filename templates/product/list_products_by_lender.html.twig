@@ -3,26 +3,26 @@
  {% block title %}Liste des objets{% endblock %}
  
     {% block body %}
-
-    <div class row>
-        {# <div class="col-md-2">
-          {%include  'product/_filter.html.twig' with {form: form} only %}
-        </div> #}
     
-      <div class="col-md-9"> 
+      <div class="row">
+        <div class="col-md-3">
+          {%include  'product/_filter.html.twig' with {form: form} only %}
+        </div>
+      
+        <div class="col-md-9"> 
           <div class="grid">
             <table class="table table-hover">         
               <tbody>
-                {% if listProduct is defined %}
-                  {%for product in listProduct %}              
+                {% if Liste is defined %}
+                  {%for product in Liste %}              
                     <tr>
                       <td>{% include 'product/_card.html.twig' with {product: product} only %}</td>                
                       <td>
                         <button type="button" class="btn btn-outline-primary"
                         onclick="self.location.href='/show-product/{{product.id}}'">Details</button>      
-                        <button type="button" class="btn btn-outline-danger" onclick="self.location.href='/delete-product/{{product.id}}'">Supprimer</button>   
+                        <button type="button" class="btn btn-outline-primary" onclick="self.location.href='/delete-product/{{product.id}}'">Supprimer</button>   
                         <button type="button" class="btn btn-outline-primary" onclick="self.location.href='/edit-product/{{product.id}}'">Modifier</button>   
-                        <button type="button" class="btn btn-outline-info" onclick="self.location.href='/qrcode-product/{{product.id}}'">Générer un QrCode</button>        
+                        <button type="button" class="btn btn-outline-primary" onclick="self.location.href='/qrcode-product/{{product.id}}'">Générer un QrCode</button>        
                       </td>
                     </tr>    			
                   {% endfor %}
@@ -32,59 +32,7 @@
           </div>    
         </div>
       </div>
-    
-
-    	{# <table class="table table-hover">
-            <thead>
-            <tr>
-    			<th> Nom </th>
-    			<th> Prix </th>
-    			<th> Caution </th>
-    			<th> Etat </th>
-                <th> Emplacement </th>
-                <th> Numéro de série </th>
-                <th> Kit </th>
-           
-                <th> Statut </th>
-            </tr>
-            </thead>
-            <tbody>
-		{% if listProduct is defined %}
-    		{%for product in listProduct %}
-			<tr>
-    			<td>{{ product.nom }}</td>
-    			<td>{{ product.prix }}</td>
-    			<td>{{ product.caution }}</td>
-                <td>{{ product.etat }}</td>
-                <td>{{ product.emplacement }}</td>
-                <td>{{ product.numSerie }}</td>
-                <td>{{ product.kit }}</td>
-                <td>{{ product.statut[0]}}</td>
-                
-                <td>
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-primary">
-                      <input type="checkbox" onclick= autocomplete="off"> Details
-                    </label>
-                    <label class="btn btn-primary">
-                      <input type="checkbox" onclick="self.location.href='/delete-product/{{product.id}}'" autocomplete="off"> Supprimer
-                    </label>
-                    <label class="btn btn-primary">
-                      <input type="checkbox" onclick="self.location.href='/edit-product/{{product.id}}'"  autocomplete="off"> Modifier
-                    </label>
-                    <label class="btn btn-primary">
-                      <input type="checkbox" onclick="self.location.href='/qrcode-product/{{product.id}}'" autocomplete="off"> Générer un QrCode
-                    </label>
-                    
-                  </div>
-                </td>
-			</tr>    			
-			{% endfor %}
-		{%endif%}
-        </tbody>
-          </table>  #}
-
-{% endblock %}
+  {% endblock %}
 
 
 

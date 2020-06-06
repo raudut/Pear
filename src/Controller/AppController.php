@@ -101,7 +101,7 @@ class AppController extends AbstractController
   
         $response = json_decode($server_output);
         if ($response->Messages[0]->Status == 'success') {
-            // echo "Email sent successfully.";
+            
         }
     }
 
@@ -144,7 +144,7 @@ class AppController extends AbstractController
 
         $response = json_decode($server_output);
         if ($response->Messages[0]->Status == 'success') {
-            // echo "Email sent successfully.";
+           
         }
     }
 
@@ -188,7 +188,7 @@ class AppController extends AbstractController
 
         $response = json_decode($server_output);
         if ($response->Messages[0]->Status == 'success') {
-            // echo "Email sent successfully.";
+           
         }
     }
 
@@ -249,7 +249,7 @@ class AppController extends AbstractController
                 //'Name' => "Billy The Pear"
                 ]
             ],
-            'Subject' => " Il y a du mouvement!",
+            'Subject' => " Confirmation de rendu demandée ",
             'HTMLPart' => "<h3>$ownername il y a du mouvement !</h3>
             </br> Bonjour, </br> Votre objet $productname a été rendu !
             </br>

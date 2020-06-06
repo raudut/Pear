@@ -98,7 +98,7 @@ class ProductController extends AbstractController
     ));
   
 }catch (Exception $e){
-  echo $e;
+ 
   return $this -> render('security/erreur.html.twig');
 }
 }
@@ -116,7 +116,7 @@ class ProductController extends AbstractController
     $listProduct =  $productRepository -> findBy(['owner' => $id]);
 
       foreach($listProduct as $product){
-          echo $product -> getId();
+          
       }
     return $this -> render ('product/list_products_by_lender.html.twig', array("listProduct" => $listProduct));
   }catch (Exception $e){
@@ -183,7 +183,7 @@ try{
       );
 
 }catch (Exception $e){
-  echo $e;
+ 
   return $this -> render('security/erreur.html.twig');
 }
 }
@@ -225,7 +225,7 @@ try{
               'form' => $form->createView()));
 
 }catch (Exception $e){
-  echo $e;
+ 
   return $this -> render('security/erreur.html.twig');
 }
 }
@@ -282,7 +282,7 @@ try{
     $qrcode_message="https://pear.min.epf.fr/qrcode-confirmation/$id";
 
     $encodeurl = urlencode($qrcode_message);
-    //echo($encodeurl); 
+    
     // goqr $url = "https://api.qrserver.com/v1/create-qrcode/?data=$encodeurl&size=100x100";
     $url = "https://chart.googleapis.com/chart?chs=500x500&cht=qr&chl=$encodeurl&choe=UTF-8"; //API google
 
@@ -365,7 +365,7 @@ try{
       'product'=> $product
     ));
   }catch (Exception $e){
-    echo $e;
+   
   return $this -> render('security/erreur.html.twig');
 }
 }
@@ -392,16 +392,13 @@ try{
       ->add('caution',   TextType::class)
       ->add('etat',    TextType::class)
       ->add('emplacement',    TextType::class,[
-        'empty_data' => '',
         'required'=> false
       ])
       ->add('num_serie',    TextType::class, [
-        'empty_data' => '',
         'required'=> false
       ]
       )
       ->add('kit',    TextType::class, [
-        'empty_data' => '',
         'required'=> false,
       ])
       ->add('statut', CollectionType::class, [
@@ -454,7 +451,6 @@ try{
 
   
 }catch (Exception $e){
-  echo($e);
   return $this -> render('security/erreur.html.twig');
 }
 }

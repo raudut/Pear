@@ -160,7 +160,7 @@ class BorrowingController extends AbstractController
 
     public function delete_borrowing(BorrowingRepository $borrowingRepository, $id, $bool)
     {
-        $this->denyAccessUnlessGranted('ROLE_LENDER');
+        $this->denyAccessUnlessGranted('ROLE_BORROWER');
 
         try {
             $bo = $borrowingRepository -> findOneById($id);
@@ -253,7 +253,7 @@ class BorrowingController extends AbstractController
             $listBorrowing =  $borrowingRepository -> findBy(['idUser' =>$user]);
             return $this -> render('product/qrcode_affichage_rendu_step_two.html.twig', array("listBorrowing" => $listBorrowing));
         } catch (Exception $e) {
-            echo $e;
+            
             return $this -> render('security/erreur.html.twig');
         }
     }

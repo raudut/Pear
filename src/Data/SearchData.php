@@ -24,10 +24,4 @@ class SearchData{
          */
         public $min;  
 
-                /**
-         * @var string
-         */
-        public $statut ;
-        
-        
     }
