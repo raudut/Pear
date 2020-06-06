@@ -26,15 +26,17 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-
 class ProductController extends AbstractController
 {
   
-    public function add_product(Request $request, CategorieRepository $catrepo){
 
-
-    $this->denyAccessUnlessGranted('ROLE_LENDER');
-    try {
+  public function add_product(Request $request, CategorieRepository $catrepo){
+    try{
+    $user = $this -> getUser();
+    if ($user == null){
+      return $this->redirectToRoute('login');
+    }
+    else{
 
     // On crée un objet Advert
     $product = new Product();
@@ -70,7 +72,6 @@ class ProductController extends AbstractController
         
         'entry_type'   => ChoiceType::class,
         'entry_options'  => [
-            'label' => false,
             'choices'  => [
               $product->getStatutNames()
             ],
@@ -98,37 +99,40 @@ class ProductController extends AbstractController
     return $this->render('product/add_product.html.twig', array(
       'form' => $form->createView(),
     ));
-  
+  }
 }catch (Exception $e){
   return $this -> render('security/erreur.html.twig');
 }
 }
 
 
-
  
   public function list_products_by_lender(ProductRepository $productRepository)
   {
-    $this->denyAccessUnlessGranted('ROLE_LENDER');
-    
     try {
-    $user = $this -> getUser();
-    $id = $user -> getId();
-    $listProduct =  $productRepository -> findBy(['owner' => $id]);
+        $user = $this -> getUser();
+        if ($user == null) {
+            return $this->redirectToRoute('login');
+        } else {
+            $user = $this -> getUser();
+            $id = $user -> getId();
+            $listProduct =  $productRepository -> findBy(['owner' => $id]);
 
 
-    return $this -> render ('product/list_products_by_lender.html.twig', array("listProduct" => $listProduct));
-  }catch (Exception $e){
+            return $this -> render('product/list_products_by_lender.html.twig', array("listProduct" => $listProduct));
+        }
+      }catch (Exception $e){
         return $this -> render('security/erreur.html.twig');
       }
-    }
-
-  
-
+}
 
   public function filtreproduit(Request $request, ProductRepository $productRepository){
 try{
-   
+    $user = $this -> getUser();
+    if ($user == null){
+      return $this->redirectToRoute('login');
+    }
+    else{
 
     $data = new SearchData();
         
@@ -138,20 +142,19 @@ try{
     $products = $productRepository->findSearch($data);
     return array($form, $products);
   }
-  catch (Exception $e){
-        return $this -> render('security/erreur.html.twig');
-      }
-    }
-
-
-
- 
+}catch (Exception $e){
+  return $this -> render('security/erreur.html.twig');
+}
+}
 
   public function list_products( ProductRepository $productRepository, Request $request)
   {
-    $this->denyAccessUnlessGranted('ROLE_ADMIN');
-    try{
-    
+try{
+    $user = $this -> getUser();
+    if ($user == null){
+      return $this->redirectToRoute('login');
+    }
+    else{
 
     $listProducts = $productRepository -> findAll();
 
@@ -181,21 +184,22 @@ try{
       
       );
 
+}
 }catch (Exception $e){
   return $this -> render('security/erreur.html.twig');
 }
-}
         
-  
+  }
 
 
     public function list_products_dispo( ProductRepository $productRepository, Request $request)
   {
-
-    $this->denyAccessUnlessGranted('ROLE_BORROWER');
-
 try{
-    
+    $user = $this -> getUser();
+    if ($user == null){
+      return $this->redirectToRoute('login');
+    }
+    else{
 
     $listProducts = $productRepository -> findBy(['statut' => "STATUT_DISPONIBLE"]); 
 
@@ -232,7 +236,7 @@ try{
         return $this  -> render('product/list_products_dispo.html.twig',
 
         array("Liste"=> $listProducts));
-
+  }
 }catch (Exception $e){
   return $this -> render('security/erreur.html.twig');
 }
@@ -242,59 +246,58 @@ try{
     
   public function delete_products(ProductRepository $productRepository, BorrowingRepository $borrowingRepository, $id, Request $request)
   {
-
-    $this->denyAccessUnlessGranted('ROLE_LENDER');
-
     try {
+        $user = $this -> getUser();
+        if ($user == null) {
+            return $this->redirectToRoute('login');
+        } else {
+            $user = $this -> getUser();
+            $product = $productRepository -> findOneById($id);
+            $borrowing = $borrowingRepository -> findOneByidUser($id);
 
-    $user = $this -> getUser();
-    $product = $productRepository -> findOneById($id);
-    $borrowing = $borrowingRepository -> findOneByidUser($id);
+            $entityManager = $this->getDoctrine()->getManager();
+            if (!is_null($borrowing)) {
+                $entityManager->remove($borrowing);
+            }
+            $entityManager->remove($product);
+            $entityManager->flush();
 
-      $entityManager = $this->getDoctrine()->getManager();
-      if(!is_null($borrowing)) {$entityManager->remove($borrowing);}
-      $entityManager->remove($product);
-      $entityManager->flush();
-
-      $listProducts = $productRepository -> findAll();
-      $form= $this -> filtreproduit($request, $productRepository)[0];
-      $products = $this -> filtreproduit($request, $productRepository)[1];
-      if(in_array("ROLE_ADMIN", $user->getRoles())){
-          return $this->redirectToRoute('home_admin');
+            $listProducts = $productRepository -> findAll();
+            $form= $this -> filtreproduit($request, $productRepository)[0];
+            $products = $this -> filtreproduit($request, $productRepository)[1];
+            if (in_array("ROLE_ADMIN", $user->getRoles())) {
+                return $this->redirectToRoute('home_admin');
+            } elseif (in_array("ROLE_LENDER", $user->getRoles())) {
+                return $this->redirectToRoute('home_lender');
+            } else {
+                return $this->redirectToRoute('home_user');
+            }
         }
-        elseif (in_array("ROLE_LENDER",  $user->getRoles())) {
-          return $this->redirectToRoute('home_lender');
-        }
-        else{
-          return $this->redirectToRoute('home_user');
-        }
-  }catch (Exception $e){
+    }catch (Exception $e){
       return $this -> render('security/erreur.html.twig');
     }
 }
 
-
-
-
   public function genarateQRcode(Request $request,ProductRepository $productRepository, $id){
 try{
+    $user = $this -> getUser();
+    if ($user == null){
+      return $this->redirectToRoute('login');
+    }
+    else{
     
-
     $product = $productRepository -> findOneById($id);
     
     $etat= $product->getEtat();
     $numSerie=$product->getNumserie();
     $nom=$product->GetNom();
     $statut=$product->GetStatut();
-    //$borrowing=$product->getBorrowing();
     
-
     
     $qrcode_message="https://pear.min.epf.fr/qrcode-confirmation/$id";
-
     $encodeurl = urlencode($qrcode_message);
-    //echo($encodeurl); 
-    // goqr $url = "https://api.qrserver.com/v1/create-qrcode/?data=$encodeurl&size=100x100";
+    
+    //API goqr $url = "https://api.qrserver.com/v1/create-qrcode/?data=$encodeurl&size=100x100";
     $url = "https://chart.googleapis.com/chart?chs=500x500&cht=qr&chl=$encodeurl&choe=UTF-8"; //API google
 
     return $this->render('product/qrcode_product.html.twig', array(
@@ -302,18 +305,14 @@ try{
       'statut' => $statut,
       'product' => $product
        ));
+  }
 }catch (Exception $e){
   return $this -> render('security/erreur.html.twig');
 }
   }
 
- 
-
   public function confirmationQRcode(Request $request,ProductRepository $productRepository, $id){
-$this->denyAccessUnlessGranted('ROLE_BORROWER');
-
 try{
-
     $product = $productRepository -> findOneById($id);
     
     $etat= $product->getEtat();
@@ -338,30 +337,34 @@ try{
 
 
   public function show_product($id, ProductRepository $productRepository){
-    
-
-    $this->denyAccessUnlessGranted('ROLE_BORROWER');
     try{
+
+    $user = $this -> getUser();
+    if ($user == null){
+      return $this->redirectToRoute('login');
+    }
+    else{
+
     $product = $productRepository -> findOneById($id);
     
     
     return $this->render('product/show_product.html.twig', array(
       'product'=> $product
     ));
-  }catch (Exception $e){
+  }
+}catch (Exception $e){
   return $this -> render('security/erreur.html.twig');
 }
 }
 
 
-
-
-
-
  public function edit_product(Request $request, Product $product){
-  $this->denyAccessUnlessGranted('ROLE_LENDER');
 try{
-  
+  $user = $this -> getUser();
+    if ($user == null){
+      return $this->redirectToRoute('login');
+    }
+    else{
     
     $entityManager = $this->getDoctrine()->getManager();
 
@@ -431,7 +434,7 @@ try{
       'form' => $form->createView(),
     ));
 
-  
+  }
 }catch (Exception $e){
   return $this -> render('security/erreur.html.twig');
 }
