@@ -20,7 +20,10 @@
 </div>
 {% endif %}
 
-     <div>Bonjour  {{app.user.username}}! Quelle catégorie voulez-vous créer ?</div>  
+     <div>
+     <p>Bonjour  {{app.user.username}}!</p>
+     <p> Quelle catégorie voulez-vous créer ?</p>
+     </div>  
   <div class="well">
   {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
 

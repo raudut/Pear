@@ -10,11 +10,15 @@
         <div clas="card-title">
             {{user.email}}
         </div>
-        {%for roles in user.roles%}           
-            <div clas="card-title">
-                {{roles}}
+        <div clas="card-title">
+                {%if user.roles[0] == "ROLE_ADMIN" %}
+                ADMIN
+                {%elseif user.roles[0] == "ROLE_LENDER"%}
+                PRETEUR
+                {%else%}
+                LOUEUR
+                {%endif%}
             </div>
-        {%endfor%}
     </div>
 
 </div>
