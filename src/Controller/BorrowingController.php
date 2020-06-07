@@ -159,7 +159,7 @@ class BorrowingController extends AbstractController
             $idProduct = $bo->getIdProduct();
             $product = $productRepository -> findOneById($idProduct);
             $entityManager = $this->getDoctrine()->getManager();
-            $statut[] = "STATUT_DISPONIBLE";
+           
             $entityManager->remove($bo);
             $entityManager->flush();
             $listBorrowing = $borrowingRepository -> findAll();
@@ -184,11 +184,7 @@ class BorrowingController extends AbstractController
         try {
             $bo = $borrowingRepository -> findOneById($id);
             $idProduct = $bo->getIdProduct();
-            $product = $productRepository -> findOneById($idProduct);
             $entityManager = $this->getDoctrine()->getManager();
-            $statut[] = "STATUT_DISPONIBLE";
-            $product->setStatut($statut);
-            echo $product -> getStatut();
             $entityManager->remove($bo);
             $entityManager->flush();
             $listBorrowing = $borrowingRepository -> findAll();
@@ -208,12 +204,13 @@ class BorrowingController extends AbstractController
         $this->denyAccessUnlessGranted('ROLE_BORROWER');
         try {
             $mailowner = new AppController();
-            $entityManager = $this->getDoctrine()->getManager();
+           
             $borrowing = $borrowingRepository -> findOneById($id);
             $idProduct = $borrowing->getIdProduct();
             $product = $productRepository -> findOneById($idProduct);
   
-           
+            $product = $productRepository -> findOneById($idProduct);
+
             $lender = $product -> getOwner();
             $owneremail = $lender -> getEmail();
             $ownername = $lender -> getNom();
@@ -251,12 +248,15 @@ class BorrowingController extends AbstractController
             $ownername = $lender -> getNom();
             $productname = $product ->getNom();
 
-     
+            $entityManager = $this->getDoctrine()->getManager();
+            $statut[] = "STATUT_DISPONIBLE";
+            $product->setStatut($statut);
+            $entityManager->flush();
 
-            $mailowner->send_email_rendre_product($owneremail, $ownername, $productname);
+           
 
             $this -> delete_borrowing($borrowingRepository, $borrowing, $bool, $productRepository);
-
+            $mailowner->send_email_rendre_product($owneremail, $ownername, $productname);
 
             $listBorrowing =  $borrowingRepository -> findBy(['idUser' =>$user]);
             return $this -> render('product/qrcode_affichage_rendu_step_two.html.twig', array("listBorrowing" => $listBorrowing));
