@@ -8,7 +8,9 @@
      <div class="grid">
             <table class="table table-hover">         
               <tbody>
-                {% if list is defined %}
+            {%if list == null%}
+            <h4>Il n'y a aucune catégorie pour le moment</h4>>
+            {%endif%}
                   {%for categorie in list %}             
                     <tr>
                       <td>{% include 'categories/_card_categorie.html.twig' with {categorie: categorie} only %}</td>                
@@ -21,7 +23,6 @@
                       </td>
                     </tr>    			
                   {% endfor %}
-                {%endif%}
               </tbody>
             </table> 
           </div> 

@@ -15,18 +15,24 @@
           <div class="grid">
             <table class="table table-hover">         
               <tbody>
-              {% if listBorrowing is defined %}
+
+
+
+              
+              {%if listBorrowing == null%}
+                  <h4> Vous n'avez pas d'emprunt pour le moment.</h4>
+              {%endif%}
                 {%for borrowing in listBorrowing %}  
                  <tr>
                     <td>{% include 'borrowing/_card_borrowing.html.twig' with {borrowing: borrowing} only %}</td>                
                     <td>                    
                       <button type="button" class="btn btn-outline-primary" onclick="self.location.href='/show-borrowings/{{borrowing.id}}'">Details</button>
-                    
-                    <button type="button" class="btn btn-outline-secondary" onclick="self.location.href='/rendre-product/{{borrowing.id}}'">Rendre</button>
                     </td>
 			      </tr> 
                 {% endfor %}
-              {%endif%}
+   
+
+              
               </tbody>
             </table> 
           </div>    

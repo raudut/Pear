@@ -13,7 +13,9 @@
           <div class="grid">
             <table class="table table-hover">         
               <tbody>
-                {% if products is defined %}
+                {%if products == null%}
+            <h4>Vous n'avez aucun objet à prêter pour l'intant! N'hésitez pas a en rajouter dès maintenant.</h4>
+                {%endif%}
                   {%for product in products %}              
                     <tr>
                       <td>{% include 'product/_card.html.twig' with {product: product} only %}</td>                
@@ -26,7 +28,7 @@
                       </td>
                     </tr>    			
                   {% endfor %}
-                {%endif%}
+             
               </tbody>
             </table> 
           </div>    
