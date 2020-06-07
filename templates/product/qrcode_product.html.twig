@@ -6,9 +6,9 @@
 {% block body %}
   <h1>Voici le QR-code de votre produit : </h1>
 	
-    <label class="btn btn-primary">
-       <input type="checkbox" onclick="window.print();return false;" autocomplete="off"> imprimer
-	</label>
+
+     <button type="button" class="btn btn-outline-secondary"  onclick="window.print();return false;">Imprimer</button>
+	
 	<img src= ' {{ url}}' alt="" title="" />
   <p>Vous venez de générer le QR-code correspondant à votre objet. Vous pouvez maintenant l'imprimer et le coller sur votre objet pour 
   suivre et gérer cet objet (préter, rendre, modifier ses informations,...)</p>

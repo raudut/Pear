@@ -118,6 +118,10 @@ delete_borrowing:
   path: /delete-borrowing/{id}
   controller: App\Controller\BorrowingController::delete_borrowing
 
+delete_borrowing_from_list:
+  path: /delete-borrowing-from-list/{id}
+  controller: App\Controller\BorrowingController::delete_borrowing_from_list
+
 list_my_borrowings:
   path: /list-my-borrowings
   controller: App\Controller\BorrowingController::list_my_borrowings

@@ -15,6 +15,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use App\Repository\BorrowingRepository;
 use App\Repository\UserRepository;
+use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -127,7 +128,8 @@ class BorrowingController extends AbstractController
             }
             return $this -> render(
                 'borrowing/list_borrowings.html.twig',
-                array("listBorrowing" => $listBorrowing)
+                array("listBorrowing" => $listBorrowing
+                )
             );
         } catch (Exception $e) {
             return $this -> render('security/erreur.html.twig');
@@ -184,7 +186,26 @@ class BorrowingController extends AbstractController
             return $this -> render('security/erreur.html.twig');
         }
     }
+    public function delete_borrowing_from_list(BorrowingRepository $borrowingRepository, $id)
+    {
+        $this->denyAccessUnlessGranted('ROLE_BORROWER');
 
+        try {
+            $bo = $borrowingRepository -> findOneById($id);
+
+            $entityManager = $this->getDoctrine()->getManager();
+      
+            $entityManager->remove($bo);
+            $entityManager->flush();
+            $listBorrowing = $borrowingRepository -> findAll();
+            
+                return $this -> render('borrowing/list_borrowings.html.twig', array("listBorrowing" => $listBorrowing));
+            
+        
+        } catch (Exception $e) {
+            return $this -> render('security/erreur.html.twig');
+        }
+    }
   
 
 

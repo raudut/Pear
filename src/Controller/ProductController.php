@@ -106,14 +106,41 @@ class ProductController extends AbstractController
 
 
  
-  public function list_products_by_lender(ProductRepository $productRepository)
+  public function list_products_by_lender(ProductRepository $productRepository, Request $request)
   {
     $this->denyAccessUnlessGranted('ROLE_LENDER');
     
     try {
     $user = $this -> getUser();
     $id = $user -> getId();
-    $listProduct =  $productRepository -> findBy(['owner' => $id]);
+    $listProducts =  $productRepository -> findBy(['owner' => $id]);
+    foreach($listProducts as $product)
+    {
+      
+      $product -> getNom();
+      $product -> getPrix();
+      $product -> getCategorie();
+      $product -> getCaution();
+      $product -> getEtat();
+      $product -> getEmplacement();
+      $product -> getNumSerie();
+      $product -> getKit();
+    }
+
+
+
+      $form= $this -> filtreproduit($request, $productRepository)[0];
+      $products = $this -> filtreproduit($request, $productRepository)[1];
+
+
+       return $this  -> render('product/list_products_by_lender.html.twig',
+        array("Liste"=> $listProducts,
+        'products' => $products,
+        'form' => $form->createView()
+        
+        )
+      
+      );
 
       foreach($listProduct as $product){
           
@@ -197,31 +224,22 @@ try{
     $this->denyAccessUnlessGranted('ROLE_BORROWER');
 
     try{
-    
-/*
-    $listProducts = $productRepository -> findBy(['statut' => "STATUT_DISPONIBLE"]); 
-
-      foreach($listProducts as $product)
-      {
-        
-        $product -> getNom();
-        $product -> getPrix();
-        $product -> getCategorie();
-        $product -> getCaution();
-        $product -> getEtat();
-        $product -> getEmplacement();
-        $product -> getNumSerie();
-        $product -> getKit();
-      }
-      */
+      
 
        $form= $this -> filtreproduit($request, $productRepository)[0];
        $products = $this -> filtreproduit($request, $productRepository)[1];
 
+        foreach ($products as $p) {
+          if(!(in_array('STATUT_DISPONIBLE', $p->getStatut())) && !(in_array('STATUT_LOUE', $p->getStatut()))){
+            unset($products[array_search($p, $products)]);
+          }
+        }
+
 
         return $this  -> render('product/list_products_dispo.html.twig',
 
-        array("products"=> $products,
+        array(
+          "products"=> $products,
               'form' => $form->createView()));
 
 }catch (Exception $e){
