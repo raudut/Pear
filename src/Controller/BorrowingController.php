@@ -255,7 +255,7 @@ class BorrowingController extends AbstractController
 
             $mailowner->send_email_rendre_product($owneremail, $ownername, $productname);
 
-            $this -> delete_borrowing($borrowingRepository, $borrowing, $bool);
+            $this -> delete_borrowing($borrowingRepository, $borrowing, $bool, $productRepository);
             $entityManager->flush();
 
 
