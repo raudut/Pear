@@ -15,8 +15,9 @@
                       <td>     
                       {% if is_granted('ROLE_ADMIN') -%}
                         <button type="button" class="btn btn-outline-primary" onclick="self.location.href='/delete-categorie/{{categorie.id}}'">Supprimer</button>   
-                      {% endif %}
+                      
                         <button type="button" class="btn btn-outline-primary" onclick="self.location.href='/edit-categorie/{{categorie.id}}'" >Modifier</button>   
+                      {% endif %}
                       </td>
                     </tr>    			
                   {% endfor %}

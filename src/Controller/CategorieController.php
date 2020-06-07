@@ -16,7 +16,7 @@ class CategorieController extends AppController
 {
     public function add_categorie(Request $request, CategorieRepository $repo)
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('ROLE_LENDER');
 
         try {
             $categorie = new Categorie();
