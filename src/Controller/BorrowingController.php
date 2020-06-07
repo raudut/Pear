@@ -70,7 +70,6 @@ class BorrowingController extends AbstractController
                 $dateFin = $dateFin->format('Y-m-d H:i:s');
                 $mydate = $mydate->format('Y-d-m H:i:s');
 
-
                 if ($mydate > $dateFin){
                     $bool =true ;
                     return $this->render('borrowing/add_borrowing.html.twig', array(

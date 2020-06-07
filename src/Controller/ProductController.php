@@ -112,29 +112,22 @@ class ProductController extends AbstractController
     
     try {
     $user = $this -> getUser();
-    $id = $user -> getId();
-    $listProducts =  $productRepository -> findBy(['owner' => $id]);
-    // foreach($listProducts as $product)
-    // {
-      
-    //   $product -> getNom();
-    //   $product -> getPrix();
-    //   $product -> getCategorie();
-    //   $product -> getCaution();
-    //   $product -> getEtat();
-    //   $product -> getEmplacement();
-    //   $product -> getNumSerie();
-    //   $product -> getKit();
-    // }
-
 
 
       $form= $this -> filtreproduit($request, $productRepository)[0];
       $products = $this -> filtreproduit($request, $productRepository)[1];
 
 
+      foreach ($products as $p) {
+          $owner = $p->getOwner();
+          if($owner != $user){
+            unset($products[array_search($p, $products)]);
+          }
+        }
+
+
        return $this  -> render('product/list_products_by_lender.html.twig',
-        array("Liste"=> $listProducts,
+        array(
         'products' => $products,
         'form' => $form->createView()
         
@@ -174,29 +167,13 @@ try{
   {
     $this->denyAccessUnlessGranted('ROLE_ADMIN');
     try{
-    
-
-    $listProducts = $productRepository -> findAll();
-
-      foreach($listProducts as $product)
-      {
-        
-        $product -> getNom();
-        $product -> getPrix();
-        $product -> getCategorie();
-        $product -> getCaution();
-        $product -> getEtat();
-        $product -> getEmplacement();
-        $product -> getNumSerie();
-        $product -> getKit();
-      }
 
       $form= $this -> filtreproduit($request, $productRepository)[0];
       $products = $this -> filtreproduit($request, $productRepository)[1];
 
 
        return $this  -> render('product/list_products.html.twig',
-        array("Liste"=> $listProducts,
+        array(
         'products' => $products,
         'form' => $form->createView()
         
