@@ -59,18 +59,6 @@ class ClientController extends AbstractController
         'widget' =>"single_text",
       ])
       ->add('save', SubmitType::class)
-      ->add('roles', CollectionType::class, [
-        'entry_type'   => ChoiceType::class,
-        'entry_options'  => [
-            'label' => false,
-            'choices'  => [
-              'Choisir un rôle' => $user->getRolesNames()
-            ],
-            'multiple' => false,
-            'label' => false,
-            'placeholder' => false
-        ],
-    ])
     ;
 
       
@@ -83,6 +71,8 @@ class ClientController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $user = $form->getData();
+                $role[] = 'ROLE_BORROWER';
+                $user->setRoles($role);
                 $userlastname = $user->getNom();
                 $userfirstname = $user->getPrenom();
                 $username = " $userfirstname $userlastname";
@@ -342,10 +332,10 @@ class ClientController extends AbstractController
 
         try {
             $mailadmin = new AppController();
-            echo($id);
+            //echo($id);
             $entityManager = $this->getDoctrine()->getManager();
             //$connUser = $this->getUser();
-            $oldborrower = $userRepo -> findBy(['idUser' => $id]);
+            $oldborrower = $userRepo -> findBy(['id' => $id]);
             $newlender = $oldborrower[0];
             $role[] = 'ROLE_LENDER';
             $newlender->setRoles($role);
@@ -359,7 +349,7 @@ class ClientController extends AbstractController
             return $this->render('user/admin_user_passer_en_preteur.html.twig');
 
         } catch (Exception $e) {
-            echo $e;
+
             return $this -> render('security/erreur.html.twig');
         }
     }

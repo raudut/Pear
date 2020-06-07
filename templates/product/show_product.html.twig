@@ -35,7 +35,13 @@
     <p class="card-text">Emplacement : {{product.emplacement}}</p>
     {%endif%}
     <p class="card-text">Propriétaire : {{product.owner.nom}}</p>
-    <p class="card-text">Statut : {{product.statut[0]}}</p>
+    {% if product.statut[0] == "STATUT_LOUE" %}
+            <p class="card-text">Statut : Loué</p>
+            {%elseif product.statut[0] == "STATUT_DISPONIBLE"%}
+            <p class="card-text">Statut : Disponible</p>
+            {%else%}
+            <p class="card-text">Statut : Indisponible</p>
+            {%endif%}
     
   </div>
   </td>

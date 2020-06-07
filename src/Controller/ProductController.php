@@ -312,7 +312,7 @@ try{
  
 
   public function confirmationQRcode(Request $request,ProductRepository $productRepository, $id){
-  //$this->denyAccessUnlessGranted('ROLE_BORROWER');
+  $this->denyAccessUnlessGranted('ROLE_BORROWER');
 
   try{
 
