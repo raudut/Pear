@@ -204,15 +204,7 @@ class ClientController extends AbstractController
       ])
       ->add('password', PasswordType::class)
       ->add('save', SubmitType::class)
-      ->add('roles', CollectionType::class, [
-        'entry_type'   => ChoiceType::class,
-        'entry_options'  => [
-            'label' => "",
-            'choices'  => [
-              'Choisir un rôle' => $user->getRolesNames()
-            ],
-        ],
-    ]);
+      ;
       
 
 
