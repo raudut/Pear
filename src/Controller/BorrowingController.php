@@ -148,15 +148,18 @@ class BorrowingController extends AbstractController
 
 
 
-    public function delete_borrowing(BorrowingRepository $borrowingRepository, $id, $bool)
+    public function delete_borrowing(BorrowingRepository $borrowingRepository, $id, $bool, ProductRepository $productRepository)
     {
-        $this->denyAccessUnlessGranted('ROLE_LEDNER');
+        $this->denyAccessUnlessGranted('ROLE_LENDER');
 
         try {
             $bo = $borrowingRepository -> findOneById($id);
 
             $entityManager = $this->getDoctrine()->getManager();
-      
+            $idProduct = $bo->getIdProduct();
+            $product = $productRepository -> findOneById($idProduct);
+            $entityManager = $this->getDoctrine()->getManager();
+            $statut[] = "STATUT_DISPONIBLE";
             $entityManager->remove($bo);
             $entityManager->flush();
             $listBorrowing = $borrowingRepository -> findAll();
