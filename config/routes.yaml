@@ -52,6 +52,11 @@ add_lender:
    path: /add-lender
    controller: App\Controller\ClientController::add_lender
 
+add_lender_admin:
+   path: /add-lender-admin/{id}
+   controller: App\Controller\ClientController::add_lender_admin
+
+
 list_lenders:
   path: /list-lenders
   controller: App\Controller\ClientController::list_lenders
