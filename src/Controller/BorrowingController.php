@@ -218,15 +218,16 @@ class BorrowingController extends AbstractController
 
        
 
-            $mailowner->send_email_rendre_product($owneremail, $ownername, $productname);
+            $mailowner->send_email_confirmation_rendu($ownername, $owneremail, $productname,$id); 
             $bool = false;
-            $this -> delete_borrowing($borrowingRepository, $borrowing,$bool);
+            //$this -> delete_borrowing($borrowingRepository, $borrowing,$bool);
             $entityManager->flush();
 
 
             $listBorrowing =  $borrowingRepository -> findBy(['idUser' =>$borrowing->getIdUser()]);
-            return $this -> render('borrowing/list_my_borrowings.html.twig', array("listBorrowing" => $listBorrowing));
+            return $this -> render('product/qrcode_affichage_rendu.html.twig', array("product" => $product));
         } catch (Exception $e) {
+            echo $e;
             return $this -> render('security/erreur.html.twig');
         }
     }
