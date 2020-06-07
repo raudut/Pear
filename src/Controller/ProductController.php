@@ -379,8 +379,8 @@ try{
     // On ajoute les champs de l'entité que l'on veut à notre formulaire
     $formBuilder
       ->add('nom',      TextType::class)
-      ->add('prix',     TextType::class)
-      ->add('caution',   TextType::class)
+      ->add('prix',     NumberType::class)
+      ->add('caution',   NumberType::class)
       ->add('etat',    TextType::class)
       ->add('emplacement',    TextType::class,[
         'required'=> false

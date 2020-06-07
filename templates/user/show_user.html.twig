@@ -20,10 +20,13 @@
     <p class="card-text">Email : {{client.email}}</p>
     <p class="card-text">Rôle : {{client.roles[0]}}</p>
   </div>
+  </div>
   </td>
 
   <td>
-</div>
+
+  {%if listLendings != null %}
+
 <div class="card border-info mb-3" style="max-width: 20rem;">
   <div class="card-header">Ses objets :</div>
   <div class="card-body">
@@ -32,10 +35,14 @@
       <p class="card-text">Catégorie : {{product.categorie}}</p>       
     {% endfor %}                                       
   </div>
+  </div>
+  {%endif%}
   </td>
   
   <td>
-</div>
+
+{% if listBorrowings != null %}
+
 <div class="card border-success mb-3" style="max-width: 20rem;">
   <div class="card-header">Ses emprunts :</div>
   <div class="card-body">
@@ -47,6 +54,7 @@
 
   </div>
 </div>
+{%endif%}
 </td>
 </tr>
 
