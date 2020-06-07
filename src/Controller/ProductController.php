@@ -114,18 +114,18 @@ class ProductController extends AbstractController
     $user = $this -> getUser();
     $id = $user -> getId();
     $listProducts =  $productRepository -> findBy(['owner' => $id]);
-    foreach($listProducts as $product)
-    {
+    // foreach($listProducts as $product)
+    // {
       
-      $product -> getNom();
-      $product -> getPrix();
-      $product -> getCategorie();
-      $product -> getCaution();
-      $product -> getEtat();
-      $product -> getEmplacement();
-      $product -> getNumSerie();
-      $product -> getKit();
-    }
+    //   $product -> getNom();
+    //   $product -> getPrix();
+    //   $product -> getCategorie();
+    //   $product -> getCaution();
+    //   $product -> getEtat();
+    //   $product -> getEmplacement();
+    //   $product -> getNumSerie();
+    //   $product -> getKit();
+    // }
 
 
 
@@ -141,11 +141,6 @@ class ProductController extends AbstractController
         )
       
       );
-
-      foreach($listProduct as $product){
-          
-      }
-    return $this -> render ('product/list_products_by_lender.html.twig', array("listProduct" => $listProduct));
   }catch (Exception $e){
         return $this -> render('security/erreur.html.twig');
       }
