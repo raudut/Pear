@@ -282,6 +282,7 @@ try{
       'product' => $product
        ));
 }catch (Exception $e){
+
   return $this -> render('security/erreur.html.twig');
 }
   }

@@ -44,7 +44,8 @@
  
 
 
-	{% if product.statut[0] ends with 'STATUT_DISPONIBLE' %} 
+	{% if (product.statut[0] == 'STATUT_DISPONIBLE') and (product.statut[0] != null) %} 
+
   <h4 text-align="center" > </br></br> Voulez-vous emprunter cet objet ? </h4>
   
 

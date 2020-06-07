@@ -160,6 +160,9 @@ class BorrowingController extends AbstractController
             $product = $productRepository -> findOneById($idProduct);
             $entityManager = $this->getDoctrine()->getManager();
             $statut[] = "STATUT_DISPONIBLE";
+
+            $product->setStatut($statut);
+
             $entityManager->remove($bo);
             $entityManager->flush();
             $listBorrowing = $borrowingRepository -> findAll();
