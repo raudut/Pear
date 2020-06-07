@@ -57,6 +57,7 @@
       {{ form_widget(form.naissance, {'label_attr': {'class':'col-sm-2 control-label'}}) }}
     </div>
 </div>
+{% if is_granted('ROLE_ADMIN') -%}
 <div class="form-group">
   {{form_label(form.roles, "Roles", {'label_attr' : {'class':'col-sm-2 control-label'}})}}
   {{form_errors (form.roles)}}
@@ -66,7 +67,7 @@
 
     </div>
 </div>
-
+{%endif%}
   {# Pour le bouton, pas de label ni d'erreur, on affiche juste le widget #}
   {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary' }}) }}
 

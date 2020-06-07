@@ -93,10 +93,9 @@ class AppCustomAuthenticator extends AbstractFormLoginAuthenticator implements P
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
 
-        //if ($path != null){
-            //return new RedirectResponse ( $this -> urlGenerator -> generate($path));
-        //}
-        //else{
+        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
+            return new RedirectResponse($targetPath);
+        }
 
         $roles = $token->getUser()->getRoles();
 

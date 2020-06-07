@@ -16,23 +16,20 @@
         <div class="grid">
           <table class="table table-hover">         
             <tbody>
-            {% if products is defined %}
+            {%if products == null%}
+            <h4>Il n'y a aucun objet disponible pour le moment</h4>
+            <p>Si vous êtes loueur, attendez quelques jours qu'un objet soit proposé à la location.</p>
+            <p>Si vous êtes prêteur, n'hésitez pas a ajouter à objet à prêter!</p>
+            {%endif%}
               {%for product in products %}              
                 <tr>
                   <td>{% include 'product/_card.html.twig' with {product: product} only %}</td>                
                   <td>
-                    <button type="button" class="btn btn-outline-primary"  onclick="self.location.href='/show-product/{{product.id}}'">Details</button>
-                    {% if product.statut[0] == "STATUT_DISPONIBLE" %}
-                     <td> <button type="button" class="btn btn-outline-secondary" onclick="self.location.href='/add-borrowing/{{product.id}}'">Emprunter</button> </td>
-                      {%endif%}
-                   {% if product.statut[0] == "STATUT_LOUE" %}
-                    <td> <button type="button" class="btn btn-outline-secondary disabled">Emprunter</button> </td>
-                    {%endif%} 
-                    
+                    <button type="button" class="btn btn-outline-primary"  onclick="self.location.href='/show-product/{{product.id}}'">Details</button>                    
                   </td>
                 </tr>    			
               {% endfor %}
-            {%endif%}
+         
             </tbody>
           </table> 
         </div>    

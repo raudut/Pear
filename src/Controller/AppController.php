@@ -3,31 +3,7 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use App\Entity\Product;
-use Doctrine\DBAL\Types\JsonType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use App\Repository\UserRepository;
-use App\Repository\ProductRepository;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\CurrencyType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use App\Controller\ArrayList;
-use Doctrine\DBAL\Types\ArrayType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 
 class AppController extends AbstractController
@@ -121,7 +97,7 @@ class AppController extends AbstractController
             ]
         ],
         'Subject' => "Bienvenue !",
-        'HTMLPart' => "<h3>Bienvenue $user sur Pear Plateforme !</h3></br> Bonjour, </br> Je suis Billy The Pear, et je suis là pour répondre a tes question sur toute l'utilisation de PearPlateforme! Ton adresse mail pour te connecter sur Pear est : $mailuseradd </br> Amuse toi bien, <br/>Bien à toi, <br/> Billy The Pear "
+        'HTMLPart' => "<h3>Bienvenue $user sur Pear Plateforme !</h3></br> Bonjour, </br> Je suis Billy The Pear, et je suis là pour répondre a tes question sur toute l'utilisation de PearPlateforme! Ton adresse mail pour te connecter sur Pear est : $mailuseradd </br> Amuse toi bien, <br/>Bien à vous, <br/> Billy The Pear "
         ]
     ]
 ];
@@ -165,7 +141,7 @@ class AppController extends AbstractController
                 ]
             ],
             'Subject' => "$user Il y a du mouvement!",
-            'HTMLPart' => "<h3>$user il y a du mouvement !</h3></br> Bonjour, </br> Votre objet $object a été emprunté ! Plus d'informations sur Pear ..</br> A bientôt, <br/>Bien à toi, <br/> Billy The Pear "
+            'HTMLPart' => "<h3>$user il y a du mouvement !</h3></br> Bonjour, </br> Votre objet $object a été emprunté ! Plus d'informations sur Pear ..</br> A bientôt, <br/>Bien à vous, <br/> Billy The Pear "
             ]
         ]
     ];
@@ -208,7 +184,7 @@ class AppController extends AbstractController
                 ]
             ],
             'Subject' => " Il y a du mouvement!",
-            'HTMLPart' => "<h3>$user il y a du mouvement !</h3></br> Bonjour, </br> Votre objet $object a été rendu ! Plus d'informations sur Pear ..</br> A bientôt, <br/>Bien à toi, <br/> Billy The Pear "
+            'HTMLPart' => "<h3>$user il y a du mouvement !</h3></br> Bonjour, </br> Votre objet $object a été rendu ! Plus d'informations sur Pear ..</br> A bientôt, <br/>Bien à vous, <br/> Billy The Pear "
             ]
         ]
     ];
@@ -256,7 +232,7 @@ class AppController extends AbstractController
             </br>Veuillez confirmé que votre objet est bien rendu pour que d'autre puisse l'emprunter en cliquant sur le lien suivant : 
             </br> https://pear.min.epf.fr/rendre-product-qrcode/$id
             </br> 
-            </br> A bientôt, <br/>Bien à toi, <br/> Billy The Pear "
+            </br> A bientôt, <br/>Bien à vous, <br/> Billy The Pear "
             ]
         ]
     ];
@@ -281,4 +257,100 @@ class AppController extends AbstractController
         if ($response->Messages[0]->Status == 'success') {
         }
     }
+
+    public function send_email_confirmation_preteur($preteurname, $preteuremail, $id)
+    {
+        $bodyAdmin = [
+        'Messages' => [
+            [
+            'From' => [
+                'Email' => "pear@epf.fr",
+                'Name' => "Billy The Pear"
+            ],
+            'To' => [
+                [
+                'Email' => "pear@epf.fr",
+                //'Name' => "Billy The Pear"
+                ]
+            ],
+            'Subject' => " Un utilisateur veut devenir prêteur ",
+            'HTMLPart' => "<h3> $preteurname veut devenir prêteur !</h3>
+            </br> Bonjour, </br>$preteurname veut devenir prêteur !
+            </br>
+            </br>Veuillez approuver son changement de statut en cliquant sur le lien suivant : 
+            </br> https://pear.min.epf.fr/add-lender-admin/$id
+            </br> 
+            </br> A bientôt, <br/>Bien à vous, <br/> Billy The Pear "
+            ]
+        ]
+    ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, "https://api.mailjet.com/v3.1/send");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($bodyAdmin));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            array(
+        'Content-Type: application/json')
+        );
+        curl_setopt($ch, CURLOPT_USERPWD, "47219a1c999266c91efd07942860e61d:46478c82213deacd3a251becee8e5776");
+        $server_output = curl_exec($ch);
+        curl_close($ch);
+
+        $response = json_decode($server_output);
+        if ($response->Messages[0]->Status == 'success') {
+        }
+    }
+    public function send_email_info_passage_preteur($preteurname, $preteuremail)
+    {
+        $bodyAdmin = [
+        'Messages' => [
+            [
+            'From' => [
+                'Email' => "pear@epf.fr",
+                'Name' => "Billy The Pear"
+            ],
+            'To' => [
+                [
+                'Email' => "$preteuremail",
+                //'Name' => "Billy The Pear"
+                ]
+            ],
+            'Subject' => " Vous êtes devenu prêteur ",
+            'HTMLPart' => "<h3> $preteurname vous êtes devenu préteur !</h3>
+            </br> Bonjour, </br>$preteurname vous êtes devenu préteur !
+            </br>
+            </br>Billy The Pear vous a approuvé, vous êtes maintenant préteur. Rendez-vous sur Pear pour de nouvelles avantures : 
+            </br> https://pear.min.epf.fr/
+            </br> 
+            </br> A bientôt, <br/>Bien à vous, <br/> Billy The Pear "
+            ]
+        ]
+    ];
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, "https://api.mailjet.com/v3.1/send");
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($bodyAdmin));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            array(
+        'Content-Type: application/json')
+        );
+        curl_setopt($ch, CURLOPT_USERPWD, "47219a1c999266c91efd07942860e61d:46478c82213deacd3a251becee8e5776");
+        $server_output = curl_exec($ch);
+        curl_close($ch);
+
+        $response = json_decode($server_output);
+        if ($response->Messages[0]->Status == 'success') {
+        }
+    }
+
 }
