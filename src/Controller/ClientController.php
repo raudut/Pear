@@ -59,18 +59,6 @@ class ClientController extends AbstractController
         'widget' =>"single_text",
       ])
       ->add('save', SubmitType::class)
-      ->add('roles', CollectionType::class, [
-        'entry_type'   => ChoiceType::class,
-        'entry_options'  => [
-            'label' => false,
-            'choices'  => [
-              'Choisir un rôle' => $user->getRolesNames()
-            ],
-            'multiple' => false,
-            'label' => false,
-            'placeholder' => false
-        ],
-    ])
     ;
 
       
@@ -83,6 +71,8 @@ class ClientController extends AbstractController
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $user = $form->getData();
+                $role[] = 'ROLE_BORROWER';
+                $user->setRoles($role);
                 $userlastname = $user->getNom();
                 $userfirstname = $user->getPrenom();
                 $username = " $userfirstname $userlastname";
