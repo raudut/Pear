@@ -20,6 +20,7 @@ body::after{ content:''; display:block; height:100px; }
 	</style>
     <head>
         <meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel= "stylesheet" href="https://bootswatch.com/4/spacelab/bootstrap.min.css">
 		<link rel="icon" href="https://www.logolynx.com/images/logolynx/6b/6b8c0718034a984dd1cec7517595de43.png">
@@ -30,9 +31,6 @@ body::after{ content:''; display:block; height:100px; }
               top: 20px;
             }
 
-            .grid{
-                
-            }
         </style>
         {% block stylesheets %}{% endblock %}
    
