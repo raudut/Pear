@@ -341,10 +341,10 @@ class ClientController extends AbstractController
 
         try {
             $mailadmin = new AppController();
-            echo($id);
+            //echo($id);
             $entityManager = $this->getDoctrine()->getManager();
             //$connUser = $this->getUser();
-            $oldborrower = $userRepo -> findBy(['idUser' => $id]);
+            $oldborrower = $userRepo -> findBy(['id' => $id]);
             $newlender = $oldborrower[0];
             $role[] = 'ROLE_LENDER';
             $newlender->setRoles($role);
@@ -358,6 +358,7 @@ class ClientController extends AbstractController
             return $this->render('user/admin_user_passer_en_preteur.html.twig');
 
         } catch (Exception $e) {
+          echo($e);
             return $this -> render('security/erreur.html.twig');
         }
     }
