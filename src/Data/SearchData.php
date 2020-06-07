@@ -13,15 +13,5 @@ class SearchData{
          * @var Categorie[]
          */
         public $categorie = [];
-    
-        /**
-         * @var null|integer
-         */
-        public $max;
-    
-        /**
-         * @var null|integer
-         */
-        public $min;  
 
     }
