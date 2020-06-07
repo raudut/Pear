@@ -5,29 +5,14 @@ namespace App\Controller;
 use DateTime;
 use Exception;
 use App\Entity\User;
-use App\Entity\Lender;
-use App\Entity\Product;
 use App\Entity\Borrowing;
-use Doctrine\ORM\EntityManager;
-use Doctrine\DBAL\Types\ArrayType;
 use App\Repository\ProductRepository;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use App\Repository\BorrowingRepository;
 use App\Repository\UserRepository;
-use phpDocumentor\Reflection\Types\Boolean;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class BorrowingController extends AbstractController
@@ -62,7 +47,8 @@ class BorrowingController extends AbstractController
                 ;
 
             $form = $formBuilder->getForm();
-            $form->handleRequest($request);            if ($form->isSubmitted() && $form->isValid()) {
+            $form->handleRequest($request);           
+             if ($form->isSubmitted() && $form->isValid()) {
                 $borrowing = $form->getData();
                 $borrowing-> setDateDebut($mydate);
                 $dateFin = $borrowing->getDateFin();
@@ -146,8 +132,6 @@ class BorrowingController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_BORROWER');
 
-        
-
 
         try {
             $user = $this -> getUser();
@@ -166,7 +150,7 @@ class BorrowingController extends AbstractController
 
     public function delete_borrowing(BorrowingRepository $borrowingRepository, $id, $bool)
     {
-        $this->denyAccessUnlessGranted('ROLE_BORROWER');
+        $this->denyAccessUnlessGranted('ROLE_LEDNER');
 
         try {
             $bo = $borrowingRepository -> findOneById($id);
@@ -190,15 +174,18 @@ class BorrowingController extends AbstractController
             return $this -> render('security/erreur.html.twig');
         }
     }
-    public function delete_borrowing_from_list(BorrowingRepository $borrowingRepository, $id)
+    public function delete_borrowing_from_list( ProductRepository $productRepository, BorrowingRepository $borrowingRepository, $id)
     {
-        $this->denyAccessUnlessGranted('ROLE_BORROWER');
+        $this->denyAccessUnlessGranted('ROLE_LENDER');
 
         try {
             $bo = $borrowingRepository -> findOneById($id);
-
+            $idProduct = $bo->getIdProduct();
+            $product = $productRepository -> findOneById($idProduct);
             $entityManager = $this->getDoctrine()->getManager();
-      
+            $statut[] = "STATUT_DISPONIBLE";
+            $product->setStatut($statut);
+            $entityManager->flush();
             $entityManager->remove($bo);
             $entityManager->flush();
             $listBorrowing = $borrowingRepository -> findAll();
@@ -213,7 +200,7 @@ class BorrowingController extends AbstractController
   
 
 
-    public function rendre_product($id, ProductRepository $productRepository, BorrowingRepository $borrowingRepository)
+    public function rendre_product($id, BorrowingRepository $borrowingRepository, ProductRepository $productRepository)
     {
         $this->denyAccessUnlessGranted('ROLE_BORROWER');
         try {
@@ -223,10 +210,7 @@ class BorrowingController extends AbstractController
             $idProduct = $borrowing->getIdProduct();
             $product = $productRepository -> findOneById($idProduct);
   
-            $statut[] = "STATUT_DISPONIBLE";
-            $product->setStatut($statut);
-            $entityManager->flush();
-
+           
             $lender = $product -> getOwner();
             $owneremail = $lender -> getEmail();
             $ownername = $lender -> getNom();
@@ -257,10 +241,6 @@ class BorrowingController extends AbstractController
             $bool=true;
             $borrowing =  $borrowingRepository -> findBy(['idProduct' => $id]);
             $user = $borrowing[0]->getIdUser();
-           
-            $statut[] = "STATUT_DISPONIBLE";
-            $product->setStatut($statut);
-            $entityManager->flush();
 
             $lender = $product -> getOwner();
             $owneremail = $lender -> getEmail();
@@ -285,7 +265,7 @@ class BorrowingController extends AbstractController
 
     public function show_borrowings($id, ProductRepository $productRepository, BorrowingRepository $borrowingRepo, UserRepository $userRespo)
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        $this->denyAccessUnlessGranted('ROLE_BORROWER');
         try {
             $borrowingl= $borrowingRepo -> findby(['id' => $id]);
             $borrowing = $borrowingl[0];

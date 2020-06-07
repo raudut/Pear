@@ -5,12 +5,8 @@ namespace App\Controller;
 
 //use App\Form\UserFormType;
 use App\Entity\User;
-use App\Entity\Lender;
-use App\Controller\ArrayList;
 use App\Repository\BorrowingRepository;
-use App\Repository\LenderRepository;
 use App\Repository\ProductRepository;
-use Doctrine\DBAL\Types\JsonType;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Types\ArrayType;
 use Exception;
