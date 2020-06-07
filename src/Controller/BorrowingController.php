@@ -188,7 +188,7 @@ class BorrowingController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $statut[] = "STATUT_DISPONIBLE";
             $product->setStatut($statut);
-            $entityManager->flush();
+            echo $product -> getStatut();
             $entityManager->remove($bo);
             $entityManager->flush();
             $listBorrowing = $borrowingRepository -> findAll();
@@ -224,7 +224,7 @@ class BorrowingController extends AbstractController
             $mailowner->send_email_confirmation_rendu($ownername, $owneremail, $productname,$id); 
             $bool = false;
             //$this -> delete_borrowing($borrowingRepository, $borrowing,$bool);
-            $entityManager->flush();
+            
 
 
             $listBorrowing =  $borrowingRepository -> findBy(['idUser' =>$borrowing->getIdUser()]);
@@ -256,7 +256,6 @@ class BorrowingController extends AbstractController
             $mailowner->send_email_rendre_product($owneremail, $ownername, $productname);
 
             $this -> delete_borrowing($borrowingRepository, $borrowing, $bool, $productRepository);
-            $entityManager->flush();
 
 
             $listBorrowing =  $borrowingRepository -> findBy(['idUser' =>$user]);
