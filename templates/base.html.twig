@@ -5,7 +5,17 @@
 .body{ min-height:120%; padding:0px; margin:0; position:relative; }
 
 body::after{ content:''; display:block; height:100px; }
-
+@media screen and (max-width:600px) {
+    .footer {
+        	position: relative;
+			left: 0;
+			bottom: 0;
+			width: 100%;
+			background-color: #f2f2f2;
+			text-align: center;
+			height: 80px;
+    }
+}
 		.footer {
 			position: absolute;
 			left: 0;
