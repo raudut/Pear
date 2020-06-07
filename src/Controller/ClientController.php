@@ -330,6 +330,7 @@ class ClientController extends AbstractController
 
             return $this->render('user/user_en_preteur.html.twig');
         } catch (Exception $e) {
+            echo $e;
             return $this -> render('security/erreur.html.twig');
         }
     }
@@ -358,6 +359,7 @@ class ClientController extends AbstractController
             return $this->render('user/admin_user_passer_en_preteur.html.twig');
 
         } catch (Exception $e) {
+            echo $e;
             return $this -> render('security/erreur.html.twig');
         }
     }
